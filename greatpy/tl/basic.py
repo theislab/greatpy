@@ -20,7 +20,7 @@ def file_reader(path:str,type_f:str):
         tss if : "Chr","tss","strand","name"
         chr_size if : "Chr","Chr_Size" 
     """
-    if type_f not in ["tss""chr_size"]: 
+    if type_f not in ["tss","chr_size"]: 
         print("type should be tsv,tss,BED or chr_size")
         return False
 
