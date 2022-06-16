@@ -1,5 +1,6 @@
 from anndata import AnnData
 import pandas as pd
+from math import lgamma, log, exp
 
 
 def basic_tool(adata: AnnData) -> int:
@@ -180,3 +181,105 @@ def create_Regdom(tssFn,chromSizesFn,AssociationRule,outFn):
 
     write_Regdom(out,outFn) 
     return out
+
+def get_range_tree_of_regdom(regdom): 
+    return regdom[["Chr","Chr_Start","Chr_End"]]
+
+def get_Total_Non_Gap_Bases(antigap):
+    retval=0
+    for i in range(antigap.shape[0]): 
+        retval+= antigap.iloc[i]["Chr_End"]-antigap.iloc[i]["Chr_Start"]
+    return retval
+
+def genomeOverlapSize(ranges,chr,start,end):
+    """ 
+    Function to get the number of intersection between the range and an element which we know the chr number, the start and stop position on the chromosome
+    """
+    # ranges=ranges.loc[ranges["Chr"]==chr & ranges["Chr_Start"]>start & ranges["Chr_End"]<end] # don't work I don't understand
+    ranges=ranges.loc[ranges["Chr"]==chr]
+    ranges=ranges.loc[ranges["Chr_Start"]>start]
+    ranges=ranges.loc[ranges["Chr_End"]<end]
+    for i in range(ranges.shape[0]): 
+        if ranges.iloc[i]["Chr_Start"] > start : 
+            start = ranges.iloc[i]["Chr_Start"]
+        elif ranges.iloc[i]["Chr_End"] < end : 
+            end = ranges.iloc[i]["Chr_End"]
+    return end-start
+
+def get_anotated_Non_Gap_Bases(ranges,antigap):
+    """Function to get all of the intersection of the antigap and the ranges data """
+    retval=0
+    for i in range(antigap.shape[0]):
+        currAntigap=antigap.iloc[i]
+        retval+=genomeOverlapSize(ranges,currAntigap["Chr"],currAntigap["Chr_Start"],currAntigap["Chr_End"])
+    return retval
+
+def betacf(a,b,x): 
+    MAXIT = 10000
+    EPS = 3.0e-7 
+    FPMIN = 1.0e-30
+    qab=a+b
+    qap=a+1
+    qam=a-1
+    c=1
+    d=1-qab*x/qap
+    if abs(d) < FPMIN :
+        d = FPMIN
+    d=1/d 
+    h=d
+    for m in range(1,MAXIT+1): 
+        m2=2*m
+        aa=m*(b-m)*x/((qam+m2)*(a+m2))
+        d=1.0+aa*d
+        if (abs(d) < FPMIN) : 
+            d=FPMIN
+        c=1.0+aa/c
+        if (abs(c) < FPMIN):
+            c=FPMIN
+        d=1.0/d
+        h *= d*c
+        aa = -(a+m)*(qab+m)*x/((a+m2)*(qap+m2))
+        d=1.0+aa*d  
+        if (abs(d) < FPMIN):
+            d=FPMIN
+        c=1.0+aa/c
+        if (abs(c) < FPMIN):
+            c=FPMIN
+        d=1.0/d
+        dell=d*c
+        h *= dell
+        if (abs(dell-1.0) < EPS):
+            break
+    if (m > MAXIT):
+        print("a or b too big, or MAXIT too small in betacf")
+        return False
+    return h
+
+def betai(a,b,x):
+    if x < 0 or x > 1 : 
+        print("bad x in routine betai")
+        return False
+    if x == 0 or x == 1 : 
+        bt=0.0
+    else : 
+        bt=exp(lgamma(a+b)-lgamma(a)-lgamma(b)+a*log(x)+b*log(1.0-x))
+    if x < (a+1)/(a+b+2) : 
+        return bt*betacf(a,b,x)
+    return 1-bt*betacf(b,a,1-x)/b
+
+def get_Binom_Pval(n,k,p):
+    if k == 0 : return 1
+    else : return betai(k,n-k+1,p)
+
+def calculBinomP(regdomFn,antigapFn,totalRegions,hitRegions) : 
+    df=pd.read_csv(regdomFn,sep="\t",comment="#",names=["Chr", "Chr_Start", "Chr_End","Name","tss","Strand"])
+    ranges=get_range_tree_of_regdom(df)
+    antigap=pd.read_csv(antigapFn,sep="\t",comment="#",names=["Chr", "Chr_Start", "Chr_End","Characteristics"])
+    
+    total_Non_Gap_Bases=get_Total_Non_Gap_Bases(antigap)
+    anotated_Non_Gap_Bases=get_anotated_Non_Gap_Bases(ranges,antigap)
+
+    annotation_Weight=anotated_Non_Gap_Bases/total_Non_Gap_Bases
+
+    binomP = get_Binom_Pval(totalRegions,hitRegions,annotation_Weight)
+    return binomP 
