@@ -1,6 +1,7 @@
 from anndata import AnnData
 import pandas as pd
 from math import lgamma, log, exp,fabs
+pd.options.display.float_format = '{:12.5e}'.format
 
 
 def basic_tool(adata: AnnData) -> int:
