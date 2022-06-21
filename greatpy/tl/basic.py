@@ -1,6 +1,6 @@
 from anndata import AnnData
 import pandas as pd
-from math import lgamma, log, exp
+from math import lgamma, log, exp,fabs
 
 
 def basic_tool(adata: AnnData) -> int:
@@ -182,37 +182,41 @@ def create_Regdom(tssFn,chromSizesFn,AssociationRule,outFn):
     write_Regdom(out,outFn) 
     return out
 
-def get_range_tree_of_regdom(regdom): 
-    return regdom[["Chr","Chr_Start","Chr_End"]]
+def get_association(test,regdom): 
+    res = []
+    for i in range(test.shape[0]):
+        currTest=test.iloc[i]
+        regdom_curr_test = regdom.loc[regdom["Chr"]==currTest["Chr"]].sort_values("Chr_Start")
+        regdom_inf = regdom_curr_test.loc[regdom_curr_test["tss"]<=currTest["Chr_Start"]]
+        regdom_sup = regdom_curr_test.loc[regdom_curr_test["tss"]>=currTest["Chr_End"]]
+        try : 
+            if regdom_inf.iloc[-1]["Name"] not in res : 
+                res.append (regdom_inf.iloc[-1]["Name"])
+        except :
+            pass
+        try :
+            if regdom_sup.iloc[0]["Name"] not in res :
+                res.append(regdom_sup.iloc[0]["Name"])
+        except : 
+            pass
+    return res
 
-def get_Total_Non_Gap_Bases(antigap):
-    retval=0
-    for i in range(antigap.shape[0]): 
-        retval+= antigap.iloc[i]["Chr_End"]-antigap.iloc[i]["Chr_Start"]
-    return retval
+def len_regdom(regdom): 
+    res={}
+    for i in range(regdom.shape[0]): 
+        res[regdom.iloc[i]["Name"]]=regdom.iloc[i]["Chr_End"]-regdom.iloc[i]["Chr_Start"]
+    return res
 
-def genomeOverlapSize(ranges,chr,start,end):
-    """ 
-    Function to get the number of intersection between the range and an element which we know the chr number, the start and stop position on the chromosome
-    """
-    # ranges=ranges.loc[ranges["Chr"]==chr & ranges["Chr_Start"]>start & ranges["Chr_End"]<end] # don't work I don't understand
-    ranges=ranges.loc[ranges["Chr"]==chr]
-    ranges=ranges.loc[ranges["Chr_Start"]>start]
-    ranges=ranges.loc[ranges["Chr_End"]<end]
-    for i in range(ranges.shape[0]): 
-        if ranges.iloc[i]["Chr_Start"] > start : 
-            start = ranges.iloc[i]["Chr_Start"]
-        elif ranges.iloc[i]["Chr_End"] < end : 
-            end = ranges.iloc[i]["Chr_End"]
-    return end-start
-
-def get_anotated_Non_Gap_Bases(ranges,antigap):
-    """Function to get all of the intersection of the antigap and the ranges data """
-    retval=0
-    for i in range(antigap.shape[0]):
-        currAntigap=antigap.iloc[i]
-        retval+=genomeOverlapSize(ranges,currAntigap["Chr"],currAntigap["Chr_Start"],currAntigap["Chr_End"])
-    return retval
+def hit(test,regdom): 
+    nb=0
+    for i in range(test.shape[0]): 
+        currTest=test.iloc[i]
+        regdom=regdom.loc[regdom["Chr"]==currTest["Chr"]]
+        for j in range(regdom.shape[0]): 
+            currRegdom=regdom.iloc[j]
+            if currTest["Chr_Start"] >= currRegdom["Chr_Start"] and currTest["Chr_End"] <= currRegdom["Chr_End"] :
+                nb+=1
+    return nb
 
 def betacf(a,b,x): 
     MAXIT = 10000
@@ -223,7 +227,7 @@ def betacf(a,b,x):
     qam=a-1
     c=1
     d=1-qab*x/qap
-    if abs(d) < FPMIN :
+    if fabs(d) < FPMIN :
         d = FPMIN
     d=1/d 
     h=d
@@ -231,24 +235,24 @@ def betacf(a,b,x):
         m2=2*m
         aa=m*(b-m)*x/((qam+m2)*(a+m2))
         d=1.0+aa*d
-        if (abs(d) < FPMIN) : 
+        if (fabs(d) < FPMIN) : 
             d=FPMIN
         c=1.0+aa/c
-        if (abs(c) < FPMIN):
+        if (fabs(c) < FPMIN):
             c=FPMIN
         d=1.0/d
         h *= d*c
         aa = -(a+m)*(qab+m)*x/((a+m2)*(qap+m2))
         d=1.0+aa*d  
-        if (abs(d) < FPMIN):
+        if (fabs(d) < FPMIN):
             d=FPMIN
         c=1.0+aa/c
-        if (abs(c) < FPMIN):
+        if (fabs(c) < FPMIN):
             c=FPMIN
         d=1.0/d
         dell=d*c
         h *= dell
-        if (abs(dell-1.0) < EPS):
+        if (fabs(dell-1.0) < EPS):
             break
     if (m > MAXIT):
         print("a or b too big, or MAXIT too small in betacf")
@@ -264,22 +268,40 @@ def betai(a,b,x):
     else : 
         bt=exp(lgamma(a+b)-lgamma(a)-lgamma(b)+a*log(x)+b*log(1.0-x))
     if x < (a+1)/(a+b+2) : 
-        return bt*betacf(a,b,x)
+        return bt*betacf(a,b,x)/a
     return 1-bt*betacf(b,a,1-x)/b
 
 def get_Binom_Pval(n,k,p):
     if k == 0 : return 1
     else : return betai(k,n-k+1,p)
 
-def calculBinomP(regdomFn,antigapFn,totalRegions,hitRegions) : 
-    df=pd.read_csv(regdomFn,sep="\t",comment="#",names=["Chr", "Chr_Start", "Chr_End","Name","tss","Strand"])
-    ranges=get_range_tree_of_regdom(df)
-    antigap=pd.read_csv(antigapFn,sep="\t",comment="#",names=["Chr", "Chr_Start", "Chr_End","Characteristics"])
+def calculBinomP(test,regdomFn,Chr_sizeFn,annotation): 
+    regdom=pd.read_csv(regdomFn,sep="\t",comment="#",names=["Chr", "Chr_Start", "Chr_End","Name","tss","Strand"])
+
+    test=pd.read_csv(test,sep="\t",comment="#",names=["Chr", "Chr_Start", "Chr_End"])
+    n = test.shape[0] # get the number of genomic region in the test set
+    size=pd.read_csv(Chr_sizeFn,sep="\t",comment="#",names=["Chrom","Size"])
+    G = size["Size"].sum() # get the total number of nucleotides in the genome
+    ann = pd.read_csv(annotation,usecols=[1,2,3,4,5,6],low_memory=False)
+    ann = ann[ann['id'].str.match('^GO.*')== True]
+
+    res={}
+    asso= get_association(test,regdom) # get the name of the regulatory domain associated to each genomic region in the test set
     
-    total_Non_Gap_Bases=get_Total_Non_Gap_Bases(antigap)
-    anotated_Non_Gap_Bases=get_anotated_Non_Gap_Bases(ranges,antigap)
+    ann_red = ann[ann["symbol"].isin(asso)]
+    regdom = regdom[regdom["Name"].isin(list(ann[ann["id"].isin(list(ann_red["id"]))]["symbol"]))]
+    len_on_chr=len_regdom(regdom) # get the length of each regulatory domain
+    for name in asso :
+        ann_name_gene = ann[ann["symbol"]==name]
+        id=ann_name_gene["id"]
+        tmp=[]
+        for i in (list(id.unique())): 
+            gene_imply=ann[ann['id']==i]
+            curr_regdom=regdom.loc[regdom["Name"].isin(list(gene_imply["gene.name"]))]
+            k = hit(test,curr_regdom) # get the number of test genomic regions in the regulatory domain of a gene with annotation
+            nb=sum([len_on_chr[i] for i in curr_regdom["Name"]]) # get the portion of the genome in the regulatory domain of a gene with annotation
+            tmp.append((k,nb,i,gene_imply.iloc[0]["name"]))
+        
+        res.update({elem[2]:[elem[3],get_Binom_Pval(n,elem[0],elem[1]/G)] for elem in tmp})# if get_Binom_Pval(n,elem[0],elem[1]/G)<0.05 and get_Binom_Pval(n,elem[0],elem[1]/G)!=0})
 
-    annotation_Weight=anotated_Non_Gap_Bases/total_Non_Gap_Bases
-
-    binomP = get_Binom_Pval(totalRegions,hitRegions,annotation_Weight)
-    return binomP 
+    return pd.DataFrame(res).transpose().rename(columns={0:"GO_term",1:"P-value"}).sort_values(by="P-value")
