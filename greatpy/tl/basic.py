@@ -282,7 +282,7 @@ def calculBinomP(test,regdomFn,Chr_sizeFn,annotation):
     n = test.shape[0] # get the number of genomic region in the test set
     size=pd.read_csv(Chr_sizeFn,sep="\t",comment="#",names=["Chrom","Size"])
     G = size["Size"].sum() # get the total number of nucleotides in the genome
-    ann = pd.read_csv(annotation,usecols=[1,2,3,4,5,6],low_memory=False)
+    ann = pd.read_csv(annotation,sep="\t",names=["ensembl","id","name","ontology.group","gene.name","symbol"],low_memory=False)
     ann = ann[ann['id'].str.match('^GO.*')== True]
 
     res={}
