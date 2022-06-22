@@ -286,7 +286,6 @@ def calculBinomP(test,regdomFn,Chr_sizeFn,annotation):
     ann = ann[ann['id'].str.match('^GO.*')== True]
 
     res={}
-    return test, regdom 
     asso= get_association(test,regdom) # get the name of the regulatory domain associated to each genomic region in the test set
     
     ann_red = ann[ann["symbol"].isin(asso)]
