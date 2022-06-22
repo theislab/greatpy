@@ -278,7 +278,6 @@ def get_Binom_Pval(n,k,p):
 
 def calculBinomP(test,regdomFn,Chr_sizeFn,annotation): 
     regdom=pd.read_csv(regdomFn,sep="\t",comment="#",names=["Chr", "Chr_Start", "Chr_End","Name","tss","Strand"])
-
     test=pd.read_csv(test,sep="\t",comment="#",names=["Chr", "Chr_Start", "Chr_End"])
     n = test.shape[0] # get the number of genomic region in the test set
     size=pd.read_csv(Chr_sizeFn,sep="\t",comment="#",names=["Chrom","Size"])
@@ -287,6 +286,7 @@ def calculBinomP(test,regdomFn,Chr_sizeFn,annotation):
     ann = ann[ann['id'].str.match('^GO.*')== True]
 
     res={}
+    return test, regdom 
     asso= get_association(test,regdom) # get the name of the regulatory domain associated to each genomic region in the test set
     
     ann_red = ann[ann["symbol"].isin(asso)]
