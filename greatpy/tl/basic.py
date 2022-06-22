@@ -203,10 +203,8 @@ def get_association(test,regdom):
     return res
 
 def len_regdom(regdom): 
-    res={}
-    for i in range(regdom.shape[0]): 
-        res[regdom.iloc[i]["Name"]]=regdom.iloc[i]["Chr_End"]-regdom.iloc[i]["Chr_Start"]
-    return res
+    test= regdom["Chr_End"]-regdom["Chr_Start"]
+    return pd.DataFrame({"len":list(test)},index=regdom["Name"]).to_dict()["len"]
 
 def hit(test,regdom): 
     nb=0
@@ -217,6 +215,15 @@ def hit(test,regdom):
             currRegdom=regdom.iloc[j]
             if currTest["Chr_Start"] >= currRegdom["Chr_Start"] and currTest["Chr_End"] <= currRegdom["Chr_End"] :
                 nb+=1
+    return nb
+
+def hit_faster(test,regdom): 
+    # I don't understand why the function hit and hit_faster could return different results bc I just modify a line to reduce calculation time
+    nb=0
+    for i in range(test.shape[0]): 
+        currTest=test.iloc[i]
+        regdom_reduce=regdom.loc[regdom["Chr"]==currTest["Chr"]]
+        nb+= regdom_reduce[(regdom_reduce["Chr_Start"] <= currTest["Chr_Start"]) & (regdom_reduce["Chr_End"] >= currTest["Chr_End"])].shape[0]
     return nb
 
 def betacf(a,b,x): 
@@ -277,20 +284,28 @@ def get_Binom_Pval(n,k,p):
     else : return betai(k,n-k+1,p)
 
 def calculBinomP(test,regdomFn,Chr_sizeFn,annotation): 
-    regdom=pd.read_csv(regdomFn,sep="\t",comment="#",names=["Chr", "Chr_Start", "Chr_End","Name","tss","Strand"])
-    test=pd.read_csv(test,sep="\t",comment="#",names=["Chr", "Chr_Start", "Chr_End"])
-    n = test.shape[0] # get the number of genomic region in the test set
-    size=pd.read_csv(Chr_sizeFn,sep="\t",comment="#",names=["Chrom","Size"])
-    G = size["Size"].sum() # get the total number of nucleotides in the genome
-    ann = pd.read_csv(annotation,sep="\t",names=["ensembl","id","name","ontology.group","gene.name","symbol"],low_memory=False)
+    # Data import 
+    regdom=pd.read_csv(regdomFn,sep="\t",comment="#",
+                    names=["Chr", "Chr_Start", "Chr_End","Name","tss","Strand"],dtype={"Chr":"object", "Chr_Start":"int64", "Chr_End":"int64","Name":"object","tss":"int64","Strand":"object"})
+    test=pd.read_csv(test,sep="\t",comment="#",
+                    names=["Chr", "Chr_Start", "Chr_End"],dtype={"Chr":"object", "Chr_Start":"int64", "Chr_End":"int64"})#,"Name","tss","Strand"])
+    size=pd.read_csv(Chr_sizeFn,sep="\t",comment="#",
+                    names=["Chrom","Size"],dtype={"Chrom":"object", "Size":"int64"})
+    ann = pd.read_csv(annotation,sep=";",  
+                    names=["ensembl","id","name","ontology.group","gene.name","symbol"],dtype={"ensembl":"object","id":"object","name":"object","ontology.group":"object","gene.name":"object","symbol":"object"},
+                    usecols=["id","name","gene.name","symbol"],low_memory=True)
     ann = ann[ann['id'].str.match('^GO.*')== True]
 
+    # Init 
     res={}
-    asso= get_association(test,regdom) # get the name of the regulatory domain associated to each genomic region in the test set
-    
-    ann_red = ann[ann["symbol"].isin(asso)]
-    regdom = regdom[regdom["Name"].isin(list(ann[ann["id"].isin(list(ann_red["id"]))]["symbol"]))]
-    len_on_chr=len_regdom(regdom) # get the length of each regulatory domain
+    n = test.shape[0]# get the number of genomic region in the test set
+    G = size["Size"].sum()# get the total number of nucleotides in the genome
+    asso= get_association(test,regdom)# get the name of the regulatory domain associated to each genomic region in the test set
+    ann_red = ann[ann["symbol"].isin(asso)]#
+    regdom = regdom[regdom["Name"].isin(list(ann[ann["id"].isin(list(ann_red["id"]))]["symbol"]))]#reduction of the regdom file by selecting only the genes whose GO ID is owned by a gene of the association 
+    len_on_chr=len_regdom(regdom)# get the length of each regulatory domain 
+
+    #Compute for all associating gene and for each GO id associated with the gene the probability. 
     for name in asso :
         ann_name_gene = ann[ann["symbol"]==name]
         id=ann_name_gene["id"]
@@ -298,10 +313,9 @@ def calculBinomP(test,regdomFn,Chr_sizeFn,annotation):
         for i in (list(id.unique())): 
             gene_imply=ann[ann['id']==i]
             curr_regdom=regdom.loc[regdom["Name"].isin(list(gene_imply["gene.name"]))]
-            k = hit(test,curr_regdom) # get the number of test genomic regions in the regulatory domain of a gene with annotation
-            nb=sum([len_on_chr[i] for i in curr_regdom["Name"]]) # get the portion of the genome in the regulatory domain of a gene with annotation
+            k = hit_faster(test,curr_regdom)# get the number of test genomic regions in the regulatory domain of a gene with annotation
+            nb=sum([len_on_chr[i] for i in curr_regdom["Name"]])# get the portion of the genome in the regulatory domain of a gene with annotation
             tmp.append((k,nb,i,gene_imply.iloc[0]["name"]))
         
         res.update({elem[2]:[elem[3],get_Binom_Pval(n,elem[0],elem[1]/G)] for elem in tmp})# if get_Binom_Pval(n,elem[0],elem[1]/G)<0.05 and get_Binom_Pval(n,elem[0],elem[1]/G)!=0})
-
     return pd.DataFrame(res).transpose().rename(columns={0:"GO_term",1:"P-value"}).sort_values(by="P-value")
