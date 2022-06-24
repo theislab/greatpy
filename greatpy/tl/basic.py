@@ -2,6 +2,7 @@ from anndata import AnnData
 import pandas as pd
 from math import lgamma, log, exp,fabs
 pd.options.display.float_format = '{:12.5e}'.format
+from scipy.stats import hypergeom
 
 
 def basic_tool(adata: AnnData) -> int:
@@ -272,7 +273,7 @@ def get_Binom_Pval(n,k,p):
     if k == 0 : return 1
     else : return betai(k,n-k+1,p)
 
-def calculBinomP(test,regdomFn,Chr_sizeFn,annotation): 
+def calculBinomP_and_HypergeomP(test,regdomFn,Chr_sizeFn,annotation): 
     # Data import 
     regdom=pd.read_csv(regdomFn,sep="\t",comment="#",
                     names=["Chr", "Chr_Start", "Chr_End","Name","tss","Strand"],dtype={"Chr":"object", "Chr_Start":"int64", "Chr_End":"int64","Name":"object","tss":"int64","Strand":"object"})
@@ -285,14 +286,19 @@ def calculBinomP(test,regdomFn,Chr_sizeFn,annotation):
                     usecols=["id","name","gene.name","symbol"],low_memory=True)
     ann = ann[ann['id'].str.match('^GO.*')== True]
 
-    # Init 
+    # Init Great
     res={}
-    n = test.shape[0]# get the number of genomic region in the test set
+    n_binom = test.shape[0]# get the number of genomic region in the test set
     G = size["Size"].sum()# get the total number of nucleotides in the genome
     asso= get_association(test,regdom)# get the name of the regulatory domain associated to each genomic region in the test set
+    # return asso
     ann_red = ann[ann["symbol"].isin(asso)]
     regdom = regdom[regdom["Name"].isin(list(ann[ann["id"].isin(list(ann_red["id"]))]["symbol"]))]#reduction of the regdom file by selecting only the genes whose GO ID is owned by a gene of the association 
     len_on_chr=len_regdom(regdom)# get the length of each regulatory domain 
+
+    # init Hypergeom
+    N_hypergeom=regdom.shape[0] #get the number of genes in the genome.
+    n_hypergeom=len(asso) # get the number of genes in the test gene set.
 
     #Compute for all associating gene and for each GO id associated with the gene the probability. 
     for name in asso :
@@ -301,10 +307,12 @@ def calculBinomP(test,regdomFn,Chr_sizeFn,annotation):
         tmp=[]
         for i in (list(id.unique())): 
             gene_imply=ann[ann['id']==i]
+            K_hypergeom=gene_imply.shape[0] # get be the number of genes in the genome with annotation
             curr_regdom=regdom.loc[regdom["Name"].isin(list(gene_imply["gene.name"]))]
-            k = number_of_hit(test,curr_regdom)# get the number of test genomic regions in the regulatory domain of a gene with annotation
-            nb=sum([len_on_chr[i] for i in curr_regdom["Name"]])# get the portion of the genome in the regulatory domain of a gene with annotation
-            tmp.append((k,nb,i,gene_imply.iloc[0]["name"]))
-        
-        res.update({elem[2]:[elem[3],get_Binom_Pval(n,elem[0],elem[1]/G)] for elem in tmp})# if get_Binom_Pval(n,elem[0],elem[1]/G)<0.05 and get_Binom_Pval(n,elem[0],elem[1]/G)!=0})
-    return pd.DataFrame(res).transpose().rename(columns={0:"GO_term",1:"P-value"}).sort_values(by="P-value")
+            k_hypergeom= curr_regdom.loc[curr_regdom["Name"].isin(asso)].shape[0] # get the number of genes in the test gene set with annotation
+            k_binom = number_of_hit(test,curr_regdom)# get the number of test genomic regions in the regulatory domain of a gene with annotation
+            nb_binom=sum([len_on_chr[i] for i in curr_regdom["Name"]])# get the portion of the genome in the regulatory domain of a gene with annotation
+            
+            tmp.append((k_binom,nb_binom,i,gene_imply.iloc[0]["name"],K_hypergeom,k_hypergeom))
+        res.update({elem[2]:[ elem[3],get_Binom_Pval(n_binom,elem[0],elem[1]/G), hypergeom.pmf(elem[5],N_hypergeom,n_hypergeom,elem[4]) ] for elem in tmp})
+    return pd.DataFrame(res).transpose().rename(columns={0:"GO_term",1:"Binom p-value",2:"Hypergeom p-value"}).sort_values(by="Binom p-value")
