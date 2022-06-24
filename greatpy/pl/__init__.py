@@ -1,1 +1,4 @@
-from .basic import basic_plot
+from .basic import (
+    basic_plot,
+    scatterplot
+    )

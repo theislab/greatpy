@@ -1,6 +1,10 @@
 from anndata import AnnData
 import pandas as pd
-from math import lgamma, log, exp
+from math import lgamma, log, exp,fabs
+pd.options.display.float_format = '{:12.5e}'.format
+from scipy.stats import hypergeom
+from statsmodels.stats.multitest import multipletests,fdrcorrection
+from scipy.stats import hypergeom as hg 
 
 
 def basic_tool(adata: AnnData) -> int:
@@ -182,37 +186,37 @@ def create_Regdom(tssFn,chromSizesFn,AssociationRule,outFn):
     write_Regdom(out,outFn) 
     return out
 
-def get_range_tree_of_regdom(regdom): 
-    return regdom[["Chr","Chr_Start","Chr_End"]]
+def get_association(test,regdom): 
+    res = []
+    for i in range(test.shape[0]):
+        currTest=test.iloc[i]
+        regdom_curr_test = regdom.loc[regdom["Chr"]==currTest["Chr"]].sort_values("Chr_Start")
+        regdom_inf = regdom_curr_test.loc[regdom_curr_test["tss"]<=currTest["Chr_Start"]]
+        regdom_sup = regdom_curr_test.loc[regdom_curr_test["tss"]>=currTest["Chr_End"]]
+        try : 
+            if regdom_inf.iloc[-1]["Name"] not in res : 
+                res.append (regdom_inf.iloc[-1]["Name"])
+        except :
+            pass
+        try :
+            if regdom_sup.iloc[0]["Name"] not in res :
+                res.append(regdom_sup.iloc[0]["Name"])
+        except : 
+            pass
+    return res
 
-def get_Total_Non_Gap_Bases(antigap):
-    retval=0
-    for i in range(antigap.shape[0]): 
-        retval+= antigap.iloc[i]["Chr_End"]-antigap.iloc[i]["Chr_Start"]
-    return retval
+def len_regdom(regdom): 
+    test= regdom["Chr_End"]-regdom["Chr_Start"]
+    return pd.DataFrame({"len":list(test)},index=regdom["Name"]).to_dict()["len"]
 
-def genomeOverlapSize(ranges,chr,start,end):
-    """ 
-    Function to get the number of intersection between the range and an element which we know the chr number, the start and stop position on the chromosome
-    """
-    # ranges=ranges.loc[ranges["Chr"]==chr & ranges["Chr_Start"]>start & ranges["Chr_End"]<end] # don't work I don't understand
-    ranges=ranges.loc[ranges["Chr"]==chr]
-    ranges=ranges.loc[ranges["Chr_Start"]>start]
-    ranges=ranges.loc[ranges["Chr_End"]<end]
-    for i in range(ranges.shape[0]): 
-        if ranges.iloc[i]["Chr_Start"] > start : 
-            start = ranges.iloc[i]["Chr_Start"]
-        elif ranges.iloc[i]["Chr_End"] < end : 
-            end = ranges.iloc[i]["Chr_End"]
-    return end-start
-
-def get_anotated_Non_Gap_Bases(ranges,antigap):
-    """Function to get all of the intersection of the antigap and the ranges data """
-    retval=0
-    for i in range(antigap.shape[0]):
-        currAntigap=antigap.iloc[i]
-        retval+=genomeOverlapSize(ranges,currAntigap["Chr"],currAntigap["Chr_Start"],currAntigap["Chr_End"])
-    return retval
+def number_of_hit(test,regdom): 
+    nb=0
+    for i in range(test.shape[0]): 
+        currTest=test.iloc[i]
+        regdom_reduce=regdom.loc[regdom["Chr"]==currTest["Chr"]]
+        if regdom_reduce[(regdom_reduce["Chr_Start"] <= currTest["Chr_Start"]) & (regdom_reduce["Chr_End"] >= currTest["Chr_End"])].shape[0] > 0 : 
+            nb+=1
+    return nb
 
 def betacf(a,b,x): 
     MAXIT = 10000
@@ -223,7 +227,7 @@ def betacf(a,b,x):
     qam=a-1
     c=1
     d=1-qab*x/qap
-    if abs(d) < FPMIN :
+    if fabs(d) < FPMIN :
         d = FPMIN
     d=1/d 
     h=d
@@ -231,24 +235,24 @@ def betacf(a,b,x):
         m2=2*m
         aa=m*(b-m)*x/((qam+m2)*(a+m2))
         d=1.0+aa*d
-        if (abs(d) < FPMIN) : 
+        if (fabs(d) < FPMIN) : 
             d=FPMIN
         c=1.0+aa/c
-        if (abs(c) < FPMIN):
+        if (fabs(c) < FPMIN):
             c=FPMIN
         d=1.0/d
         h *= d*c
         aa = -(a+m)*(qab+m)*x/((a+m2)*(qap+m2))
         d=1.0+aa*d  
-        if (abs(d) < FPMIN):
+        if (fabs(d) < FPMIN):
             d=FPMIN
         c=1.0+aa/c
-        if (abs(c) < FPMIN):
+        if (fabs(c) < FPMIN):
             c=FPMIN
         d=1.0/d
         dell=d*c
         h *= dell
-        if (abs(dell-1.0) < EPS):
+        if (fabs(dell-1.0) < EPS):
             break
     if (m > MAXIT):
         print("a or b too big, or MAXIT too small in betacf")
@@ -264,22 +268,137 @@ def betai(a,b,x):
     else : 
         bt=exp(lgamma(a+b)-lgamma(a)-lgamma(b)+a*log(x)+b*log(1.0-x))
     if x < (a+1)/(a+b+2) : 
-        return bt*betacf(a,b,x)
+        return bt*betacf(a,b,x)/a
     return 1-bt*betacf(b,a,1-x)/b
 
 def get_Binom_Pval(n,k,p):
     if k == 0 : return 1
     else : return betai(k,n-k+1,p)
 
-def calculBinomP(regdomFn,antigapFn,totalRegions,hitRegions) : 
-    df=pd.read_csv(regdomFn,sep="\t",comment="#",names=["Chr", "Chr_Start", "Chr_End","Name","tss","Strand"])
-    ranges=get_range_tree_of_regdom(df)
-    antigap=pd.read_csv(antigapFn,sep="\t",comment="#",names=["Chr", "Chr_Start", "Chr_End","Characteristics"])
-    
-    total_Non_Gap_Bases=get_Total_Non_Gap_Bases(antigap)
-    anotated_Non_Gap_Bases=get_anotated_Non_Gap_Bases(ranges,antigap)
+def enrichment(test,regdomFn,Chr_sizeFn,annotation,binom=True,hypergeom=True,correction=(0,0)): 
+    if not binom and not hypergeom : 
+        return False
+    # Data import 
+    regdom=pd.read_csv(regdomFn,sep="\t",comment="#",
+                    names=["Chr", "Chr_Start", "Chr_End","Name","tss","Strand"],dtype={"Chr":"object", "Chr_Start":"int64", "Chr_End":"int64","Name":"object","tss":"int64","Strand":"object"})
+    test=pd.read_csv(test,sep="\t",comment="#",
+                    names=["Chr", "Chr_Start", "Chr_End"],dtype={"Chr":"object", "Chr_Start":"int64", "Chr_End":"int64"})#,"Name","tss","Strand"])
+    size=pd.read_csv(Chr_sizeFn,sep="\t",comment="#",
+                    names=["Chrom","Size"],dtype={"Chrom":"object", "Size":"int64"})
+    ann = pd.read_csv(annotation,sep=";",  
+                    names=["ensembl","id","name","ontology.group","gene.name","symbol"],dtype={"ensembl":"object","id":"object","name":"object","ontology.group":"object","gene.name":"object","symbol":"object"},
+                    usecols=["id","name","gene.name","symbol"],low_memory=True)
+    ann = ann[ann['id'].str.match('^GO.*')== True]
 
-    annotation_Weight=anotated_Non_Gap_Bases/total_Non_Gap_Bases
+    if binom and hypergeom : 
+        # Init Great
+        res={}
+        n_binom = test.shape[0]# get the number of genomic region in the test set
+        G = size["Size"].sum()# get the total number of nucleotides in the genome
+        asso= get_association(test,regdom)# get the name of the regulatory domain associated to each genomic region in the test set
+        ann_red = ann[ann["symbol"].isin(asso)]
+        regdom = regdom[regdom["Name"].isin(list(ann[ann["id"].isin(list(ann_red["id"]))]["symbol"]))]#reduction of the regdom file by selecting only the genes whose GO ID is owned by a gene of the association 
+        len_on_chr=len_regdom(regdom)# get the length of each regulatory domain 
 
-    binomP = get_Binom_Pval(totalRegions,hitRegions,annotation_Weight)
-    return binomP 
+        # init Hypergeom
+        N_hypergeom=regdom.shape[0] #get the number of genes in the genome.
+        n_hypergeom=len(asso) # get the number of genes in the test gene set.
+
+        #Compute for all associating gene and for each GO id associated with the gene the probability. 
+        for name in asso :
+            ann_name_gene = ann[ann["symbol"]==name]
+            id=ann_name_gene["id"]
+            tmp=[]
+            for i in (list(id.unique())): 
+                gene_imply=ann[ann['id']==i]
+                K_hypergeom=gene_imply.shape[0] # get be the number of genes in the genome with annotation
+                curr_regdom=regdom.loc[regdom["Name"].isin(list(gene_imply["gene.name"]))]
+                k_hypergeom= curr_regdom.loc[curr_regdom["Name"].isin(asso)].shape[0] # get the number of genes in the test gene set with annotation
+                k_binom = number_of_hit(test,curr_regdom)# get the number of test genomic regions in the regulatory domain of a gene with annotation
+                nb_binom=sum([len_on_chr[i] for i in curr_regdom["Name"]])# get the portion of the genome in the regulatory domain of a gene with annotation
+                
+                tmp.append((k_binom,nb_binom,i,gene_imply.iloc[0]["name"],K_hypergeom,k_hypergeom))
+            # res.update({elem[2]:[ elem[3],get_Binom_Pval(n_binom,elem[0],elem[1]/G),sum([ hypergeom.pmf(i,N_hypergeom,n_hypergeom,elem[4]) for i in range(elem[5],min(n_hypergeom,elem[4])) ]) ] for elem in tmp})# if get_Binom_Pval(n,elem[0],elem[1]/G)<0.05 and get_Binom_Pval(n,elem[0],elem[1]/G)!=0})
+            res.update({elem[2]:[ elem[3],get_Binom_Pval(n_binom,elem[0],elem[1]/G), hg.pmf(elem[5],N_hypergeom,n_hypergeom,elem[4]) ] for elem in tmp})
+            # print([[(sum([hypergeom.pmf(i,N_hypergeom,n_hypergeom,elem[4]) for i in range(elem[5],min(n_hypergeom,elem[4])) ])) ] for elem in tmp])
+        
+        df= pd.DataFrame(res).transpose().rename(columns={0:"go_term",1:"binom_p_value",2:"hypergeom_p_value"}).sort_values(by="binom_p_value")
+        if correction == (0,0) or correction[0] not in ['bonferoni','fdr'] or correction[1] >= 1 or correction[1]<=0: 
+            return df 
+
+        elif correction[0] == "bonferroni" : 
+            df["binom_bonferoni_correction"] = multipletests(df["binom_p_value"], alpha=correction[1], method='bonferroni')[1]
+            df["hypergeom_bonferoni_correction"] = multipletests(df["hypergeom_p_value"], alpha=correction[1], method='bonferroni')[1]
+
+        elif correction[0] == "fdr" : 
+            df["binom_fdr_correction"] = fdrcorrection(df["binom_p_value"], alpha=correction[1])[1]
+            df["hypergeom_fdr_correction"] = fdrcorrection(df["hypergeom_p_value"], alpha=correction[1])[1]
+        return df 
+
+    elif binom : 
+        # Init Great
+        res={}
+        n_binom = test.shape[0]# get the number of genomic region in the test set
+        G = size["Size"].sum()# get the total number of nucleotides in the genome
+        asso= get_association(test,regdom)# get the name of the regulatory domain associated to each genomic region in the test set
+        ann_red = ann[ann["symbol"].isin(asso)]
+        regdom = regdom[regdom["Name"].isin(list(ann[ann["id"].isin(list(ann_red["id"]))]["symbol"]))]#reduction of the regdom file by selecting only the genes whose GO ID is owned by a gene of the association 
+        len_on_chr=len_regdom(regdom)# get the length of each regulatory domain 
+
+        #Compute for all associating gene and for each GO id associated with the gene the probability. 
+        for name in asso :
+            ann_name_gene = ann[ann["symbol"]==name]
+            id=ann_name_gene["id"]
+            tmp=[]
+            for i in (list(id.unique())): 
+                gene_imply=ann[ann['id']==i]
+                curr_regdom=regdom.loc[regdom["Name"].isin(list(gene_imply["gene.name"]))]
+                k_binom = number_of_hit(test,curr_regdom)# get the number of test genomic regions in the regulatory domain of a gene with annotation
+                nb_binom=sum([len_on_chr[i] for i in curr_regdom["Name"]])# get the portion of the genome in the regulatory domain of a gene with annotation
+                
+                tmp.append((k_binom,nb_binom,i,gene_imply.iloc[0]["name"]))
+            res.update({elem[2]:[ elem[3],get_Binom_Pval(n_binom,elem[0],elem[1]/G) ] for elem in tmp})
+        df= pd.DataFrame(res).transpose().rename(columns={0:"go_term",1:"binom_p_value"}).sort_values(by="binom_p_value")
+        if correction == (0,0) or correction[0] not in ['bonferoni','fdr'] or correction[1] >= 1 or correction[1]<=0: 
+            return df 
+
+        elif correction[0] == "bonferroni" : 
+            df["binom_bonferoni_correction"] = multipletests(df["binom_p_value"], alpha=correction[1], method='bonferroni')[1]
+
+        elif correction[0] == "fdr" : 
+            df["binom_fdr_correction"] = fdrcorrection(df["binom_p_value"], alpha=correction[1])[1]
+        return df 
+
+    else : 
+        # Init Great
+        res={}
+        asso= get_association(test,regdom)# get the name of the regulatory domain associated to each genomic region in the test set
+        ann_red = ann[ann["symbol"].isin(asso)]
+        regdom = regdom[regdom["Name"].isin(list(ann[ann["id"].isin(list(ann_red["id"]))]["symbol"]))]#reduction of the regdom file by selecting only the genes whose GO ID is owned by a gene of the association 
+        len_on_chr=len_regdom(regdom)# get the length of each regulatory domain 
+
+        # init Hypergeom
+        N_hypergeom=regdom.shape[0] #get the number of genes in the genome.
+        n_hypergeom=len(asso) # get the number of genes in the test gene set.
+
+        #Compute for all associating gene and for each GO id associated with the gene the probability. 
+        for name in asso :
+            ann_name_gene = ann[ann["symbol"]==name]
+            id=ann_name_gene["id"]
+            tmp=[]
+            for i in (list(id.unique())): 
+                gene_imply=ann[ann['id']==i]
+                K_hypergeom=gene_imply.shape[0] # get be the number of genes in the genome with annotation
+                curr_regdom=regdom.loc[regdom["Name"].isin(list(gene_imply["gene.name"]))]
+                k_hypergeom= curr_regdom.loc[curr_regdom["Name"].isin(asso)].shape[0] # get the number of genes in the test gene set with annotation                
+                tmp.append((i,gene_imply.iloc[0]["name"],K_hypergeom,k_hypergeom))
+            res.update({elem[0]:[ elem[1], hg.pmf(elem[3],N_hypergeom,n_hypergeom,elem[2]) ] for elem in tmp})
+        df = pd.DataFrame(res).transpose().rename(columns={0:"go_term",1:"hypergeom_p_value"}).sort_values(by="hypergeom_p_value")
+        if correction == (0,0) or correction[0] not in ['bonferoni','fdr'] or correction[1] >= 1 or correction[1]<=0: 
+            return df 
+        elif correction[0] == "bonferroni" : 
+            df["hypergeom_bonferoni_correction"] = multipletests(df["hypergeom_p_value"], alpha=correction[1], method='bonferroni')[1]
+
+        elif correction[0] == "fdr" : 
+            df["hypergeom_fdr_correction"] = fdrcorrection(df["hypergeom_p_value"], alpha=correction[1])[1]
+        return df 
