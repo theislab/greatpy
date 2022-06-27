@@ -321,7 +321,7 @@ def enrichment(test,regdom_file,chr_size_file,annotation,binom=True,hypergeom=Tr
             res.update({elem[2]:[ elem[3],get_binom_pval(n_binom,elem[0],elem[1]/total_nu), sum([hg.pmf(i,hypergeom_total_number_gene,hypergeom_gene_set,elem[4]) for i in range(elem[5],min(elem[4],hypergeom_gene_set)+1)]) ] for elem in tmp})
         
         df= pd.DataFrame(res).transpose().rename(columns={0:"go_term",1:"binom_p_value",2:"hypergeom_p_value"})
-        if correction == (0,0) or correction[0] not in ['bonferoni','fdr'] or correction[1] >= 1 or correction[1] <= 0: 
+        if correction == (0,0) or correction[0] not in ['bonferroni','fdr'] or correction[1] >= 1 or correction[1] <= 0: 
             return df.sort_values(by=sort_by) if sort_by != None else df 
 
         elif correction[0] == "bonferroni" : 
@@ -359,7 +359,7 @@ def enrichment(test,regdom_file,chr_size_file,annotation,binom=True,hypergeom=Tr
                 tmp.append((k_binom,nb_binom,i,gene_imply.iloc[0]["name"]))
             res.update({elem[2]:[ elem[3],get_binom_pval(n_binom,elem[0],elem[1]/total_nu) ] for elem in tmp})
         df= pd.DataFrame(res).transpose().rename(columns={0:"go_term",1:"binom_p_value"}).sort_values(by="binom_p_value")
-        if correction == (0,0) or correction[0] not in ['bonferoni','fdr'] or correction[1] >= 1 or correction[1]<=0: 
+        if correction == (0,0) or correction[0] not in ['bonferroni','fdr'] or correction[1] >= 1 or correction[1]<=0: 
             return df.sort_values(by=sort_by) if sort_by != None else df 
 
         elif correction[0] == "bonferroni" : 
@@ -398,7 +398,7 @@ def enrichment(test,regdom_file,chr_size_file,annotation,binom=True,hypergeom=Tr
 
         df = pd.DataFrame(res).transpose().rename(columns={0:"go_term",1:"hypergeom_p_value"}).sort_values(by="hypergeom_p_value")
         
-        if correction == (0,0) or correction[0] not in ['bonferoni','fdr'] or correction[1] >= 1 or correction[1]<=0: 
+        if correction == (0,0) or correction[0] not in ['bonferroni','fdr'] or correction[1] >= 1 or correction[1]<=0: 
             df = df.loc[df["hypergeom_p_value"] <= alpha]
             return df.sort_values(by=sort_by) if sort_by != None else df  
 
