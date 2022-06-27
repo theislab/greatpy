@@ -275,15 +275,16 @@ def get_Binom_Pval(n,k,p):
     if k == 0 : return 1
     else : return betai(k,n-k+1,p)
 
-def enrichment(test,regdomFn,Chr_sizeFn,annotation,binom=True,hypergeom=True,correction=(0,0)): 
+def enrichment(test,regdomFn,chr_sizeFn,annotation,binom=True,hypergeom=True,alpha=0.05,correction=("fdr",0.05),sort_by=None): 
+    # Data import 
     if not binom and not hypergeom : 
         return False
-    # Data import 
+    
     regdom=pd.read_csv(regdomFn,sep="\t",comment="#",
                     names=["Chr", "Chr_Start", "Chr_End","Name","tss","Strand"],dtype={"Chr":"object", "Chr_Start":"int64", "Chr_End":"int64","Name":"object","tss":"int64","Strand":"object"})
     test=pd.read_csv(test,sep="\t",comment="#",
                     names=["Chr", "Chr_Start", "Chr_End"],dtype={"Chr":"object", "Chr_Start":"int64", "Chr_End":"int64"})#,"Name","tss","Strand"])
-    size=pd.read_csv(Chr_sizeFn,sep="\t",comment="#",
+    size=pd.read_csv(chr_sizeFn,sep="\t",comment="#",
                     names=["Chrom","Size"],dtype={"Chrom":"object", "Size":"int64"})
     ann = pd.read_csv(annotation,sep=";",  
                     names=["ensembl","id","name","ontology.group","gene.name","symbol"],dtype={"ensembl":"object","id":"object","name":"object","ontology.group":"object","gene.name":"object","symbol":"object"},
@@ -293,6 +294,7 @@ def enrichment(test,regdomFn,Chr_sizeFn,annotation,binom=True,hypergeom=True,cor
     if binom and hypergeom : 
         # Init Great
         res={}
+        N_hypergeom=regdom.shape[0] #get the number of genes in the genome.
         n_binom = test.shape[0]# get the number of genomic region in the test set
         G = size["Size"].sum()# get the total number of nucleotides in the genome
         asso= get_association(test,regdom)# get the name of the regulatory domain associated to each genomic region in the test set
@@ -301,7 +303,6 @@ def enrichment(test,regdomFn,Chr_sizeFn,annotation,binom=True,hypergeom=True,cor
         len_on_chr=len_regdom(regdom)# get the length of each regulatory domain 
 
         # init Hypergeom
-        N_hypergeom=regdom.shape[0] #get the number of genes in the genome.
         n_hypergeom=len(asso) # get the number of genes in the test gene set.
 
         #Compute for all associating gene and for each GO id associated with the gene the probability. 
@@ -319,21 +320,23 @@ def enrichment(test,regdomFn,Chr_sizeFn,annotation,binom=True,hypergeom=True,cor
                 
                 tmp.append((k_binom,nb_binom,i,gene_imply.iloc[0]["name"],K_hypergeom,k_hypergeom))
             # res.update({elem[2]:[ elem[3],get_Binom_Pval(n_binom,elem[0],elem[1]/G),sum([ hypergeom.pmf(i,N_hypergeom,n_hypergeom,elem[4]) for i in range(elem[5],min(n_hypergeom,elem[4])) ]) ] for elem in tmp})# if get_Binom_Pval(n,elem[0],elem[1]/G)<0.05 and get_Binom_Pval(n,elem[0],elem[1]/G)!=0})
-            res.update({elem[2]:[ elem[3],get_Binom_Pval(n_binom,elem[0],elem[1]/G), hg.pmf(elem[5],N_hypergeom,n_hypergeom,elem[4]) ] for elem in tmp})
+            res.update({elem[2]:[ elem[3],get_Binom_Pval(n_binom,elem[0],elem[1]/G), sum([hg.pmf(i,N_hypergeom,n_hypergeom,elem[4]) for i in range(elem[5],min(elem[4],n_hypergeom)+1)]) ] for elem in tmp})
             # print([[(sum([hypergeom.pmf(i,N_hypergeom,n_hypergeom,elem[4]) for i in range(elem[5],min(n_hypergeom,elem[4])) ])) ] for elem in tmp])
         
-        df= pd.DataFrame(res).transpose().rename(columns={0:"go_term",1:"binom_p_value",2:"hypergeom_p_value"}).sort_values(by="binom_p_value")
+        df= pd.DataFrame(res).transpose().rename(columns={0:"go_term",1:"binom_p_value",2:"hypergeom_p_value"})
         if correction == (0,0) or correction[0] not in ['bonferoni','fdr'] or correction[1] >= 1 or correction[1]<=0: 
-            return df 
+            return df.sort_values(by=sort_by) if sort_by != None else df 
 
         elif correction[0] == "bonferroni" : 
             df["binom_bonferoni_correction"] = multipletests(df["binom_p_value"], alpha=correction[1], method='bonferroni')[1]
             df["hypergeom_bonferoni_correction"] = multipletests(df["hypergeom_p_value"], alpha=correction[1], method='bonferroni')[1]
+            df = df.loc[df["binom_bonferoni_correction"]<=alpha]
 
         elif correction[0] == "fdr" : 
             df["binom_fdr_correction"] = fdrcorrection(df["binom_p_value"], alpha=correction[1])[1]
             df["hypergeom_fdr_correction"] = fdrcorrection(df["hypergeom_p_value"], alpha=correction[1])[1]
-        return df 
+            df = df.loc[df["binom_fdr_correction"]<=alpha]
+        return df.sort_values(by=sort_by) if sort_by != None else df 
 
     elif binom : 
         # Init Great
@@ -360,25 +363,28 @@ def enrichment(test,regdomFn,Chr_sizeFn,annotation,binom=True,hypergeom=True,cor
             res.update({elem[2]:[ elem[3],get_Binom_Pval(n_binom,elem[0],elem[1]/G) ] for elem in tmp})
         df= pd.DataFrame(res).transpose().rename(columns={0:"go_term",1:"binom_p_value"}).sort_values(by="binom_p_value")
         if correction == (0,0) or correction[0] not in ['bonferoni','fdr'] or correction[1] >= 1 or correction[1]<=0: 
-            return df 
+            return df.sort_values(by=sort_by) if sort_by != None else df 
 
         elif correction[0] == "bonferroni" : 
             df["binom_bonferoni_correction"] = multipletests(df["binom_p_value"], alpha=correction[1], method='bonferroni')[1]
+            df = df.loc[df["binom_bonferoni_correction"]<=alpha]
 
-        elif correction[0] == "fdr" : 
+        elif correction[0] == "fdr" :
             df["binom_fdr_correction"] = fdrcorrection(df["binom_p_value"], alpha=correction[1])[1]
-        return df 
+            df = df.loc[df["binom_fdr_correction"]<=alpha] 
+        return df.sort_values(by=sort_by) if sort_by != None else df 
 
     else : 
         # Init Great
         res={}
+        N_hypergeom=regdom.shape[0] #get the number of genes in the genome.
         asso= get_association(test,regdom)# get the name of the regulatory domain associated to each genomic region in the test set
         ann_red = ann[ann["symbol"].isin(asso)]
         regdom = regdom[regdom["Name"].isin(list(ann[ann["id"].isin(list(ann_red["id"]))]["symbol"]))]#reduction of the regdom file by selecting only the genes whose GO ID is owned by a gene of the association 
         len_on_chr=len_regdom(regdom)# get the length of each regulatory domain 
 
         # init Hypergeom
-        N_hypergeom=regdom.shape[0] #get the number of genes in the genome.
+        
         n_hypergeom=len(asso) # get the number of genes in the test gene set.
 
         #Compute for all associating gene and for each GO id associated with the gene the probability. 
@@ -391,14 +397,21 @@ def enrichment(test,regdomFn,Chr_sizeFn,annotation,binom=True,hypergeom=True,cor
                 K_hypergeom=gene_imply.shape[0] # get be the number of genes in the genome with annotation
                 curr_regdom=regdom.loc[regdom["Name"].isin(list(gene_imply["gene.name"]))]
                 k_hypergeom= curr_regdom.loc[curr_regdom["Name"].isin(asso)].shape[0] # get the number of genes in the test gene set with annotation                
-                tmp.append((i,gene_imply.iloc[0]["name"],K_hypergeom,k_hypergeom))
-            res.update({elem[0]:[ elem[1], hg.pmf(elem[3],N_hypergeom,n_hypergeom,elem[2]) ] for elem in tmp})
-        df = pd.DataFrame(res).transpose().rename(columns={0:"go_term",1:"hypergeom_p_value"}).sort_values(by="hypergeom_p_value")
+                tmp.append((i,gene_imply.iloc[0]["name"],K_hypergeom,k_hypergeom)) 
+            res.update({elem[0]:[ elem[1], sum([hg.pmf(i,N_hypergeom,n_hypergeom,elem[2]) for i in range(elem[3],min(elem[2],n_hypergeom)+1)]),elem[3],elem[2],elem[3]/n_hypergeom ] for elem in tmp}) 
+
+        df = pd.DataFrame(res).transpose().rename(columns={0:"go_term",1:"hypergeom_p_value",2:"Observed gene Hit",3:"Total gene",4:"gene set coverage"}).sort_values(by="hypergeom_p_value")
+        
         if correction == (0,0) or correction[0] not in ['bonferoni','fdr'] or correction[1] >= 1 or correction[1]<=0: 
-            return df 
+            df = df.loc[df["hypergeom_p_value"]<=alpha]
+            return df.sort_values(by=sort_by) if sort_by != None else df  
+
         elif correction[0] == "bonferroni" : 
             df["hypergeom_bonferoni_correction"] = multipletests(df["hypergeom_p_value"], alpha=correction[1], method='bonferroni')[1]
+            df = df.loc[df["hypergeom_bonferoni_correction"]<=alpha]
 
         elif correction[0] == "fdr" : 
             df["hypergeom_fdr_correction"] = fdrcorrection(df["hypergeom_p_value"], alpha=correction[1])[1]
-        return df 
+            df = df.loc[df["hypergeom_fdr_correction"]<=alpha]
+
+        return df.sort_values(by=sort_by) if sort_by != None else df  
