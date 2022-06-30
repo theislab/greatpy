@@ -300,6 +300,7 @@ def enrichment(test:str or pd.DataFrame,regdom_file,chr_size_file,annotation,bin
                     names=["Chrom","Size"],dtype={"Chrom":"object", "Size":"int64"})
 
     ann = df1.read_csv(annotation,sep="\t",comment="#")
+    return ann 
 
     ann = pd.read_csv(annotation,sep=";",  
                     names=["ensembl","id","name","ontology.group","gene.name","symbol"],dtype={"ensembl":"object","id":"object","name":"object","ontology.group":"object","gene.name":"object","symbol":"object"},
