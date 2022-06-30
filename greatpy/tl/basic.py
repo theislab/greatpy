@@ -274,17 +274,21 @@ def get_binom_pval(n,k,p):
     if k == 0 : return 1
     else : return betai(k,n-k+1,p)
 
-def enrichment(test,regdom_file,chr_size_file,annotation,binom=True,hypergeom=True,alpha=0.05,correction=("fdr",0.05),sort_by=None): 
+def enrichment(test:str or pd.DataFrame,regdom_file,chr_size_file,annotation,binom=True,hypergeom=True,alpha=0.05,correction=("fdr",0.05),sort_by=None): 
     # Data import 
     if not binom and not hypergeom : 
         return False
     
     regdom = pd.read_csv(regdom_file,sep="\t",comment="#",
                     names=["Chr", "Chr_Start", "Chr_End","Name","tss","Strand"],dtype={"Chr":"object", "Chr_Start":"int64", "Chr_End":"int64","Name":"object","tss":"int64","Strand":"object"})
-    test = pd.read_csv(test,sep="\t",comment="#",
-                    names=["Chr", "Chr_Start", "Chr_End"],dtype={"Chr":"object", "Chr_Start":"int64", "Chr_End":"int64"})#,"Name","tss","Strand"])
+
+    if type(test) == str : 
+        test = pd.read_csv(test,sep="\t",comment="#",
+                        names=["Chr", "Chr_Start", "Chr_End"],dtype={"Chr":"object", "Chr_Start":"int64", "Chr_End":"int64"})
+    
     size = pd.read_csv(chr_size_file,sep="\t",comment="#",
                     names=["Chrom","Size"],dtype={"Chrom":"object", "Size":"int64"})
+
     ann = pd.read_csv(annotation,sep=";",  
                     names=["ensembl","id","name","ontology.group","gene.name","symbol"],dtype={"ensembl":"object","id":"object","name":"object","ontology.group":"object","gene.name":"object","symbol":"object"},
                     usecols=["id","name","gene.name","symbol"],low_memory=True)
