@@ -285,6 +285,15 @@ def enrichment(test:str or pd.DataFrame,regdom_file,chr_size_file,annotation,bin
     if type(test) == str : 
         test = pd.read_csv(test,sep="\t",comment="#",
                         names=["Chr", "Chr_Start", "Chr_End"],dtype={"Chr":"object", "Chr_Start":"int64", "Chr_End":"int64"})
+    else : 
+        test = test.iloc[:,:3]
+        colname = list(test.columns)
+        try : 
+            test = test.rename(columns={colname[0]:"Chr",colname[1]:"Chr_Start",colname[2]:"Chr_End"})
+        except : 
+            print("Error in test dataframe, please check your input")
+            print("Columns should be : chr...(type object), start(type int), end(type int)")
+            return False
     
     size = pd.read_csv(chr_size_file,sep="\t",comment="#",
                     names=["Chrom","Size"],dtype={"Chrom":"object", "Size":"int64"})
