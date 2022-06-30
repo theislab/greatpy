@@ -325,7 +325,7 @@ def enrichment(test:str or pd.DataFrame,regdom_file,chr_size_file,annotation,bin
 
         #Compute for all associating gene and for each GO id associated with the gene the probability. 
         for name in asso :
-            ann_name_gene = ann[ann["symbol"]==name]
+            ann_name_gene = ann[ann["symbol"].isin([name])]
             id = ann_name_gene["id"]
             tmp = []
             for i in (list(id.unique())): 
