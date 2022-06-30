@@ -300,7 +300,7 @@ def enrichment(test:str or pd.DataFrame,regdom_file,chr_size_file,annotation,bin
 
     chunk = pd.read_csv(annotation,sep=";",  
                     names=["ensembl","id","name","ontology.group","gene.name","symbol"],dtype={"ensembl":"object","id":"object","name":"object","ontology.group":"object","gene.name":"object","symbol":"object"},
-                    usecols=["id","name","gene.name","symbol"],chunksize=1000)
+                    usecols=["id","name","gene.name","symbol"],chunksize=10000)
     ann = pd.concat(chunk)
 
     ann = pd.read_csv(annotation,sep=";",  
