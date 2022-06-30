@@ -5,6 +5,8 @@ pd.options.display.float_format = '{:12.5e}'.format
 from scipy.stats import hypergeom
 from statsmodels.stats.multitest import multipletests,fdrcorrection
 from scipy.stats import hypergeom as hg 
+import dask.dataframe as dd 
+
 
 
 def basic_tool(adata: AnnData) -> int:
@@ -298,9 +300,13 @@ def enrichment(test:str or pd.DataFrame,regdom_file,chr_size_file,annotation,bin
     size = pd.read_csv(chr_size_file,sep="\t",comment="#",
                     names=["Chrom","Size"],dtype={"Chrom":"object", "Size":"int64"})
 
-    ann = pd.read_csv(annotation,sep=";",  
-                    names=["ensembl","id","name","ontology.group","gene.name","symbol"],dtype={"ensembl":"object","id":"object","name":"object","ontology.group":"object","gene.name":"object","symbol":"object"},
+    dask_df = dd.read_csv("../data/human/ontologies.csv",sep=";",  comment = "#",
+                    dtype={"ensembl":"object","id":"object","name":"object","ontology.group":"object","gene.name":"object","symbol":"object"},
                     usecols=["id","name","gene.name","symbol"],low_memory=False)
+    ann = dask_df.compute()
+    # ann = pd.read_csv(annotation,sep=";",  
+    #                 names=["ensembl","id","name","ontology.group","gene.name","symbol"],dtype={"ensembl":"object","id":"object","name":"object","ontology.group":"object","gene.name":"object","symbol":"object"},
+    #                 usecols=["id","name","gene.name","symbol"],low_memory=False)
     ann = ann[ann['id'].str.match('^GO.*')== True]
 
     if binom and hypergeom : 
