@@ -323,7 +323,7 @@ def enrichment(test:str or pd.DataFrame,regdom_file,chr_size_file,annotation,bin
             id = ann_name_gene["id"]
             tmp = []
             for i in (list(id.unique())): 
-                gene_imply = ann.loc[ann['id']==i]
+                # gene_imply = ann.loc[ann['id']==i]
                 K_hypergeom = gene_imply.shape[0] # get be the number of genes in the genome with annotation
                 curr_regdom = regdom.loc[regdom["Name"].isin(list(gene_imply["gene.name"]))]
                 k_hypergeom = curr_regdom.loc[curr_regdom["Name"].isin(asso)].shape[0] # get the number of genes in the test gene set with annotation
