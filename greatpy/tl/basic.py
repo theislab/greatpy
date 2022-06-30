@@ -5,6 +5,7 @@ pd.options.display.float_format = '{:12.5e}'.format
 from scipy.stats import hypergeom
 from statsmodels.stats.multitest import multipletests,fdrcorrection
 from scipy.stats import hypergeom as hg 
+from dask import dataframe as df1
 
 
 def basic_tool(adata: AnnData) -> int:
@@ -298,10 +299,7 @@ def enrichment(test:str or pd.DataFrame,regdom_file,chr_size_file,annotation,bin
     size = pd.read_csv(chr_size_file,sep="\t",comment="#",
                     names=["Chrom","Size"],dtype={"Chrom":"object", "Size":"int64"})
 
-    chunk = pd.read_csv(annotation,sep=";",  
-                    names=["ensembl","id","name","ontology.group","gene.name","symbol"],dtype={"ensembl":"object","id":"object","name":"object","ontology.group":"object","gene.name":"object","symbol":"object"},
-                    usecols=["id","name","gene.name","symbol"],chunksize=50000)
-    ann = pd.concat(chunk)
+    ann = df1.read_csv(annotation,sep="\t",comment="#")
 
     ann = pd.read_csv(annotation,sep=";",  
                     names=["ensembl","id","name","ontology.group","gene.name","symbol"],dtype={"ensembl":"object","id":"object","name":"object","ontology.group":"object","gene.name":"object","symbol":"object"},
