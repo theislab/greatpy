@@ -299,7 +299,7 @@ def enrichment(test:str or pd.DataFrame,regdom_file,chr_size_file,annotation,bin
     size = pd.read_csv(chr_size_file,sep="\t",comment="#",
                     names=["Chrom","Size"],dtype={"Chrom":"object", "Size":"int64"})
 
-    ann = df1.read_csv(annotation,sep="\t",comment="#")
+    ann = df1.read_csv(annotation,sep=";",comment="#")
     return ann 
 
     ann = pd.read_csv(annotation,sep=";",  
