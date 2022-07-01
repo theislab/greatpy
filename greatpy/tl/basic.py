@@ -312,6 +312,7 @@ def enrichment(test:str or pd.DataFrame,regdom_file,chr_size_file,annotation,bin
     if binom and hypergeom : 
         # Init Great
         res = {}
+        hit={}
         hypergeom_total_number_gene = regdom.shape[0] #get the number of genes in the genome.
         n_binom = test.shape[0]# get the number of genomic region in the test set
         total_nu = size["Size"].sum()# get the total number of nucleotides in the genome
@@ -333,7 +334,10 @@ def enrichment(test:str or pd.DataFrame,regdom_file,chr_size_file,annotation,bin
                 K_hypergeom = gene_imply.shape[0] # get be the number of genes in the genome with annotation
                 curr_regdom = regdom.loc[regdom["Name"].isin(list(gene_imply["gene.name"]))]
                 k_hypergeom = curr_regdom.loc[curr_regdom["Name"].isin(asso)].shape[0] # get the number of genes in the test gene set with annotation
-                k_binom = number_of_hit(test,curr_regdom)# get the number of test genomic regions in the regulatory domain of a gene with annotation
+                if i not in list(hit.keys()) : 
+                    hit[i] = number_of_hit(test,curr_regdom)# get the number of test genomic regions in the regulatory domain of a gene with annotation
+                k_binom=hit[i]
+                    # k_binom = number_of_hit(test,curr_regdom)# get the number of test genomic regions in the regulatory domain of a gene with annotation
                 nb_binom = sum([len_on_chr[i] for i in curr_regdom["Name"]])# get the portion of the genome in the regulatory domain of a gene with annotation
                 
                 tmp.append((k_binom,nb_binom,i,gene_imply.iloc[0]["name"],K_hypergeom,k_hypergeom))
