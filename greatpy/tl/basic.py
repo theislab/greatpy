@@ -6,7 +6,7 @@ from scipy.stats import hypergeom
 from statsmodels.stats.multitest import multipletests,fdrcorrection
 from scipy.stats import hypergeom as hg 
 import dask.dataframe as dd 
-
+import cython
 
 
 def basic_tool(adata: AnnData) -> int:
@@ -210,12 +210,16 @@ def len_regdom(regdom):
     test = regdom["Chr_End"]-regdom["Chr_Start"]
     return pd.DataFrame({"len":list(test)},index=regdom["Name"]).to_dict()["len"]
 
+@cython
 def number_of_hit(test,regdom): 
     nb=0
+    regdom = regdom[["Chr","Chr_Start","Chr_End"]]
     for i in range(test.shape[0]): 
-        curr_test = test.iloc[i]
-        regdom_reduce = regdom.loc[regdom["Chr"] == curr_test["Chr"]]
-        if regdom_reduce[(regdom_reduce["Chr_Start"] <= curr_test["Chr_Start"]) & (regdom_reduce["Chr_End"] >= curr_test["Chr_End"])].shape[0] > 0 : 
+        chrom = test.iat[i,0]
+        start = test.iat[i,1]
+        end = test.iat[i,2]
+        regdom_reduce = regdom[regdom["Chr"].isin([chrom])]
+        if regdom_reduce[(regdom_reduce["Chr_Start"] <= start) & (regdom_reduce["Chr_End"] >= end)].shape[0] > 0 : 
             nb += 1
     return nb
 
