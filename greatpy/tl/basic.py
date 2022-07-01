@@ -341,8 +341,12 @@ def enrichment(test:str or pd.DataFrame,regdom_file,chr_size_file,annotation,bin
                 nb_binom = sum([len_on_chr[i] for i in curr_regdom["Name"]])# get the portion of the genome in the regulatory domain of a gene with annotation
                 
                 tmp.append((k_binom,nb_binom,i,gene_imply.iloc[0]["name"],K_hypergeom,k_hypergeom))
-            res.update({elem[2]:[ elem[3],get_binom_pval(n_binom,elem[0],elem[1]/total_nu), sum([hg.pmf(i,hypergeom_total_number_gene,hypergeom_gene_set,elem[4]) for i in range(elem[5],min(elem[4],hypergeom_gene_set)+1)]) ] for elem in tmp})
-        
+            # res.update({elem[2]:[ elem[3],get_binom_pval(n_binom,elem[0],elem[1]/total_nu), sum([hg.pmf(i,hypergeom_total_number_gene,hypergeom_gene_set,elem[4]) for i in range(elem[5],min(elem[4],hypergeom_gene_set)+1)]) ] for elem in tmp})
+            for elem in tmp : 
+                res[elem[2]] = [elem[3]]
+                res[elem[2]].append(get_binom_pval(n_binom,elem[0],elem[1]/total_nu))
+                res[elem[2]].append(sum([hg.pmf(i,hypergeom_total_number_gene,hypergeom_gene_set,elem[4]) for i in range(elem[5],min(elem[4],hypergeom_gene_set)+1)]))
+
         df= pd.DataFrame(res).transpose().rename(columns={0:"go_term",1:"binom_p_value",2:"hypergeom_p_value"})
         if correction == (0,0) or correction[0] not in ['bonferroni','fdr'] or correction[1] >= 1 or correction[1] <= 0: 
             return df.sort_values(by=sort_by) if sort_by != None else df 
