@@ -281,7 +281,7 @@ def get_binom_pval(n,k,p):
     if k == 0 : return 1
     else : return betai(k,n-k+1,p)
 
-def hypergeom_pmf(N, A, n, x):
+def hypergeom_pmf(N, K, n, k):
     
     '''
     Probability Mass Function for Hypergeometric Distribution
@@ -291,13 +291,13 @@ def hypergeom_pmf(N, A, n, x):
     :param x: number of desired items in our draw of n items
     :returns: PMF computed at x
     '''
-    Achoosex = comb(A,x)
-    NAchoosenx = comb(N-A, n-x)
+    Achoosex = comb(K,k)
+    NAchoosenx = comb(N-K, n-k)
     Nchoosen = comb(N,n)
     
     return (Achoosex)*NAchoosenx/Nchoosen
 
-def hypergeom_cdf(N, A, n, t, min_value):
+def hypergeom_cdf(N, K, n, k):
     
     '''
     Cumulative Density Funtion for Hypergeometric Distribution
@@ -307,8 +307,7 @@ def hypergeom_cdf(N, A, n, t, min_value):
     :param t: number of desired items in our draw of n items up to t
     :returns: CDF computed up to t
     '''
-    if min_value:
-        return np.sum([hypergeom_pmf(N, A, n, x) for x in range(min_value, t+1)])
+    return np.sum([hypergeom_pmf(N, K, n, x) for x in range(k,min(K,n)+1)])
 
 def enrichment(test:str or pd.DataFrame,regdom_file,chr_size_file,annotation,binom=True,hypergeom=True,alpha=0.05,correction=("fdr",0.05),sort_by=None): 
     # Data import 
@@ -380,7 +379,7 @@ def enrichment(test:str or pd.DataFrame,regdom_file,chr_size_file,annotation,bin
                 res[elem[2]] = [elem[3]]
                 res[elem[2]].append(get_binom_pval(n_binom,elem[0],elem[1]/total_nu))
                 # res[elem[2]].append(sum([hg.pmf(i,hypergeom_total_number_gene,hypergeom_gene_set,elem[4]) for i in range(elem[5],min(elem[4],hypergeom_gene_set)+1)]))
-                res[elem[2]].append(hypergeom_cdf(hypergeom_total_number_gene,elem[4],hypergeom_gene_set,elem[5],min_value=min(elem[4],hypergeom_gene_set)))
+                res[elem[2]].append(hypergeom_cdf(hypergeom_total_number_gene,elem[4],hypergeom_gene_set,elem[5]))
 
         df= pd.DataFrame(res).transpose().rename(columns={0:"go_term",1:"binom_p_value",2:"hypergeom_p_value"})
         if correction == (0,0) or correction[0] not in ['bonferroni','fdr'] or correction[1] >= 1 or correction[1] <= 0: 
