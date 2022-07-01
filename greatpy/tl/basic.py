@@ -210,7 +210,6 @@ def len_regdom(regdom):
     test = regdom["Chr_End"]-regdom["Chr_Start"]
     return pd.DataFrame({"len":list(test)},index=regdom["Name"]).to_dict()["len"]
 
-@cython
 def number_of_hit(test,regdom): 
     nb=0
     regdom = regdom[["Chr","Chr_Start","Chr_End"]]
