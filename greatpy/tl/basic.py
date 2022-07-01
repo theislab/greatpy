@@ -381,7 +381,7 @@ def enrichment(test:str or pd.DataFrame,regdom_file,chr_size_file,annotation,bin
                 # res[elem[2]].append(sum([hg.pmf(i,hypergeom_total_number_gene,hypergeom_gene_set,elem[4]) for i in range(elem[5],min(elem[4],hypergeom_gene_set)+1)]))
                 res[elem[2]].append(hypergeom_cdf(hypergeom_total_number_gene,elem[4],hypergeom_gene_set,elem[5]))
 
-        df= pd.DataFrame(res).transpose().rename(columns={0:"go_term",1:"binom_p_value",2:"hypergeom_p_value"})
+        df= pd.DataFrame(res).transpose().rename(columns={0:"go_term",1:"binom_p_value",2:"hypergeom_p_value"}).replace(0,np.nan)
         if correction == (0,0) or correction[0] not in ['bonferroni','fdr'] or correction[1] >= 1 or correction[1] <= 0: 
             return df.sort_values(by=sort_by) if sort_by != None else df 
 
