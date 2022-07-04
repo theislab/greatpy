@@ -219,8 +219,14 @@ def number_of_hit(test,regdom):
         chrom = test.iat[i,0]
         start = test.iat[i,1]
         end = test.iat[i,2]
-        regdom_reduce = regdom[regdom["Chr"].isin([chrom])]
-        if regdom_reduce[(regdom_reduce["Chr_Start"] <= start) & (regdom_reduce["Chr_End"] >= end)].shape[0] > 0 : 
+        regdom_np = regdom["Chr"].to_numpy()
+        reg_start = regdom["Chr_Start"].to_numpy()
+        reg_end = regdom["Chr_End"].to_numpy()
+        Chr_reduce = np.where(regdom_np == chrom)
+        reg_start = np.take(reg_start,Chr_reduce,axis=0)[0]
+        reg_end = np.take(reg_end,Chr_reduce,axis=0)[0]
+
+        if any(reg_start <= start) & any(reg_end >= end): 
             nb += 1
     return nb
 
