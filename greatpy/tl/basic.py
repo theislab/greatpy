@@ -226,7 +226,7 @@ def number_of_hit(test,regdom):
         reg_start = np.take(reg_start,Chr_reduce,axis=0)[0]
         reg_end = np.take(reg_end,Chr_reduce,axis=0)[0]
 
-        if any(reg_start <= start) & any(reg_end >= end): 
+        if any((reg_start <= start) & (reg_end >= end)):  
             nb += 1
     return nb
 
