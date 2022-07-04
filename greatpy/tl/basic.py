@@ -376,19 +376,13 @@ def enrichment(test:str or pd.DataFrame,regdom_file,chr_size_file,annotation,bin
                 if i not in list(hit.keys()) : 
                     hit[i] = number_of_hit(test,curr_regdom)# get the number of test genomic regions in the regulatory domain of a gene with annotation
                 k_binom=hit[i]
-                    # k_binom = number_of_hit(test,curr_regdom)# get the number of test genomic regions in the regulatory domain of a gene with annotation
                 nb_binom = sum([len_on_chr[i] for i in curr_regdom["Name"]])# get the portion of the genome in the regulatory domain of a gene with annotation
                 
                 tmp.append((k_binom,nb_binom,i,gene_imply.iloc[0]["name"],K_hypergeom,k_hypergeom))
-            # res.update({elem[2]:[ elem[3],get_binom_pval(n_binom,elem[0],elem[1]/total_nu), sum([hg.pmf(i,hypergeom_total_number_gene,hypergeom_gene_set,elem[4]) for i in range(elem[5],min(elem[4],hypergeom_gene_set)+1)]) ] for elem in tmp})
-            for elem in tmp : 
-                res[elem[2]] = [elem[3]]
-                res[elem[2]].append(get_binom_pval(n_binom,elem[0],elem[1]/total_nu))
-                # res[elem[2]].append(sum([hg.pmf(i,hypergeom_total_number_gene,hypergeom_gene_set,elem[4]) for i in range(elem[5],min(elem[4],hypergeom_gene_set)+1)]))
-                res[elem[2]].append(hypergeom_cdf(hypergeom_total_number_gene,elem[4],hypergeom_gene_set,elem[5]))
+            res.update({elem[2]:[ elem[3],get_binom_pval(n_binom,elem[0],elem[1]/total_nu), hypergeom_cdf(hypergeom_total_number_gene,elem[4],hypergeom_gene_set,elem[5]) ] for elem in tmp})
 
         df= pd.DataFrame(res).transpose().rename(columns={0:"go_term",1:"binom_p_value",2:"hypergeom_p_value"}).replace(0,np.nan)
-        if correction == (0,0) or correction[0] not in ['bonferroni','fdr'] or correction[1] >= 1 or correction[1] <= 0: 
+        if correction[0] not in ['bonferroni','fdr'] or correction[1] >= 1 or correction[1] <= 0: 
             return df.sort_values(by=sort_by) if sort_by != None else df 
 
         elif correction[0] == "bonferroni" : 
@@ -414,13 +408,15 @@ def enrichment(test:str or pd.DataFrame,regdom_file,chr_size_file,annotation,bin
 
         #Compute for all associating gene and for each GO id associated with the gene the probability. 
         for name in asso :
-            ann_name_gene = ann[ann["symbol"] == name]
+            ann_name_gene = ann[ann["symbol"].isin([name])]
             id = ann_name_gene["id"]
             tmp=[]
             for i in (list(id.unique())): 
-                gene_imply = ann[ann['id']==i]
+                gene_imply = ann[ann['id'].isin([i])]
                 curr_regdom = regdom.loc[regdom["Name"].isin(list(gene_imply["gene.name"]))]
-                k_binom = number_of_hit(test,curr_regdom)# get the number of test genomic regions in the regulatory domain of a gene with annotation
+                if i not in list(hit.keys()) : 
+                    hit[i] = number_of_hit(test,curr_regdom)# get the number of test genomic regions in the regulatory domain of a gene with annotation
+                k_binom=hit[i]
                 nb_binom = sum([len_on_chr[i] for i in curr_regdom["Name"]])# get the portion of the genome in the regulatory domain of a gene with annotation
                 
                 tmp.append((k_binom,nb_binom,i,gene_imply.iloc[0]["name"]))
@@ -461,7 +457,7 @@ def enrichment(test:str or pd.DataFrame,regdom_file,chr_size_file,annotation,bin
                 curr_regdom = regdom.loc[regdom["Name"].isin(list(gene_imply["gene.name"]))]
                 k_hypergeom = curr_regdom.loc[curr_regdom["Name"].isin(asso)].shape[0] # get the number of genes in the test gene set with annotation                
                 tmp.append((i,gene_imply.iloc[0]["name"],K_hypergeom,k_hypergeom)) 
-            res.update({elem[0]:[ elem[1], sum([hg.pmf(i,hypergeom_total_number_gene,hypergeom_gene_set,elem[2]) for i in range(elem[3],min(elem[2],hypergeom_gene_set)+1)]) ] for elem in tmp}) 
+            res.update({elem[0]:[ elem[1], hypergeom_cdf(hypergeom_total_number_gene,elem[2],hypergeom_gene_set,elem[3]) ] for elem in tmp}) 
 
         df = pd.DataFrame(res).transpose().rename(columns={0:"go_term",1:"hypergeom_p_value"}).sort_values(by="hypergeom_p_value")
         
