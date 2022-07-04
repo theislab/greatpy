@@ -3,4 +3,6 @@ from .basic import (
     create_regdom,
     get_association,
     enrichment,
+    number_of_hit, 
+    get_binom_pval
     )
