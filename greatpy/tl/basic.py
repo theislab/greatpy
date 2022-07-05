@@ -300,9 +300,7 @@ def hypergeom_pmf(N, K, n, k):
     Achoosex = comb(K,k)
     NAchoosenx = comb(N-K, n-k)
     Nchoosen = comb(N,n)
-    if Nchoosen < 3.0e-308 : 
-        Nchoosen = 1.0e-308 # python limit 
-    return (Achoosex)*NAchoosenx/Nchoosen
+    return ((Achoosex)*NAchoosenx)/Nchoosen if Nchoosen > 1e-308 and (Achoosex)*NAchoosenx != 0.0 else 1e-308
 
 def hypergeom_cdf(N, K, n, k):
     
