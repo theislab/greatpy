@@ -389,12 +389,13 @@ def enrichment(test:str or pd.DataFrame,regdom_file,chr_size_file,annotation,bin
         elif correction[0] == "bonferroni" : 
             df["binom_bonferroni_correction"] = multipletests(df["binom_p_value"], alpha=correction[1], method='bonferroni')[1]
             df["hypergeom_bonferroni_correction"] = multipletests(df["hypergeom_p_value"], alpha=correction[1], method='bonferroni')[1]
-            df = df.loc[df["binom_bonferroni_correction"] <= alpha]
+            # df = df.loc[df["binom_bonferroni_correction"] <= alpha]
 
         elif correction[0] == "fdr" : 
             df["binom_fdr_correction"] = fdrcorrection(df["binom_p_value"], alpha=correction[1])[1]
             df["hypergeom_fdr_correction"] = fdrcorrection(df["hypergeom_p_value"], alpha=correction[1])[1]
-            df = df.loc[df["binom_fdr_correction"] <= alpha]
+            # df = df.loc[df["binom_fdr_correction"] <= alpha]
+
         return df.sort_values(by=sort_by) if sort_by != None else df 
 
     elif binom : 
@@ -428,11 +429,11 @@ def enrichment(test:str or pd.DataFrame,regdom_file,chr_size_file,annotation,bin
 
         elif correction[0] == "bonferroni" : 
             df["binom_bonferroni_correction"] = multipletests(df["binom_p_value"], alpha=correction[1], method='bonferroni')[1]
-            df = df.loc[df["binom_bonferroni_correction"]<=alpha]
+            # df = df.loc[df["binom_bonferroni_correction"]<=alpha]
 
         elif correction[0] == "fdr" :
             df["binom_fdr_correction"] = fdrcorrection(df["binom_p_value"], alpha=correction[1])[1]
-            df = df.loc[df["binom_fdr_correction"]<=alpha] 
+            # df = df.loc[df["binom_fdr_correction"]<=alpha] 
         return df.sort_values(by=sort_by) if sort_by != None else df 
 
     else : 
@@ -468,10 +469,10 @@ def enrichment(test:str or pd.DataFrame,regdom_file,chr_size_file,annotation,bin
 
         elif correction[0] == "bonferroni" : 
             df["hypergeom_bonferroni_correction"] = multipletests(df["hypergeom_p_value"], alpha=correction[1], method='bonferroni')[1]
-            df = df.loc[df["hypergeom_bonferroni_correction"] <= alpha]
+            # df = df.loc[df["hypergeom_bonferroni_correction"] <= alpha]
 
         elif correction[0] == "fdr" : 
             df["hypergeom_fdr_correction"] = fdrcorrection(df["hypergeom_p_value"], alpha=correction[1])[1]
-            df = df.loc[df["hypergeom_fdr_correction"] <= alpha]
+            # df = df.loc[df["hypergeom_fdr_correction"] <= alpha]
 
         return df.sort_values(by=sort_by) if sort_by != None else df  
