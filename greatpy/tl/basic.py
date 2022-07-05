@@ -325,7 +325,7 @@ def enrichment(test:str or pd.DataFrame,regdom_file,chr_size_file,annotation,bin
                     names=["Chr", "Chr_Start", "Chr_End","Name","tss","Strand"],dtype={"Chr":"object", "Chr_Start":"int64", "Chr_End":"int64","Name":"object","tss":"int64","Strand":"object"})
 
     if type(test) == str : 
-        test = pd.read_csv(test,sep="\t",comment="#",
+        test = pd.read_csv(test,sep="\t",comment="#",usecols=[0,1,2],
                         names=["Chr", "Chr_Start", "Chr_End"],dtype={"Chr":"object", "Chr_Start":"int64", "Chr_End":"int64"})
     else : 
         test = test.iloc[:,:3]
