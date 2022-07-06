@@ -1,6 +1,6 @@
 from anndata import AnnData
 import pandas as pd
-from math import lgamma, log, exp,fabs
+from math import lgamma, log, exp,fabs,inf
 pd.options.display.float_format = '{:12.5e}'.format
 from scipy.stats import hypergeom
 from scipy.special import comb
@@ -297,9 +297,9 @@ def hypergeom_pmf(N, K, n, k):
     :param x: number of desired items in our draw of n items
     :returns: PMF computed at x
     '''
-    Achoosex = comb(K,k)
-    NAchoosenx = comb(N-K, n-k)
-    Nchoosen = comb(N,n)
+    Achoosex = comb(K,k) if comb(K,k) != inf else 1e-308
+    NAchoosenx = comb(N-K, n-k) if comb(N-K, n-k) != inf else 1e-308
+    Nchoosen = comb(N,n) if comb(N,n) != inf else 1e-308
     return ((Achoosex)*NAchoosenx)/Nchoosen if Nchoosen > 1e-308 and (Achoosex)*NAchoosenx != 0.0 else 1e-308
 
 def hypergeom_cdf(N, K, n, k):
