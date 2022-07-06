@@ -186,7 +186,8 @@ def create_regdom(tss_file,chr_sizes_file,association_rule,out_path):
     out = out.astype({"Chr_Start":int,"Chr_End":int})
     out = out.reindex(["Chr","Chr_Start","Chr_End","name","tss","Strand"],axis=1)
 
-    write_Regdom(out,out_path) 
+    if out_path != None : 
+        write_Regdom(out,out_path) 
     return out
 
 def get_association(test,regdom): 
