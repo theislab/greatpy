@@ -719,14 +719,56 @@ class GREAT:
         else : 
               return GREAT.__enrichment_hypergeom(test,regdom,ann,asso)
 
-    def set_bonferroni(self,alpha:int=0.05): 
+    def set_bonferroni(self,alpha:float=0.05): 
+        """
+        This function create new columns in the dataframe with the Bonferroni correction
+
+        Parameters
+        ----------
+        alpha : float
+            alpha value for the Bonferroni correction
+        
+        Returns
+        -------
+        pd.DataFrame
+            dataframe new columns with the Bonferroni correction for each p-value
+            
+        Exemples 
+        --------
+        >>> test,regdom,size,ann = GREAT.loader("../../data/human/test_genomic_region.bed", "../../data/human/regulatory_domain.bed", "../../data/human/chr_size.bed", "../../data/human/ontologies.csv")
+        >>> enrichment = GREAT.enrichment(test = test,regdom = regdom,ann = ann,asso = get_association(test,regdom),binom=True,hypergeom=True)
+        >>> bonferroni = GREAT.set_bonferroni(enrichment,alpha=0.05)
+        >>> bonferroni.head()
+
+        """
         for col in self.columns: 
             if col in ["binom_p_value","hypergeom_p_value"] : 
                 col_split = col.split("_")
                 self[f"{col_split[0]}_bonferroni"] = multipletests(self[col], alpha=alpha, method='bonferroni')[1]
         return self 
 
-    def set_fdr(self,alpha:int=0.05) : 
+    def set_fdr(self,alpha:float=0.05) : 
+        """
+        This function create new columns in the dataframe with the fdr correction
+
+        Parameters
+        ----------
+        alpha : float
+            alpha value for the fdr correction
+        
+        Returns
+        -------
+        pd.DataFrame
+            dataframe new columns with the fdr correction for each p-value
+            
+        Exemples 
+        --------
+        >>> test,regdom,size,ann = GREAT.loader("../../data/human/test_genomic_region.bed", "../../data/human/regulatory_domain.bed", "../../data/human/chr_size.bed", "../../data/human/ontologies.csv")
+        >>> enrichment = GREAT.enrichment(test = test,regdom = regdom,ann = ann,asso = get_association(test,regdom),binom=True,hypergeom=True)
+        >>> fdr = GREAT.set_fdr(enrichment,alpha=0.05)
+        >>> fdr.head()
+
+        """
         for col in self.columns: 
             if col in ["binom_p_value","hypergeom_p_value"] : 
                 col_split = col.split("_")
@@ -735,6 +777,27 @@ class GREAT:
         return self 
 
     def set_threshold(self,colname:str, alpha:int=0.05) : 
+        """
+        This function allows to delete rows according to the p-value of the column taken as argument. By default the alpha value is 0.05
+
+        Parameters
+        ----------
+        alpha : float
+            alpha value for the fdr correction
+        
+        Returns
+        -------
+        pd.DataFrame
+            dataframe with the rows deleted according to the p-value threshold
+            
+        Exemples 
+        --------
+        >>> test,regdom,size,ann = GREAT.loader("../../data/human/test_genomic_region.bed", "../../data/human/regulatory_domain.bed", "../../data/human/chr_size.bed", "../../data/human/ontologies.csv")
+        >>> enrichment = GREAT.enrichment(test = test,regdom = regdom,ann = ann,asso = get_association(test,regdom),binom=True,hypergeom=True)
+        >>> significant = GREAT.set_threshold(enrichment,colname="binom_p_value",alpha=0.05)
+        >>> significant.head()
+
+        """
         if colname in self.columns: 
             self = self.loc[self[colname]<=alpha]
         return self 
