@@ -295,9 +295,19 @@ def hypergeom_cdf(N, K, n, k):
     return np.sum([hypergeom_pmf(N, K, n, x) for x in range(k,min(K,n)+1)])
 
 class GREAT: 
-    def loader(test_data,regdom_file,chr_size_file,annotation_file): 
-        regdom = pd.read_csv(regdom_file,sep="\t",comment="#",
+    def loader(test_data:str or pd.DataFrame,regdom_file:str or pd.DataFrame,chr_size_file:str or pd.DataFrame,annotation_file:str or pd.DataFrame):
+        if type(regdom_file) == str:
+            regdom = pd.read_csv(regdom_file,sep="\t",comment="#",
                         names=["Chr", "Chr_Start", "Chr_End","Name","tss","Strand"],dtype={"Chr":"object", "Chr_Start":"int64", "Chr_End":"int64","Name":"object","tss":"int64","Strand":"object"})
+        else:
+            regdomfile = regdom_file.iloc[:,:6]
+            colname = list(regdomfile.columns)
+            try : 
+                regdom_file = regdom_file.rename(columns={colname[0]:"Chr",colname[1]:"Chr_Start",colname[2]:"Chr_End","Name":"Name","tss":"tss","Strand":"Strand"})
+            except :
+                print("Error in the format of the regdom file")
+                print("The regdom file must have the following columns : Chr, Chr_Start, Chr_End, Name, tss, Strand")
+                return False 
 
         if type(test_data) == str : 
             test_data = pd.read_csv(test_data,sep="\t",comment="#",usecols=[0,1,2],
@@ -312,9 +322,19 @@ class GREAT:
                 print("Columns should be : chr...(type object), start(type int), end(type int)")
                 return False
         
-        size = pd.read_csv(chr_size_file,sep="\t",comment="#",
-                        names=["Chrom","Size"],dtype={"Chrom":"object", "Size":"int64"})
-
+        if type(chr_size_file) == str :
+            size = pd.read_csv(chr_size_file,sep="\t",comment="#",
+                            names=["Chrom","Size"],dtype={"Chrom":"object", "Size":"int64"})
+        else :
+            chr_size_file = chr_size_file.iloc[:,:2]
+            colname = list(chr_size_file.columns)
+            try : 
+                chr_size_file = chr_size_file.rename(columns={colname[0]:"Chrom",colname[1]:"Size"})
+            except : 
+                print("Error in the format of the chr_size file")
+                print("The chr_size file must have the following columns : Chrom, Size")
+                return False
+        
         dask_df = dd.read_csv(annotation_file,sep=";",  comment = "#",
                         dtype={"ensembl":"object","id":"object","name":"object","ontology.group":"object","gene.name":"object","symbol":"object"},
                         usecols=["id","name","gene.name","symbol"],low_memory=False)
