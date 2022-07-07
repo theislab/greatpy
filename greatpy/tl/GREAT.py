@@ -1,6 +1,5 @@
 import pandas as pd
 from math import lgamma, log, exp,fabs,inf
-from scipy.stats import hypergeom
 from scipy.special import comb
 from statsmodels.stats.multitest import multipletests
 import dask.dataframe as dd 
