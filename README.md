@@ -24,7 +24,7 @@ This package is strongly inspired by [great][https://www.nature.com/articles/nbt
 
 ### What can you do with greatpy : 
 * Translate a genetic file in .bed format and containing the following information: chromosome number, start position on the chromosome, end position, gene name and tss. Into a regulatory region file that can then be used in the great : 
-``python 
+```python 
 regdom = great.tl.create_regdom(
     tss_file=path_of_the_file,
     chr_sizes_file="path_of_the_file",
