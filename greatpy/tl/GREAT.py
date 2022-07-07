@@ -331,40 +331,40 @@ class GREAT:
         ...    )
 
         >>> test.head()
-        ...    |    | Chr   |   Chr_Start |   Chr_End |
-        ...    |---:|:------|------------:|----------:|
-        ...    |  0 | chr1  |     1052028 |   1052049 |
-        ...    |  1 | chr1  |     1065512 |   1065533 |
-        ...    |  2 | chr1  |     1067375 |   1067397 |
-        ...    |  3 | chr1  |     1068083 |   1068119 |
-        ...    |  4 | chr1  |    10520283 |  10520490 |
+            |    | Chr   |   Chr_Start |   Chr_End |
+            |---:|:------|------------:|----------:|
+            |  0 | chr1  |     1052028 |   1052049 |
+            |  1 | chr1  |     1065512 |   1065533 |
+            |  2 | chr1  |     1067375 |   1067397 |
+            |  3 | chr1  |     1068083 |   1068119 |
+            |  4 | chr1  |    10520283 |  10520490 |
 
         >>> regdom.head()
-        ...    |    | Chr   |   Chr_Start |   Chr_End | Name      |   tss | Strand   |
-        ...    |---:|:------|------------:|----------:|:----------|------:|:---------|
-        ...    |  0 | chr1  |           0 |     22436 | MIR6859-1 | 17436 | -        |
-        ...    |  1 | chr1  |       16436 |     22436 | MIR6859-2 | 17436 | -        |
-        ...    |  2 | chr1  |       16436 |     22436 | MIR6859-3 | 17436 | -        |
-        ...    |  3 | chr1  |       16436 |     28370 | MIR6859-4 | 17436 | -        |
-        ...    |  4 | chr1  |       22436 |     34370 | WASH7P    | 29370 | -        |
+            |    | Chr   |   Chr_Start |   Chr_End | Name      |   tss | Strand   |
+            |---:|:------|------------:|----------:|:----------|------:|:---------|
+            |  0 | chr1  |           0 |     22436 | MIR6859-1 | 17436 | -        |
+            |  1 | chr1  |       16436 |     22436 | MIR6859-2 | 17436 | -        |
+            |  2 | chr1  |       16436 |     22436 | MIR6859-3 | 17436 | -        |
+            |  3 | chr1  |       16436 |     28370 | MIR6859-4 | 17436 | -        |
+            |  4 | chr1  |       22436 |     34370 | WASH7P    | 29370 | -        |
 
         >>> size.head()
-        ...    |    | Chrom   |      Size |
-        ...    |---:|:--------|----------:|
-        ...    |  0 | chr1    | 248956422 |
-        ...    |  1 | chr2    | 242193529 |
-        ...    |  2 | chr3    | 198295559 |
-        ...    |  3 | chr4    | 190214555 |
-        ...    |  4 | chr5    | 181538259 |
+            |    | Chrom   |      Size |
+            |---:|:--------|----------:|
+            |  0 | chr1    | 248956422 |
+            |  1 | chr2    | 242193529 |
+            |  2 | chr3    | 198295559 |
+            |  3 | chr4    | 190214555 |
+            |  4 | chr5    | 181538259 |
             
         >>> ann.head()
-        ...    |    | id         | name                                                   | symbol        |
-        ...    |---:|:-----------|:-------------------------------------------------------|:--------------|
-        ...    |  0 | GO:0003924 | GTPase activity                                        | DNAJC25-GNG10 |
-        ...    |  1 | GO:0007186 | G protein-coupled receptor signaling pathway           | DNAJC25-GNG10 |
-        ...    |  2 | GO:0003723 | RNA binding                                            | NUDT4B        |
-        ...    |  3 | GO:0005829 | cytosol                                                | NUDT4B        |
-        ...    |  4 | GO:0008486 | diphosphoinositol-polyphosphate diphosphatase activity | NUDT4B        |
+            |    | id         | name                                                   | symbol        |
+            |---:|:-----------|:-------------------------------------------------------|:--------------|
+            |  0 | GO:0003924 | GTPase activity                                        | DNAJC25-GNG10 |
+            |  1 | GO:0007186 | G protein-coupled receptor signaling pathway           | DNAJC25-GNG10 |
+            |  2 | GO:0003723 | RNA binding                                            | NUDT4B        |
+            |  3 | GO:0005829 | cytosol                                                | NUDT4B        |
+            |  4 | GO:0008486 | diphosphoinositol-polyphosphate diphosphatase activity | NUDT4B        |
         
         """
 
@@ -424,6 +424,47 @@ class GREAT:
         return test_data,regdom,size,ann
 
     def __enrichment_binom_and_hypergeom(test,regdom,size,ann,asso) : 
+        """
+        This private function is used to compute the enrichment of the test data using the binomial test and the hypergeometric test.
+
+        Parameters
+        ----------
+        test : pd.DataFrame
+            Genomic set of peaks to be tested
+        regdom : pd.DataFrame 
+            Regulatory domain of all genes in the genome 
+        chr_size :  pd.DataFrame
+            Table with the size of each chromosome
+        annotation : pd.DataFrame
+            Table with the annotation of each gene in the genome
+        asso : list 
+            List of the association between gene from regdom and peaks from test
+
+        Returns
+        -------
+        pd.DataFrame
+            dataframe contains for every GO ID associate with a every associated gene the p-value for the binomial test and the the hypergeometric test
+            
+        Exemples 
+        --------
+        >>> test,regdom,size,ann = GREAT.loader("../../data/human/test_genomic_region.bed", "../../data/human/regulatory_domain.bed", "../../data/human/chr_size.bed", "../../data/human/ontologies.csv")
+        >>> enrichment = GREAT.____enrichment_binom_and_hypergeom(
+        ...    test = test,
+        ...    regdom = regdom,
+        ...    size = size,
+        ...    ann = ann,
+        ...    asso = get_association(test,regdom)
+        ...    )
+
+        >>> enrichment.head()
+            |            | go_term                                                          |   binom_p_value |   hypergeom_p_value |
+            |:-----------|:-----------------------------------------------------------------|----------------:|--------------------:|
+            | GO:0045887 | positive regulation of synaptic growth at neuromuscular junction |     5.17744e-13 |          0.0029275  |
+            | GO:0044721 | protein import into peroxisome matrix, substrate release         |     4.83812e-10 |          0.0029275  |
+            | GO:0036250 | peroxisome transport along microtubule                           |     4.83812e-10 |          0.0029275  |
+            | GO:0016561 | protein import into peroxisome matrix, translocation             |     6.31131e-10 |          0.00584656 |
+            | GO:0047485 | protein N-terminus binding                                       |     1.2945e-09  |          0.0050377  |
+        """
         # Init Great
         res = {}
         hit={}
@@ -459,37 +500,111 @@ class GREAT:
             res.update({elem[2]:[ elem[3],get_binom_pval(n_binom,elem[0],elem[1]/total_nu), hypergeom_cdf(hypergeom_total_number_gene,elem[4],hypergeom_gene_set,elem[5]) ] for elem in tmp})
         return pd.DataFrame(res).transpose().rename(columns={0:"go_term",1:"binom_p_value",2:"hypergeom_p_value"}).replace(0,np.nan).sort_values(by="binom_p_value")
     
-    def __enrichment_binom(test,regdom,size,ann,asso): 
-            # Init Great
-            res = {}
-            hit = {}
+    def __enrichment_binom(test,regdom,size,ann,asso):
+        """
+        This private function is used to compute the enrichment of the test data using the binomial test.
 
-            # Init binom 
-            n_binom = test.shape[0]# get the number of genomic region in the test set
-            total_nu = size["Size"].sum()# get the total number of nucleotides in the genome
+        Parameters
+        ----------
+        test : pd.DataFrame
+            Genomic set of peaks to be tested
+        regdom : pd.DataFrame 
+            Regulatory domain of all genes in the genome 
+        chr_size :  pd.DataFrame
+            Table with the size of each chromosome
+        annotation : pd.DataFrame
+            Table with the annotation of each gene in the genome
+        asso : list 
+            List of the association between gene from regdom and peaks from test
+
+        Returns
+        -------
+        pd.DataFrame
+            dataframe contains for every GO ID associate with a every associated gene the p-value for the binomial test
             
-            ann_red = ann[ann["symbol"].isin(asso)]
-            regdom = regdom[regdom["Name"].isin(list(ann[ann["id"].isin(list(ann_red["id"]))]["symbol"]))]#reduction of the regdom file by selecting only the genes whose GO ID is owned by a gene of the association 
-            len_on_chr = len_regdom(regdom)# get the length of each regulatory domain 
+        Exemples 
+        --------
+        >>> test,regdom,size,ann = GREAT.loader("../../data/human/test_genomic_region.bed", "../../data/human/regulatory_domain.bed", "../../data/human/chr_size.bed", "../../data/human/ontologies.csv")
+        >>> enrichment = GREAT.____enrichment_binom(
+        ...    test = test,
+        ...    regdom = regdom,
+        ...    size = size,
+        ...    ann = ann,
+        ...    asso = get_association(test,regdom)
+        ...    )
 
-            #Compute for all associating gene and for each GO id associated with the gene the probability. 
-            for name in asso :
-                ann_name_gene = ann[ann["symbol"].isin([name])]
-                id = ann_name_gene["id"]
-                tmp=[]
-                for i in (list(id.unique())): 
-                    gene_imply = ann[ann['id'].isin([i])]
-                    curr_regdom = regdom.loc[regdom["Name"].isin(list(gene_imply["symbol"]))]
+        >>> enrichment.head()
+            |            | go_term                                                          |   binom_p_value |
+            |:-----------|:-----------------------------------------------------------------|----------------:|
+            | GO:0045887 | positive regulation of synaptic growth at neuromuscular junction |     5.17744e-13 |
+            | GO:0044721 | protein import into peroxisome matrix, substrate release         |     4.83812e-10 |
+            | GO:0036250 | peroxisome transport along microtubule                           |     4.83812e-10 |
+            | GO:0016561 | protein import into peroxisome matrix, translocation             |     6.31131e-10 |
+            | GO:0047485 | protein N-terminus binding                                       |     1.2945e-09  |
+        """ 
+        # Init Great
+        res = {}
+        hit = {}
 
-                    if i not in list(hit.keys()) : 
-                        hit[i] = number_of_hit(test,curr_regdom)# get the number of test genomic regions in the regulatory domain of a gene with annotation
-                    k_binom=hit[i]
-                    nb_binom = sum([len_on_chr[i] for i in curr_regdom["Name"]])# get the portion of the genome in the regulatory domain of a gene with annotation
-                    tmp.append((k_binom,nb_binom,i,gene_imply.iloc[0]["name"]))
-                res.update({elem[2]:[ elem[3],get_binom_pval(n_binom,elem[0],elem[1]/total_nu) ] for elem in tmp})
-            return pd.DataFrame(res).transpose().rename(columns={0:"go_term",1:"binom_p_value"}).sort_values(by="binom_p_value").sort_values(by="binom_p_value")
+        # Init binom 
+        n_binom = test.shape[0]# get the number of genomic region in the test set
+        total_nu = size["Size"].sum()# get the total number of nucleotides in the genome
+        
+        ann_red = ann[ann["symbol"].isin(asso)]
+        regdom = regdom[regdom["Name"].isin(list(ann[ann["id"].isin(list(ann_red["id"]))]["symbol"]))]#reduction of the regdom file by selecting only the genes whose GO ID is owned by a gene of the association 
+        len_on_chr = len_regdom(regdom)# get the length of each regulatory domain 
+
+        #Compute for all associating gene and for each GO id associated with the gene the probability. 
+        for name in asso :
+            ann_name_gene = ann[ann["symbol"].isin([name])]
+            id = ann_name_gene["id"]
+            tmp=[]
+            for i in (list(id.unique())): 
+                gene_imply = ann[ann['id'].isin([i])]
+                curr_regdom = regdom.loc[regdom["Name"].isin(list(gene_imply["symbol"]))]
+
+                if i not in list(hit.keys()) : 
+                    hit[i] = number_of_hit(test,curr_regdom)# get the number of test genomic regions in the regulatory domain of a gene with annotation
+                k_binom=hit[i]
+                nb_binom = sum([len_on_chr[i] for i in curr_regdom["Name"]])# get the portion of the genome in the regulatory domain of a gene with annotation
+                tmp.append((k_binom,nb_binom,i,gene_imply.iloc[0]["name"]))
+            res.update({elem[2]:[ elem[3],get_binom_pval(n_binom,elem[0],elem[1]/total_nu) ] for elem in tmp})
+        return pd.DataFrame(res).transpose().rename(columns={0:"go_term",1:"binom_p_value"}).sort_values(by="binom_p_value").sort_values(by="binom_p_value")
 
     def __enrichment_hypergeom(test,regdom,ann,asso): 
+        """
+        This private function is used to compute the enrichment of the test data using the hypergeometric test.
+
+        Parameters
+        ----------
+        test : pd.DataFrame
+            Genomic set of peaks to be tested
+        regdom : pd.DataFrame 
+            Regulatory domain of all genes in the genome 
+        chr_size :  pd.DataFrame
+            Table with the size of each chromosome
+        annotation : pd.DataFrame
+            Table with the annotation of each gene in the genome
+        asso : list 
+            List of the association between gene from regdom and peaks from test
+
+        Returns
+        -------
+        pd.DataFrame
+            dataframe contains for every GO ID associate with a every associated gene the p-value for the hypergeometric test
+            
+        Exemples 
+        --------
+        >>> test,regdom,size,ann = GREAT.loader("../../data/human/test_genomic_region.bed", "../../data/human/regulatory_domain.bed", "../../data/human/chr_size.bed", "../../data/human/ontologies.csv")
+        >>> enrichment = GREAT.____enrichment_hypergeom(
+        ...    test = test,
+        ...    regdom = regdom,
+        ...    ann = ann,
+        ...    asso = get_association(test,regdom)
+        ...    )
+
+        >>> enrichment.head()   
+        """ 
         # Init Great
         res = {}
 
@@ -516,6 +631,78 @@ class GREAT:
 
 
     def enrichment(test_file,regdom_file,chr_size_file, annotation_file, binom=True,hypergeom=True):
+        """
+        This function is a wrapper of the 3 private methods: 
+        * GREAT.__enrichment_binom_and_hypergeom 
+        * GREAT.__enrichment_binom 
+        * GREAT.__enrichment_hypergeom
+
+        Parameters
+        ----------
+        test : pd.DataFrame
+            Genomic set of peaks to be tested
+        regdom : pd.DataFrame 
+            Regulatory domain of all genes in the genome 
+        chr_size :  pd.DataFrame
+            Table with the size of each chromosome
+        annotation : pd.DataFrame
+            Table with the annotation of each gene in the genome
+        asso : list 
+            List of the association between gene from regdom and peaks from test
+
+        Returns
+        -------
+        pd.DataFrame
+            dataframe contains for every GO ID associate with a every associated gene the p-value for the hypergeometric test
+            
+        Exemples 
+        --------
+        >>> test,regdom,size,ann = GREAT.loader("../../data/human/test_genomic_region.bed", "../../data/human/regulatory_domain.bed", "../../data/human/chr_size.bed", "../../data/human/ontologies.csv")
+        >>> enrichment = GREAT.enrichment(
+        ...    test = test,
+        ...    regdom = regdom,
+        ...    ann = ann,
+        ...    asso = get_association(test,regdom),
+        ...    binom=True,
+        ...    hypergeom=True
+        ...    )
+        >>> enrichment.head()
+            |            | go_term                                                          |   binom_p_value |   hypergeom_p_value |
+            |:-----------|:-----------------------------------------------------------------|----------------:|--------------------:|
+            | GO:0045887 | positive regulation of synaptic growth at neuromuscular junction |     5.17744e-13 |          0.0029275  |
+            | GO:0044721 | protein import into peroxisome matrix, substrate release         |     4.83812e-10 |          0.0029275  |
+            | GO:0036250 | peroxisome transport along microtubule                           |     4.83812e-10 |          0.0029275  |
+            | GO:0016561 | protein import into peroxisome matrix, translocation             |     6.31131e-10 |          0.00584656 |
+            | GO:0047485 | protein N-terminus binding                                       |     1.2945e-09  |          0.0050377  |
+
+        >>> enrichment = GREAT.enrichment(
+        ...    test = test,
+        ...    regdom = regdom,
+        ...    ann = ann,
+        ...    asso = get_association(test,regdom),
+        ...    binom=True,
+        ...    hypergeom=False
+        ...    )
+        >>> enrichment.head()
+            |            | go_term                                                          |   binom_p_value |
+            |:-----------|:-----------------------------------------------------------------|----------------:|
+            | GO:0045887 | positive regulation of synaptic growth at neuromuscular junction |     5.17744e-13 |
+            | GO:0044721 | protein import into peroxisome matrix, substrate release         |     4.83812e-10 |
+            | GO:0036250 | peroxisome transport along microtubule                           |     4.83812e-10 |
+            | GO:0016561 | protein import into peroxisome matrix, translocation             |     6.31131e-10 |
+            | GO:0047485 | protein N-terminus binding                                       |     1.2945e-09  |
+
+        >>> enrichment = GREAT.enrichment(
+        ...    test = test,
+        ...    regdom = regdom,
+        ...    ann = ann,
+        ...    asso = get_association(test,regdom),
+        ...    binom=False,
+        ...    hypergeom=True
+        ...    )
+        >>> enrichment.head()
+
+        """
         if not binom and not hypergeom : 
             return False
         
