@@ -296,6 +296,78 @@ def hypergeom_cdf(N, K, n, k):
 
 class GREAT: 
     def loader(test_data:str or pd.DataFrame,regdom_file:str or pd.DataFrame,chr_size_file:str or pd.DataFrame,annotation_file:str or pd.DataFrame):
+        """
+        This function is used to load all datasets needed for the enrichment calculation
+
+        Parameters
+        ----------
+        test_data : str or pd.DataFrame
+            Genomic set of peaks to be tested
+        regdom_file : str or pd.DataFrame 
+            Regulatory domain of all genes in the genome 
+        chr_size_file : str or pd.DataFrame
+            Table with the size of each chromosome
+        annotation_file : str or pd.DataFrame
+            Table with the annotation of each gene in the genome
+
+        Returns
+        -------
+        test_data : pd.DataFrame
+            Genomic set of peaks to be tested in the good format 
+        regdom : pd.DataFrame
+            Regulatory domain of all genes in the genome in the good format
+        size : pd.DataFrame
+            Table with the size of each chromosome in the good format
+        ann : pd.DataFrame
+            Table with the annotation of each gene in the genome in the good format
+            
+        Exemples 
+        --------
+        >>> test,regdom,size,ann = GREAT.loader(
+        ...    "../../data/human/test_genomic_region.bed",
+        ...    "../../data/human/regulatory_domain.bed",
+        ...    "../../data/human/chr_size.bed",
+        ...    "../../data/human/ontologies.csv"
+        ...    )
+
+        >>> test.head()
+        ...    |    | Chr   |   Chr_Start |   Chr_End |
+        ...    |---:|:------|------------:|----------:|
+        ...    |  0 | chr1  |     1052028 |   1052049 |
+        ...    |  1 | chr1  |     1065512 |   1065533 |
+        ...    |  2 | chr1  |     1067375 |   1067397 |
+        ...    |  3 | chr1  |     1068083 |   1068119 |
+        ...    |  4 | chr1  |    10520283 |  10520490 |
+
+        >>> regdom.head()
+        ...    |    | Chr   |   Chr_Start |   Chr_End | Name      |   tss | Strand   |
+        ...    |---:|:------|------------:|----------:|:----------|------:|:---------|
+        ...    |  0 | chr1  |           0 |     22436 | MIR6859-1 | 17436 | -        |
+        ...    |  1 | chr1  |       16436 |     22436 | MIR6859-2 | 17436 | -        |
+        ...    |  2 | chr1  |       16436 |     22436 | MIR6859-3 | 17436 | -        |
+        ...    |  3 | chr1  |       16436 |     28370 | MIR6859-4 | 17436 | -        |
+        ...    |  4 | chr1  |       22436 |     34370 | WASH7P    | 29370 | -        |
+
+        >>> size.head()
+        ...    |    | Chrom   |      Size |
+        ...    |---:|:--------|----------:|
+        ...    |  0 | chr1    | 248956422 |
+        ...    |  1 | chr2    | 242193529 |
+        ...    |  2 | chr3    | 198295559 |
+        ...    |  3 | chr4    | 190214555 |
+        ...    |  4 | chr5    | 181538259 |
+            
+        >>> ann.head()
+        ...    |    | id         | name                                                   | symbol        |
+        ...    |---:|:-----------|:-------------------------------------------------------|:--------------|
+        ...    |  0 | GO:0003924 | GTPase activity                                        | DNAJC25-GNG10 |
+        ...    |  1 | GO:0007186 | G protein-coupled receptor signaling pathway           | DNAJC25-GNG10 |
+        ...    |  2 | GO:0003723 | RNA binding                                            | NUDT4B        |
+        ...    |  3 | GO:0005829 | cytosol                                                | NUDT4B        |
+        ...    |  4 | GO:0008486 | diphosphoinositol-polyphosphate diphosphatase activity | NUDT4B        |
+        
+        """
+
         if type(regdom_file) == str:
             regdom = pd.read_csv(regdom_file,sep="\t",comment="#",
                         names=["Chr", "Chr_Start", "Chr_End","Name","tss","Strand"],dtype={"Chr":"object", "Chr_Start":"int64", "Chr_End":"int64","Name":"object","tss":"int64","Strand":"object"})
@@ -334,12 +406,21 @@ class GREAT:
                 print("Error in the format of the chr_size file")
                 print("The chr_size file must have the following columns : Chrom, Size")
                 return False
-        
-        dask_df = dd.read_csv(annotation_file,sep=";",  comment = "#",
-                        dtype={"ensembl":"object","id":"object","name":"object","ontology.group":"object","gene.name":"object","symbol":"object"},
-                        usecols=["id","name","gene.name","symbol"],low_memory=False)
-        ann = dask_df.compute()
-        ann = ann[ann['id'].str.match('^GO.*')== True]
+        if type(annotation_file) == str : 
+            dask_df = dd.read_csv(annotation_file,sep=";",  comment = "#",
+                            dtype={"ensembl":"object","id":"object","name":"object","ontology.group":"object","gene.name":"object","symbol":"object"},
+                            usecols=["id","name","symbol"],low_memory=False)
+            ann = dask_df.compute()
+            ann = ann[ann['id'].str.match('^GO.*')== True]
+        else : 
+            ann = annotation_file.iloc[:,:4]
+            colname = list(ann.columns)
+            try : 
+                ann = ann.rename(columns={colname[0]:"id",colname[1]:"name",colname[3]:"symbol"})
+            except : 
+                print("Error in the format of the annotation file")
+                print("The annotation file must have the following columns : id, name, symbol")
+                return False
         return test_data,regdom,size,ann
 
     def __enrichment_binom_and_hypergeom(test,regdom,size,ann,asso) : 
@@ -367,7 +448,7 @@ class GREAT:
             for i in (list(id.unique())): 
                 gene_imply = ann[ann['id'].isin([i])]
                 K_hypergeom = gene_imply.shape[0] # get be the number of genes in the genome with annotation
-                curr_regdom = regdom.loc[regdom["Name"].isin(list(gene_imply["gene.name"]))]
+                curr_regdom = regdom.loc[regdom["Name"].isin(list(gene_imply["symbol"]))]
                 k_hypergeom = curr_regdom.loc[curr_regdom["Name"].isin(asso)].shape[0] # get the number of genes in the test gene set with annotation
 
                 if i not in list(hit.keys()) : 
@@ -398,7 +479,7 @@ class GREAT:
                 tmp=[]
                 for i in (list(id.unique())): 
                     gene_imply = ann[ann['id'].isin([i])]
-                    curr_regdom = regdom.loc[regdom["Name"].isin(list(gene_imply["gene.name"]))]
+                    curr_regdom = regdom.loc[regdom["Name"].isin(list(gene_imply["symbol"]))]
 
                     if i not in list(hit.keys()) : 
                         hit[i] = number_of_hit(test,curr_regdom)# get the number of test genomic regions in the regulatory domain of a gene with annotation
@@ -427,7 +508,7 @@ class GREAT:
             for i in (list(id.unique())): 
                 gene_imply = ann[ann['id']==i]
                 K_hypergeom = gene_imply.shape[0] # get be the number of genes in the genome with annotation
-                curr_regdom = regdom.loc[regdom["Name"].isin(list(gene_imply["gene.name"]))]
+                curr_regdom = regdom.loc[regdom["Name"].isin(list(gene_imply["symbol"]))]
                 k_hypergeom = curr_regdom.loc[curr_regdom["Name"].isin(asso)].shape[0] # get the number of genes in the test gene set with annotation                
                 tmp.append((i,gene_imply.iloc[0]["name"],K_hypergeom,k_hypergeom)) 
             res.update({elem[0]:[ elem[1], hypergeom_cdf(hypergeom_total_number_gene,elem[2],hypergeom_gene_set,elem[3]) ] for elem in tmp}) 
