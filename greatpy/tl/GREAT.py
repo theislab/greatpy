@@ -9,6 +9,43 @@ import numpy as np
 pd.options.display.float_format = '{:12.5e}'.format
 
 def get_association(test,regdom): 
+    """
+    Function allowing from a file of genomic regions from CHIPseq 
+    and a file of genomic regulatory domains to determine the names 
+    of genes associated with at least one genomic region 
+
+    Parameters
+    ----------
+    test : pd.dataFrame
+        df of the tests pics => columns: ["Chr","Chr_Start","Chr_End"]
+    
+    regdom : pd.dataFrame
+        df of the regulatory domains => columns: ["Chr"	"Chr_Start"	"Chr_End"	"Name"	"tss"	"strand"].
+
+    Returns
+    -------
+    res : list
+        list of gene associated with at least with one test peak
+        
+    Exemples 
+    --------
+    test = pd.DataFrame({
+    ...    "Chr":["chr1"],
+    ...    "Chr_Start":[1052028],
+    ...    "Chr_End": [1052049]})
+
+    regdom = pd.DataFrame({
+    ...    "Chr":["chr1","chr1"],
+    ...    "Chr_Start":[1034992,1079306],
+    ...    "Chr_End": [1115089,1132016],
+    ...    "Name":["RNF223","C1orf159"],
+    ...    "tss":[1074306,1116089],
+    ...    "strand":['-','-']})
+
+    >>> get_association(test,regdom)        
+        ['RNF223']
+    
+    """
     res = []
     for i in range(test.shape[0]):
         currTest = test.iloc[i]
@@ -27,11 +64,77 @@ def get_association(test,regdom):
             pass
     return res
 
-def len_regdom(regdom): 
+def len_regdom(regdom:pd.DataFrame): 
+    """
+    Function to calculate for each gene name from regdom the
+     size of the regulatory region for this gene in the genome 
+
+    Parameters
+    ----------    
+    regdom : pd.dataFrame
+        df of the regulatory domains => columns: ["Chr"	"Chr_Start"	"Chr_End"	"Name"	"tss"	"strand"].
+
+    Returns
+    -------
+    dict
+        dictionary in which each key corresponds to a gene name 
+        from regdom and the value is the size of the regulatory 
+        region for that gene
+        
+    Exemples 
+    --------
+    regdom = pd.DataFrame({
+    ...    "Chr":["chr1","chr1"],
+    ...    "Chr_Start":[1034992,1079306],
+    ...    "Chr_End": [1115089,1132016],
+    ...    "Name":["RNF223","C1orf159"],
+    ...    "tss":[1074306,1116089],
+    ...    "strand":['-','-']}))
+
+    >>> len_regdom(regdom)
+        {'RNF223': 80097, 'C1orf159': 52710}
+
+    """
     test = regdom["Chr_End"]-regdom["Chr_Start"]
     return pd.DataFrame({"len":list(test)},index=regdom["Name"]).to_dict()["len"]
 
 def number_of_hit(test,regdom): 
+    """ 
+    Function to calculate the number of hits from several 
+    genomic regions and the file describing the regulatory regions
+
+    Parameters
+    ----------
+    test : pd.dataFrame
+        df of the tests pics => columns: ["Chr","Chr_Start","Chr_End"]
+    
+    regdom : pd.dataFrame
+        df of the regulatory domains => columns: ["Chr"	"Chr_Start"	"Chr_End"	"Name"	"tss"	"strand"].
+
+    Returns
+    -------
+    nb : int
+        number of hit 
+        
+    Exemples 
+    --------
+    test = pd.DataFrame({
+    ...    "Chr":["chr1"],
+    ...    "Chr_Start":[1052028],
+    ...    "Chr_End": [1052049]})
+
+    regdom = pd.DataFrame({
+    ...    "Chr":["chr1","chr1"],
+    ...    "Chr_Start":[1034992,1079306],
+    ...    "Chr_End": [1115089,1132016],
+    ...    "Name":["RNF223","C1orf159"],
+    ...    "tss":[1074306,1116089],
+    ...    "strand":['-','-']})
+
+    >>> number_of_hit(test,regdom)        
+        1
+    
+    """
     nb=0
     regdom = regdom[["Chr","Chr_Start","Chr_End"]]
     for i in range(test.shape[0]): 
@@ -50,6 +153,7 @@ def number_of_hit(test,regdom):
     return nb
 
 def betacf(a,b,x): 
+    """ Used by betai: Evaluates continued fraction for incomplete beta function """
     maxit = 10000
     eps = 3.0e-7 
     fpmin = 1.0e-30
@@ -91,6 +195,7 @@ def betacf(a,b,x):
     return h
 
 def betai(a,b,x):
+    """Returns the incomplete beta function Ix(a, b)."""
     if x < 0 or x > 1 : 
         print("bad x in routine betai")
         return False
@@ -102,35 +207,91 @@ def betai(a,b,x):
         return bt*betacf(a,b,x)/a
     return 1-bt*betacf(b,a,1-x)/b
 
-def get_binom_pval(n,k,p):
+def get_binom_pval(n:int,k:int,p:float) -> float:
+    """
+    This function allows to calculate the binomial probability 
+    of obtaining k in a set of size n and whose probability is p 
+
+    Parameters
+    ----------
+    n : int
+        Number of genomic region in the test set 
+    k : int 
+        Number of test genomic regions in the regulatory domain of a gene with annotation
+    p : float
+        Percentage of genome annotated
+
+    Returns
+    -------
+    float
+        binomial probability
+        
+    Exemples 
+    --------
+    >>> get_binom_pval(100,2,0.2)
+        0.9999999947037065
+    
+    """
     if k == 0 : return 1
     else : return betai(k,n-k+1,p)
 
 def hypergeom_pmf(N, K, n, k):
+    """
+    Function to calculate the probability mass function for hypergeometric distribution
+
+    Parameters
+    ----------
+    N : int
+        Total number of gene in the genome
+    K : int 
+        Number of genes in the genome with annotation
+    n : int
+        Number of gene in the test set
+    k : int
+        Number of genes in the test gene set with annotation
+
+    Returns
+    -------
+    float
+        proability mass function
+        
+    Exemples 
+    --------
+    >>> hypergeom_pmf(100,10,30,1)
+        0.11270773995748315
     
-    '''
-    Probability Mass Function for Hypergeometric Distribution
-    :param N: population size
-    :param A: total number of desired items in N
-    :param n: number of draws made from N
-    :param x: number of desired items in our draw of n items
-    :returns: PMF computed at x
-    '''
+    """
     Achoosex = comb(K,k) if comb(K,k) != inf else 1e-308
     NAchoosenx = comb(N-K, n-k) if comb(N-K, n-k) != inf else 1e-308
     Nchoosen = comb(N,n) if comb(N,n) != inf else 1e-308
     return ((Achoosex)*NAchoosenx)/Nchoosen if Nchoosen > 1e-308 and (Achoosex)*NAchoosenx != 0.0 else 1e-308
 
 def hypergeom_cdf(N, K, n, k):
+    """
+    Function to calculate the cumulative density funtion for hypergeometric distribution
+
+    Parameters
+    ----------
+    N : int
+        Total number of gene in the genome
+    K : int 
+        Number of genes in the genome with annotation
+    n : int
+        Number of gene in the test set
+    k : int
+        Number of genes in the test gene set with annotation
+
+    Returns
+    -------
+    float
+        Cumulative density function
+        
+    Exemples 
+    --------
+    >>> hypergeom_cdf(100,10,30,1)
+        0.9770827595419788
     
-    '''
-    Cumulative Density Funtion for Hypergeometric Distribution
-    :param N: population size
-    :param A: total number of desired items in N
-    :param n: number of draws made from N
-    :param t: number of desired items in our draw of n items up to t
-    :returns: CDF computed up to t
-    '''
+    """
     return np.sum([hypergeom_pmf(N, K, n, x) for x in range(k,min(K,n)+1)])
 
 class GREAT: 
