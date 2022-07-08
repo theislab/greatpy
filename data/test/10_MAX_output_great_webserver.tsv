@@ -1,0 +1,380 @@
+# GREAT version 4.0.4	Species assembly: hg38	Association rule: Basal+extension: 5000 bp upstream, 1000 bp downstream, 1000000 bp max extension, curated regulatory domains included
+# Ontology	 Term Name 	 Term ID 	 Binom Raw P-Value 	 Binom Bonferroni P-Value 	  Binom FDR Q-Val  	 Hyper Raw P-Value 	 Hyper Bonferroni P-Value 	  Hyper FDR Q-Val
+GO Biological Process	Wnt signaling pathway	GO:0016055	0.0001006727	1	0.44158401976666667	0.00004733394	0.62286731646	0.029660348402857147	
+GO Biological Process	cellular response to hydrostatic pressure	GO:0071464	0.0001298116	1	0.4270477111	0.000518373	1	0.1156147509661017	
+GO Biological Process	cell surface receptor signaling pathway involved in cell-cell signaling	GO:1905114	0.0001315451	1	0.34620039418000004	0.000004660242	0.061324124477999994	0.006813791608666666	
+GO Biological Process	regulation of hepatocyte growth factor receptor signaling pathway	GO:1902202	0.0004615521	1	0.6748404537666667	0.003016943	1	0.2435579934785276	
+GO Biological Process	macrophage apoptotic process	GO:0071888	0.0005021802	1	0.6608189251800001	0.04506931	1	0.8102008883743169	
+GO Biological Process	photoperiodism	GO:0009648	0.0005668609	1	0.6781202348272727	0.001405672	1	0.1745022438490566	
+GO Biological Process	viral process	GO:0016032	0.0007078271	1	0.5478998122882353	0.02893061	1	0.6376849195812395	
+GO Biological Process	negative regulation of proteolysis involved in cellular protein catabolic process	GO:1903051	0.000864674	1	0.5689122582999999	0.02353857	1	0.5621488976950999	
+GO Biological Process	estrogen metabolic process	GO:0008210	0.000883925	1	0.5538842416666666	0.002303277	1	0.21804907944604315	
+GO Biological Process	multi-organism cellular process	GO:0044764	0.0008944101	1	0.5349792048136364	0.03464593	1	0.7013935274923077	
+GO Biological Process	activation of MAPK activity	GO:0000187	0.0009448253	1	0.5180398384458333	0.005315166	1	0.286648645057377	
+GO Biological Process	positive regulation of MAP kinase activity	GO:0043406	0.001095885	1	0.5768300286	0.001421659	1	0.17162945670642202	
+GO Biological Process	regulation of stress-activated MAPK cascade	GO:0032872	0.001126956	1	0.5492449631111112	0.0008835476	1	0.13841193890952383	
+GO Biological Process	regulation of stress-activated protein kinase signaling cascade	GO:0070302	0.001170443	1	0.5310986012758621	0.0009240351	1	0.14305150448117646	
+GO Biological Process	ER to Golgi vesicle-mediated transport	GO:0006888	0.001197879	1	0.5254296587	0.006971345	1	0.33850896256457563	
+GO Biological Process	cellular response to cAMP	GO:0071320	0.00122219	1	0.5187999422580645	0.0001143912	1	0.05017579336	
+GO Biological Process	collagen catabolic process	GO:0030574	0.001256906	1	0.5168633141875	0.003598501	1	0.24535064590155442	
+GO Biological Process	cardiac neural crest cell migration involved in outflow tract morphogenesis	GO:0003253	0.001645161	1	0.5850992864594594	0.00004624823	0.60858045857	0.0304290229285	
+GO Biological Process	multicellular organismal catabolic process	GO:0044243	0.001664327	1	0.576338920868421	0.006805568	1	0.332916242795539	
+GO Biological Process	positive regulation of fibroblast proliferation	GO:0048146	0.001936722	1	0.5926819720465116	0.001256878	1	0.1687679347142857	
+GO Biological Process	cellular hormone metabolic process	GO:0034754	0.001986009	1	0.5939521007045454	0.003496083	1	0.2447072138138298	
+GO Biological Process	cerebellum formation	GO:0021588	0.002049045	1	0.5991862923333334	0.02279384	1	0.6368240776220807	
+GO Biological Process	midbrain-hindbrain boundary maturation during brain development	GO:0022004	0.002049045	1	0.5991862923333334	0.02279384	1	0.6368240776220807	
+GO Biological Process	astrocyte-dopaminergic neuron signaling	GO:0036520	0.002049045	1	0.5991862923333334	0.02279384	1	0.6368240776220807	
+GO Biological Process	canonical Wnt signaling pathway	GO:0060070	0.002216198	1	0.58325898964	0.00005591692	0.73581075028	0.033445943194545455	
+GO Biological Process	response to hydrostatic pressure	GO:0051599	0.002271175	1	0.5860076828431372	0.007316963	1	0.3463450220035971	
+GO Biological Process	collagen metabolic process	GO:0032963	0.002458121	1	0.5881166225272728	0.009857602	1	0.39912672220923073	
+GO Biological Process	regulation of cellular component size	GO:0032535	0.002581942	1	0.5857892203103447	0.00126277	1	0.16616790430000003	
+GO Biological Process	negative regulation of cellular protein catabolic process	GO:1903363	0.002638154	1	0.5883977709491527	0.04541079	1	0.7413903047270471	
+GO Biological Process	response to cAMP	GO:0051591	0.002648921	1	0.5809525239833333	0.001574597	1	0.18017497324347825	
+GO Biological Process	regulation of actin polymerization or depolymerization	GO:0008064	0.002810528	1	0.5870434595555555	0.003739661	1	0.24728743265829145	
+GO Biological Process	regulation of actin filament length	GO:0030832	0.003014275	1	0.6197631988281249	0.003908659	1	0.25212766559313726	
+GO Biological Process	positive regulation of muscle contraction	GO:0045933	0.003069223	1	0.6119379614696969	0.003820962	1	0.2501494475522388	
+GO Biological Process	multicellular organismal macromolecule metabolic process	GO:0044259	0.003091419	1	0.5982350385441176	0.0130585	1	0.4733796184573003	
+GO Biological Process	intestinal absorption	GO:0050892	0.003094769	1	0.5902038445072464	0.02526207	1	0.5781279637043478	
+GO Biological Process	protein palmitoleylation	GO:0045234	0.003233828	1	0.6079134664571428	0.02279384	1	0.6368240776220807	
+GO Biological Process	response to organophosphorus	GO:0046683	0.003329618	1	0.6171048346760563	0.003126665	1	0.23114485806179774	
+GO Biological Process	cellular response to water stimulus	GO:0071462	0.003340208	1	0.6021068092054794	0.004952465	1	0.2845829123799126	
+GO Biological Process	regulation of actin filament polymerization	GO:0030833	0.003428398	1	0.6015238570933333	0.005077465	1	0.2819171389662447	
+GO Biological Process	regulation of cardiac muscle cell membrane repolarization	GO:0099623	0.003577906	1	0.6194955928157895	0.001671273	1	0.18480908745378152	
+GO Biological Process	regulation of microvillus assembly	GO:0032534	0.003919016	1	0.6366707598024691	0.0002234685	1	0.07738478925	
+GO Biological Process	cytokine production	GO:0001816	0.004184822	1	0.6715618621707318	0.003126665	1	0.23114485806179774	
+GO Biological Process	cell wall macromolecule catabolic process	GO:0016998	0.004186458	1	0.6637301303855421	0.003550021	1	0.24457971905235604	
+GO Biological Process	protein acylation	GO:0043543	0.004204019	1	0.6585795954880952	0.02954962	1	0.634328629004894	
+GO Biological Process	osteoblast differentiation	GO:0001649	0.00424022	1	0.6564359409411765	0.0004541591	1	0.11275999239433963	
+GO Biological Process	neuropeptide signaling pathway	GO:0007218	0.004468295	1	0.6758424586781608	0.00217541	1	0.2152347382706767	
+GO Biological Process	cell wall macromolecule metabolic process	GO:0044036	0.004800462	1	0.6866226028043478	0.005280066	1	0.2883003671950207	
+GO Biological Process	diterpenoid metabolic process	GO:0016101	0.004865285	1	0.681088141648936	0.006373433	1	0.3176818365416667	
+GO Biological Process	positive regulation of neurotrophin TRK receptor signaling pathway	GO:0051388	0.005016219	1	0.6735553655204082	0.004952465	1	0.2845829123799126	
+GO Biological Process	release of sequestered calcium ion into cytosol	GO:0051209	0.005122956	1	0.6809391717575757	0.002836785	1	0.24239775204545455	
+GO Biological Process	circadian rhythm	GO:0007623	0.005232667	1	0.6750653436568628	0.003635885	1	0.24410515670918367	
+GO Biological Process	positive regulation of metanephric cap mesenchymal cell proliferation	GO:0090096	0.005575133	1	0.6856371509065421	0.02279384	1	0.6368240776220807	
+GO Biological Process	protein localization to perinuclear region of cytoplasm	GO:1905719	0.005603735	1	0.6827736006018519	0.04506931	1	0.8102008883743169	
+GO Biological Process	liver regeneration	GO:0097421	0.005650483	1	0.6821532641926606	0.00797299	1	0.35325446265993266	
+GO Biological Process	terpenoid metabolic process	GO:0006721	0.005853202	1	0.6876989742678571	0.01075455	1	0.4078360906340058	
+GO Biological Process	positive regulation of smooth muscle contraction	GO:0045987	0.005859453	1	0.6823410798849557	0.005776488	1	0.29692502184374997	
+GO Biological Process	neural precursor cell proliferation	GO:0061351	0.006067017	1	0.7003147079210525	0.0001872192	1	0.07038907008	
+GO Biological Process	response to purine-containing compound	GO:0014074	0.006080276	1	0.6957421902956522	0.005816349	1	0.2966563429883721	
+GO Biological Process	positive regulation of transcription from RNA polymerase II promoter in response to endoplasmic reticulum stress	GO:1990440	0.006138173	1	0.690360841940171	0.02488193	1	0.5857268638103756	
+GO Biological Process	positive regulation of chylomicron remnant clearance	GO:0090321	0.006310501	1	0.6862800219752067	0.02279384	1	0.6368240776220807	
+GO Biological Process	regulation of microvillus organization	GO:0032530	0.006696425	1	0.6884238794921875	0.002836924	1	0.24084569623225807	
+GO Biological Process	negative regulation of stress-activated MAPK cascade	GO:0032873	0.006784074	1	0.6920281377209303	0.01505265	1	0.5053005646683674	
+GO Biological Process	cell proliferation in midbrain	GO:0033278	0.007041193	1	0.7072905243282444	0.007316963	1	0.3463450220035971	
+GO Biological Process	positive regulation of double-strand break repair via homologous recombination	GO:1905168	0.007043572	1	0.7021694238484848	0.02279384	1	0.6368240776220807	
+GO Biological Process	metanephric ascending thin limb development	GO:0072218	0.007310551	1	0.7125891896962963	0.003016943	1	0.2435579934785276	
+GO Biological Process	Golgi vesicle transport	GO:0048193	0.007409351	1	0.7169091897720588	0.01881316	1	0.5678036065137615	
+GO Biological Process	regulation of actin cytoskeleton reorganization	GO:2000249	0.007428303	1	0.7134966363284672	0.007188681	1	0.34650495706593404	
+GO Biological Process	cardiac neural crest cell development involved in outflow tract morphogenesis	GO:0061309	0.007497391	1	0.7097709940215827	0.0002234685	1	0.07738478925	
+GO Biological Process	negative regulation of protein ubiquitination involved in ubiquitin-dependent protein catabolic process	GO:2000059	0.007509455	1	0.7058351310357143	0.03424667	1	0.7052455876838811	
+GO Biological Process	positive regulation of protein tyrosine kinase activity	GO:0061098	0.007527237	1	0.7024887353404256	0.01630555	1	0.532418690942928	
+GO Biological Process	regulation of actin cytoskeleton organization	GO:0032956	0.007613425	1	0.6909314453448275	0.002640067	1	0.23315866881208053	
+GO Biological Process	regulation of fibroblast proliferation	GO:0048145	0.007693184	1	0.6933877277808219	0.003052674	1	0.23354730910465119	
+GO Biological Process	notochord formation	GO:0014028	0.008041674	1	0.70546925444	0.003016943	1	0.2435579934785276	
+GO Biological Process	slow endocytic recycling	GO:0032458	0.008133641	1	0.6995462870522876	0.02279384	1	0.6368240776220807	
+GO Biological Process	branching involved in ureteric bud morphogenesis	GO:0001658	0.008226209	1	0.7029135339675324	0.0004590805	1	0.10983709635454546	
+GO Biological Process	GDP metabolic process	GO:0046710	0.008261681	1	0.701390066316129	0.03936278	1	0.7583818770424597	
+GO Biological Process	glycolipid translocation	GO:0034203	0.008687615	1	0.71450203615625	0.000518373	1	0.1156147509661017	
+GO Biological Process	cardiac neural crest cell development involved in heart development	GO:0061308	0.008714477	1	0.7122596449875777	0.0006047267	1	0.11877012903432836	
+GO Biological Process	insecticide metabolic process	GO:0017143	0.008943331	1	0.7219956603006135	0.04506931	1	0.8102008883743169	
+GO Biological Process	mitochondrial alanyl-tRNA aminoacylation	GO:0070143	0.008957655	1	0.7187425740548781	0.02279384	1	0.6368240776220807	
+GO Biological Process	epithelial cell-cell adhesion	GO:0090136	0.008966602	1	0.715100095260606	0.005280066	1	0.2883003671950207	
+GO Biological Process	facial nucleus development	GO:0021754	0.008996179	1	0.7131368642228916	0.02279384	1	0.6368240776220807	
+GO Biological Process	immortalization of host cell by virus	GO:0019088	0.009384875	1	0.7264445301470589	0.02279384	1	0.6368240776220807	
+GO Biological Process	myoblast differentiation involved in skeletal muscle regeneration	GO:0014835	0.00965637	1	0.721978254715909	0.04506931	1	0.8102008883743169	
+GO Biological Process	rhombomere 4 development	GO:0021570	0.009731224	1	0.7193998686292135	0.000518373	1	0.1156147509661017	
+GO Biological Process	ephrin receptor signaling pathway	GO:0048013	0.009928659	1	0.721829965640884	0.0008283177	1	0.1434188501881579	
+GO Biological Process	hepatocyte proliferation	GO:0072574	0.009962154	1	0.7202856290439561	0.001531595	1	0.17994873754464286	
+GO Biological Process	negative regulation of potassium ion transport	GO:0043267	0.01025573	1	0.7334519079891304	0.003082867	1	0.23181398201714284	
+GO Biological Process	deoxynucleotide transport	GO:0030302	0.01060265	1	0.754163628918919	0.02279384	1	0.6368240776220807	
+GO Biological Process	regulation of lens fiber cell differentiation	GO:1902746	0.01072323	1	0.7545827998395722	0.003016943	1	0.2435579934785276	
+GO Biological Process	retinoid metabolic process	GO:0001523	0.01092997	1	0.7650397618617022	0.01609539	1	0.5348465581060606	
+GO Biological Process	steroid metabolic process	GO:0008202	0.01109637	1	0.7644876064397905	0.03769377	1	0.739213590804769	
+GO Biological Process	positive regulation of cytoskeleton organization	GO:0051495	0.01115157	1	0.7603290654404146	0.01123593	1	0.41648902216901407	
+GO Biological Process	positive regulation of fat cell differentiation	GO:0045600	0.01135875	1	0.76651175	0.001527695	1	0.18110755409909907	
+GO Biological Process	tongue development	GO:0043586	0.01160378	1	0.775097162538071	0.001170984	1	0.1621997732210526	
+GO Biological Process	carbohydrate derivative transport	GO:1901264	0.01200252	1	0.7976826296969697	0.007603537	1	0.34501704614827583	
+GO Biological Process	cell migration involved in heart development	GO:0060973	0.01209861	1	0.7920677064179105	0.002836924	1	0.24084569623225807	
+GO Biological Process	isoprenoid metabolic process	GO:0006720	0.01222693	1	0.7925821274384237	0.02544091	1	0.5781985055094991	
+GO Biological Process	cell proliferation involved in outflow tract morphogenesis	GO:0061325	0.01255939	1	0.7984010290338165	0.000518373	1	0.1156147509661017	
+GO Biological Process	negative regulation of osteoblast differentiation	GO:0045668	0.01261131	1	0.7978472513942307	0.002292084	1	0.21856183591304346	
+GO Biological Process	estrogen biosynthetic process	GO:0006703	0.01266002	1	0.7970966659330143	0.03424667	1	0.7052455876838811	
+GO Biological Process	neural tube development	GO:0021915	0.01267377	1	0.7941625687142857	0.0008706775	1	0.14321556528124998	
+GO Biological Process	positive regulation of growth of symbiont in host	GO:0044128	0.01282819	1	0.7962554349528301	0.02279384	1	0.6368240776220807	
+GO Biological Process	thiamine pyrophosphate transport	GO:0030974	0.01292699	1	0.7948890720093458	0.04506931	1	0.8102008883743169	
+GO Biological Process	regulation of membrane repolarization	GO:0060306	0.01314582	1	0.8045853273488373	0.004562345	1	0.27666312375576035	
+GO Biological Process	cytokine production involved in immune response	GO:0002367	0.01315929	1	0.8016810051388888	0.01484475	1	0.5073819876623377	
+GO Biological Process	cellular response to epinephrine stimulus	GO:0071872	0.01316698	1	0.7984529484792626	0.002836924	1	0.24084569623225807	
+GO Biological Process	regulation of atrial cardiac muscle cell membrane repolarization	GO:0060372	0.01327214	1	0.8011380287155964	0.01008997	1	0.39992143141566266	
+GO Biological Process	regulation of protein polymerization	GO:0032271	0.01340243	1	0.7908635711659193	0.02399316	1	0.5668330205385996	
+GO Biological Process	metanephric loop of Henle development	GO:0072236	0.01351647	1	0.7870054368584071	0.007316963	1	0.3463450220035971	
+GO Biological Process	Wnt signaling pathway, calcium modulating pathway	GO:0007223	0.0136721	1	0.7890840521929824	0.00970538	1	0.3991034231875	
+GO Biological Process	liver development	GO:0001889	0.01370369	1	0.7840298117826087	0.00203923	1	0.20484143183206108	
+GO Biological Process	positive regulation of phospholipase C activity	GO:0010863	0.01385698	1	0.7825922739055794	0.0008425977	1	0.14215055300384616	
+GO Biological Process	negative regulation of collateral sprouting of intact axon in response to injury	GO:0048685	0.01391889	1	0.7827293739743589	0.02279384	1	0.6368240776220807	
+GO Biological Process	spinal cord dorsal/ventral patterning	GO:0021513	0.01399757	1	0.7838043558723404	0.001405672	1	0.1745022438490566	
+GO Biological Process	positive regulation of stress-activated MAPK cascade	GO:0032874	0.01438689	1	0.8021910402966101	0.0168729	1	0.5337271420673078	
+GO Biological Process	melanocyte migration	GO:0097324	0.01442305	1	0.7974492224789916	0.000518373	1	0.1156147509661017	
+GO Biological Process	canonical Wnt signaling pathway involved in midbrain dopaminergic neuron differentiation	GO:1904954	0.01458838	1	0.7998687184166666	0.003016943	1	0.2435579934785276	
+GO Biological Process	peptidyl-tyrosine dephosphorylation involved in inactivation of protein kinase activity	GO:1990264	0.01476654	1	0.8062775927800829	0.04506931	1	0.8102008883743169	
+GO Biological Process	positive regulation of stress-activated protein kinase signaling cascade	GO:0070304	0.0148929	1	0.8064842432098766	0.01752329	1	0.5425622896705883	
+GO Biological Process	metanephric cortex development	GO:0072214	0.01494008	1	0.8057234127868852	0.02279384	1	0.6368240776220807	
+GO Biological Process	metanephric cortical collecting duct development	GO:0072219	0.01494008	1	0.8057234127868852	0.02279384	1	0.6368240776220807	
+GO Biological Process	BMP signaling pathway involved in spinal cord dorsal/ventral patterning	GO:0021919	0.01497984	1	0.8012996526829268	0.02279384	1	0.6368240776220807	
+GO Biological Process	positive regulation of actin cytoskeleton reorganization	GO:2000251	0.01504262	1	0.801400148097166	0.007438719	1	0.34106656209407665	
+GO Biological Process	smoothened signaling pathway involved in ventral spinal cord interneuron specification	GO:0021775	0.01577831	1	0.8078863085214008	0.001531595	1	0.17994873754464286	
+GO Biological Process	smoothened signaling pathway involved in spinal cord motor neuron cell fate specification	GO:0021776	0.01577831	1	0.8078863085214008	0.001531595	1	0.17994873754464286	
+GO Biological Process	regulation of ventricular cardiac muscle cell membrane repolarization	GO:0060307	0.01581218	1	0.8033686355984555	0.008686069	1	0.3759867827993421	
+GO Biological Process	negative regulation of fibrinolysis	GO:0051918	0.01587965	1	0.8006142312260536	0.02066579	1	0.6070114522544643	
+GO Biological Process	response to corticosterone	GO:0051412	0.01588287	1	0.7977201768320611	0.007438719	1	0.34106656209407665	
+GO Biological Process	hepaticobiliary system development	GO:0061008	0.01588649	1	0.7948681441444867	0.002404399	1	0.22281328479577467	
+GO Biological Process	NK T cell differentiation	GO:0001865	0.01590324	1	0.7926921786363635	0.04506931	1	0.8102008883743169	
+GO Biological Process	positive regulation of myoblast proliferation	GO:2000288	0.01598431	1	0.7907426138721806	0.007316963	1	0.3463450220035971	
+GO Biological Process	multicellular organism metabolic process	GO:0044236	0.01602175	1	0.789626248127341	0.03440159	1	0.6996762330911902	
+GO Biological Process	endocytic recycling	GO:0032456	0.01630501	1	0.7976119947583643	0.02293394	1	0.5537389292844037	
+GO Biological Process	positive regulation of lipase activity	GO:0060193	0.01671007	1	0.8054498576190476	0.002610061	1	0.233644848292517	
+GO Biological Process	regulation of JUN kinase activity	GO:0043506	0.01672425	1	0.8031912618613138	0.04110447	1	0.7771461504741378	
+GO Biological Process	smoothened signaling pathway involved in ventral spinal cord patterning	GO:0021910	0.01675347	1	0.8016687699272727	0.003016943	1	0.2435579934785276	
+GO Biological Process	cellular response to acid chemical	GO:0071229	0.01688743	1	0.8022443731768952	0.005055034	1	0.2830603932170213	
+GO Biological Process	regulation of potassium ion transport	GO:0043266	0.01692497	1	0.8011355403956835	0.0009624656	1	0.1472684282604651	
+GO Biological Process	toxin metabolic process	GO:0009404	0.01693295	1	0.7986404625448028	0.04474734	1	0.8270087739606741	
+GO Biological Process	liver morphogenesis	GO:0072576	0.01766773	1	0.8072557606597222	0.003016943	1	0.2435579934785276	
+GO Biological Process	spinal cord patterning	GO:0021511	0.01778	1	0.806782827586207	0.001969808	1	0.20093568582945737	
+GO Biological Process	response to water	GO:0009415	0.01794231	1	0.8085714290753425	0.03936278	1	0.7583818770424597	
+GO Biological Process	cranial nerve morphogenesis	GO:0021602	0.01800256	1	0.8085177032081912	0.0003831213	1	0.10726581248297871	
+GO Biological Process	regulation of phospholipase C activity	GO:1900274	0.01810124	1	0.8101844121088436	0.001110286	1	0.15880710297826087	
+GO Biological Process	regulation of JNK cascade	GO:0046328	0.01827526	1	0.8097109304377105	0.0140468	1	0.4889995798941799	
+GO Biological Process	regulation of fusion of sperm to egg plasma membrane	GO:0043012	0.0184448	1	0.8063625355481728	0.02279384	1	0.6368240776220807	
+GO Biological Process	ventral spinal cord interneuron specification	GO:0021521	0.01867033	1	0.8108345626072606	0.001693151	1	0.18413366949586776	
+GO Biological Process	nucleosome mobilization	GO:0042766	0.01943973	1	0.8251851840967741	0.02279384	1	0.6368240776220807	
+GO Biological Process	cell differentiation in spinal cord	GO:0021515	0.02004192	1	0.8399096346496815	0.001136078	1	0.16074892905376342	
+GO Biological Process	ureteric bud morphogenesis	GO:0060675	0.02004569	1	0.8374007451111112	0.001136078	1	0.16074892905376342	
+GO Biological Process	nuclear inner membrane organization	GO:0071765	0.02011001	1	0.8374291822468354	0.02279384	1	0.6368240776220807	
+GO Biological Process	positive regulation of actin filament polymerization	GO:0030838	0.02021091	1	0.8337158767711598	0.02549472	1	0.5774268855077452	
+GO Biological Process	non-canonical Wnt signaling pathway	GO:0035567	0.02083245	1	0.851348476863354	0.03762707	1	0.7412194822305389	
+GO Biological Process	potassium ion export	GO:0071435	0.02091828	1	0.8469650662153846	0.01678312	1	0.5386562831219511	
+GO Biological Process	antigen processing and presentation, endogenous lipid antigen via MHC class Ib	GO:0048006	0.02091972	1	0.8444251395092024	0.02279384	1	0.6368240776220807	
+GO Biological Process	skeletal muscle hypertrophy	GO:0014734	0.02093314	1	0.8423828417737004	0.02279384	1	0.6368240776220807	
+GO Biological Process	ERBB2-ERBB3 signaling pathway	GO:0038133	0.02093314	1	0.8423828417737004	0.02279384	1	0.6368240776220807	
+GO Biological Process	negative regulation of protein kinase B signaling	GO:0051898	0.0211902	1	0.8398850656626506	0.01762195	1	0.5443362442488263	
+GO Biological Process	myoblast fusion	GO:0007520	0.02184929	1	0.8608227757784431	0.01004858	1	0.40069474006060607	
+GO Biological Process	membrane hyperpolarization	GO:0060081	0.02213515	1	0.8643217770029673	0.02066579	1	0.6070114522544643	
+GO Biological Process	negative regulation of microvillus assembly	GO:1903697	0.02235883	1	0.8679051444542772	0.02279384	1	0.6368240776220807	
+GO Biological Process	intracellular cholesterol transport	GO:0032367	0.02268534	1	0.8652648958260869	0.02488193	1	0.5857268638103756	
+GO Biological Process	developmental maturation	GO:0021700	0.02278317	1	0.8639877061383285	0.0105906	1	0.40394697217391307	
+GO Biological Process	circadian behavior	GO:0048512	0.02291812	1	0.8641247595415473	0.01312647	1	0.4732362156986301	
+GO Biological Process	metanephric distal tubule development	GO:0072235	0.02300793	1	0.8601174740625	0.01008997	1	0.39992143141566266	
+GO Biological Process	regulation of smooth muscle contraction	GO:0006940	0.02304775	1	0.8567382549435028	0.01097818	1	0.411572280968661	
+GO Biological Process	histone H4-K5 acetylation	GO:0043981	0.02331753	1	0.8570820594134078	0.04474734	1	0.8270087739606741	
+GO Biological Process	histone H4-K8 acetylation	GO:0043982	0.02331753	1	0.8570820594134078	0.04474734	1	0.8270087739606741	
+GO Biological Process	regulation of fibrinolysis	GO:0051917	0.02353563	1	0.8531827966115701	0.03936278	1	0.7583818770424597	
+GO Biological Process	retinol metabolic process	GO:0042572	0.02366592	1	0.8532050446027397	0.0302847	1	0.6438067323101777	
+GO Biological Process	positive regulation of peptidyl-tyrosine phosphorylation	GO:0050731	0.02381568	1	0.8492968377235772	0.01617867	1	0.5335717256390977	
+GO Biological Process	activation of phospholipase C activity	GO:0007202	0.02384661	1	0.8481014621351352	0.01668403	1	0.5420867920246913	
+GO Biological Process	hematopoietic stem cell proliferation	GO:0071425	0.0239405	1	0.8491456590296496	0.0002976128	1	0.09107643802790698	
+GO Biological Process	mesonephric tubule morphogenesis	GO:0072171	0.02415841	1	0.8500013828609626	0.001256878	1	0.1687679347142857	
+GO Biological Process	calcium ion transmembrane import into cytosol	GO:0097553	0.0252978	1	0.8760361847368421	0.008211122	1	0.36016718132666664	
+GO Biological Process	small nucleolar ribonucleoprotein complex assembly	GO:0000491	0.02537075	1	0.8716806768929505	0.01678312	1	0.5386562831219511	
+GO Biological Process	positive regulation of response to wounding	GO:1903036	0.02538889	1	0.8700323008072917	0.008851555	1	0.3769502014401295	
+GO Biological Process	rhythmic behavior	GO:0007622	0.0256295	1	0.8714692260981911	0.01484475	1	0.5073819876623377	
+GO Biological Process	positive regulation of mitochondrial calcium ion concentration	GO:0051561	0.0259251	1	0.872502278516624	0.02066579	1	0.6070114522544643	
+GO Biological Process	cytosolic calcium ion transport	GO:0060401	0.02671492	1	0.8877313946464647	0.007258885	1	0.3448363455415162	
+GO Biological Process	apical junction assembly	GO:0043297	0.02698173	1	0.8920919222864321	0.01386229	1	0.48385643	
+GO Biological Process	ureteric bud development	GO:0001657	0.02700308	1	0.8905602248621554	0.0007096111	1	0.13339674949857144	
+GO Biological Process	cellular carbohydrate catabolic process	GO:0044275	0.02710582	1	0.8850756461042183	0.04177763	1	0.7842394196433667	
+GO Biological Process	columnar/cuboidal epithelial cell maturation	GO:0002069	0.02720464	1	0.8861036083168317	0.01008997	1	0.39992143141566266	
+GO Biological Process	mesonephric tubule development	GO:0072164	0.02726928	1	0.8860159395555556	0.0007671199	1	0.13641257789324324	
+GO Biological Process	activation of GTPase activity	GO:0090630	0.02735396	1	0.8865782257142857	0.01692473	1	0.532805076722488	
+GO Biological Process	cell maturation	GO:0048469	0.0275058	1	0.8893091454545454	0.01887777	1	0.5671519986986301	
+GO Biological Process	myeloid leukocyte migration	GO:0097529	0.0275841	1	0.8896548330882352	0.03048857	1	0.6460532892592592	
+GO Biological Process	rhombomere 3 development	GO:0021569	0.02779473	1	0.8920752489512195	0.04506931	1	0.8102008883743169	
+GO Biological Process	negative regulation of ossification	GO:0030279	0.02789955	1	0.8889350567796609	0.005195504	1	0.2872589795630252	
+GO Biological Process	spinal cord motor neuron cell fate specification	GO:0021520	0.02809645	1	0.8930463419082125	0.002836924	1	0.24084569623225807	
+GO Biological Process	nucleoside transmembrane transport	GO:1901642	0.02825799	1	0.8938627173317308	0.02488193	1	0.5857268638103756	
+GO Biological Process	isopeptide cross-linking via N6-(L-isoglutamyl)-L-lysine	GO:0018153	0.02841251	1	0.8965952496163069	0.04506931	1	0.8102008883743169	
+GO Biological Process	granulocyte migration	GO:0097530	0.02843633	1	0.8952001590191387	0.03272003	1	0.6834331345555554	
+GO Biological Process	negative regulation of delayed rectifier potassium channel activity	GO:1902260	0.02884033	1	0.8993125650947867	0.01008997	1	0.39992143141566266	
+GO Biological Process	positive regulation of T cell activation	GO:0050870	0.02921576	1	0.9067221364150944	0.01723534	1	0.5374403769194313	
+GO Biological Process	ventral spinal cord interneuron fate commitment	GO:0060579	0.0292519	1	0.905707652	0.004363123	1	0.2695508711596244	
+GO Biological Process	collagen fibril organization	GO:0030199	0.02970742	1	0.9155033718501171	0.01273349	1	0.4628729141160221	
+GO Biological Process	gastrulation with mouth forming second	GO:0001702	0.03025882	1	0.9259902613488371	0.003082867	1	0.23181398201714284	
+GO Biological Process	B cell differentiation	GO:0030183	0.0303104	1	0.9254165976798144	0.0225237	1	0.633310616025641	
+GO Biological Process	T cell cytokine production	GO:0002369	0.03033987	1	0.9220377582678985	0.0294144	1	0.6461837889816361	
+GO Biological Process	minus-end-directed vesicle transport along microtubule	GO:0072382	0.03043168	1	0.9226969518894009	0.02279384	1	0.6368240776220807	
+GO Biological Process	mitochondrial translational initiation	GO:0070124	0.03044167	1	0.9208780127126437	0.04506931	1	0.8102008883743169	
+GO Biological Process	optic nerve morphogenesis	GO:0021631	0.03071948	1	0.9271505443119267	0.007316963	1	0.3463450220035971	
+GO Biological Process	cornified envelope assembly	GO:1903575	0.0307327	1	0.925427000686499	0.04506931	1	0.8102008883743169	
+GO Biological Process	iris morphogenesis	GO:0061072	0.03078296	1	0.9227174729840547	0.02066579	1	0.6070114522544643	
+GO Biological Process	calcium ion import	GO:0070509	0.03108395	1	0.9254156064479638	0.009857602	1	0.39912672220923073	
+GO Biological Process	regulation of osteoblast differentiation	GO:0045667	0.03149553	1	0.9355523234085779	0.0008724572	1	0.14173659623209878	
+GO Biological Process	negative regulation of ion transport	GO:0043271	0.03163236	1	0.933296469147982	0.01036574	1	0.39767572204081636	
+GO Biological Process	negative regulation of voltage-gated potassium channel activity	GO:1903817	0.03168698	1	0.9328164872930648	0.01325171	1	0.4738566627445652	
+GO Biological Process	positive regulation of supramolecular fiber organization	GO:1902905	0.03191926	1	0.9313204929933481	0.03458096	1	0.7011569378120185	
+GO Biological Process	regulation of myoblast proliferation	GO:2000291	0.03206714	1	0.9335652550000001	0.02488193	1	0.5857268638103756	
+GO Biological Process	mesonephros development	GO:0001823	0.03221954	1	0.9359314058719647	0.001035769	1	0.1531425198988764	
+GO Biological Process	metanephric glomerulus vasculature development	GO:0072239	0.0323931	1	0.9327369866520787	0.01008997	1	0.39992143141566266	
+GO Biological Process	positive regulation of estradiol secretion	GO:2000866	0.03284742	1	0.9376121470281996	0.04506931	1	0.8102008883743169	
+GO Biological Process	neural crest cell migration	GO:0001755	0.03425825	1	0.9571216809978768	0.001265541	1	0.16488370315841586	
+GO Biological Process	placenta development	GO:0001890	0.03451846	1	0.9582877956540086	0.006353242	1	0.3178795113231939	
+GO Biological Process	establishment of planar polarity of follicular epithelium	GO:0042247	0.03507771	1	0.9636484047807933	0.02279384	1	0.6368240776220807	
+GO Biological Process	bone trabecula formation	GO:0060346	0.03523396	1	0.9659243325833333	0.01325171	1	0.4738566627445652	
+GO Biological Process	10-formyltetrahydrofolate catabolic process	GO:0009258	0.03558409	1	0.9714751873651453	0.04506931	1	0.8102008883743169	
+GO Biological Process	one-carbon metabolic process	GO:0006730	0.03563282	1	0.9667882028453609	0.04494682	1	0.8091042467578659	
+GO Biological Process	positive regulation of cyclic nucleotide-gated ion channel activity	GO:1902161	0.03588752	1	0.9716952174485596	0.02279384	1	0.6368240776220807	
+GO Biological Process	negative regulation of phosphatidylinositol 3-kinase signaling	GO:0014067	0.03628672	1	0.9764763772597137	0.0294144	1	0.6461837889816361	
+GO Biological Process	cell proliferation in forebrain	GO:0021846	0.03664733	1	0.9841677866734693	0.003082867	1	0.23181398201714284	
+GO Biological Process	regulation of phosphatidylinositol 3-kinase signaling	GO:0014066	0.03763786	1	0.9965323938430585	0.001574597	1	0.18017497324347825	
+GO Biological Process	medial motor column neuron differentiation	GO:0021526	0.03805673	1	0.9975866734462151	0.04506931	1	0.8102008883743169	
+GO Biological Process	positive regulation of sequestering of calcium ion	GO:0051284	0.03869381	1	1	0.03936278	1	0.7583818770424597	
+GO Biological Process	response to epinephrine	GO:0071871	0.03904837	1	1	0.005280066	1	0.2883003671950207	
+GO Biological Process	artery smooth muscle contraction	GO:0014824	0.039274	1	1	0.01008997	1	0.39992143141566266	
+GO Biological Process	negative regulation of hepatocyte growth factor receptor signaling pathway	GO:1902203	0.03983884	1	1	0.02279384	1	0.6368240776220807	
+GO Biological Process	negative regulation of cellular response to hepatocyte growth factor stimulus	GO:2001113	0.03983884	1	1	0.02279384	1	0.6368240776220807	
+GO Biological Process	extracellular exosome assembly	GO:0071971	0.03990608	1	1	0.02279384	1	0.6368240776220807	
+GO Biological Process	negative regulation of cellular response to heat	GO:1900035	0.03990608	1	1	0.02279384	1	0.6368240776220807	
+GO Biological Process	neural tube closure	GO:0001843	0.0402172	1	1	0.01377658	1	0.4834293765866666	
+GO Biological Process	homoiothermy	GO:0042309	0.04045243	1	1	0.04506931	1	0.8102008883743169	
+GO Biological Process	inositol phosphate-mediated signaling	GO:0048016	0.04058548	1	1	0.01004858	1	0.40069474006060607	
+GO Biological Process	positive regulation of Notch signaling pathway	GO:0045747	0.04097659	1	1	0.007188681	1	0.34650495706593404	
+GO Biological Process	placenta blood vessel development	GO:0060674	0.04170887	1	1	0.03297818	1	0.6877335509033281	
+GO Biological Process	negative regulation of smoothened signaling pathway	GO:0045879	0.04173998	1	1	0.02293394	1	0.5537389292844037	
+GO Biological Process	membrane repolarization during bundle of His cell action potential	GO:0086050	0.04197405	1	1	0.02279384	1	0.6368240776220807	
+GO Biological Process	membrane repolarization during SA node cell action potential	GO:0086052	0.04197405	1	1	0.02279384	1	0.6368240776220807	
+GO Biological Process	trabecular meshwork development	GO:0002930	0.04235599	1	1	0.04506931	1	0.8102008883743169	
+GO Biological Process	mesangial cell-matrix adhesion	GO:0035759	0.04247006	1	1	0.04506931	1	0.8102008883743169	
+GO Biological Process	regulation of cell migration involved in sprouting angiogenesis	GO:0090049	0.04324792	1	1	0.01484475	1	0.5073819876623377	
+GO Biological Process	intestinal epithelial cell development	GO:0060576	0.04331109	1	1	0.02488193	1	0.5857268638103756	
+GO Biological Process	glycolipid transport	GO:0046836	0.04349947	1	1	0.007316963	1	0.3463450220035971	
+GO Biological Process	bone trabecula morphogenesis	GO:0061430	0.04360074	1	1	0.02488193	1	0.5857268638103756	
+GO Biological Process	positive regulation of membrane depolarization	GO:1904181	0.04362761	1	1	0.0294144	1	0.6461837889816361	
+GO Biological Process	nephron tubule development	GO:0072080	0.04406442	1	1	0.001855986	1	0.19695903043548388	
+GO Biological Process	post-Golgi vesicle-mediated transport	GO:0006892	0.04425102	1	1	0.04670425	1	0.7568734307266011	
+GO Biological Process	transepithelial water transport	GO:0035377	0.0443201	1	1	0.04506931	1	0.8102008883743169	
+GO Biological Process	platelet-derived growth factor receptor-alpha signaling pathway	GO:0035790	0.04480848	1	1	0.02279384	1	0.6368240776220807	
+GO Biological Process	locomotor rhythm	GO:0045475	0.04494315	1	1	0.02066579	1	0.6070114522544643	
+GO Biological Process	hormonal regulation of the force of heart contraction	GO:0003058	0.0450212	1	1	0.02279384	1	0.6368240776220807	
+GO Biological Process	spinal cord development	GO:0021510	0.04536075	1	1	0.001796684	1	0.19221597362601625	
+GO Biological Process	positive regulation of telomerase activity	GO:0051973	0.04551228	1	1	0.04823185	1	0.7740035538414634	
+GO Biological Process	nephron tubule morphogenesis	GO:0072078	0.04554432	1	1	0.003074725	1	0.23253049583333335	
+GO Biological Process	kidney vasculature development	GO:0061440	0.04582751	1	1	0.01152818	1	0.4261216871348315	
+GO Biological Process	ventral spinal cord interneuron differentiation	GO:0021514	0.04597317	1	1	0.006304261	1	0.3166327118282443	
+GO Biological Process	peripheral nervous system development	GO:0007422	0.04615326	1	1	0.02051886	1	0.6040440240268456	
+GO Biological Process	positive regulation of phospholipase activity	GO:0010518	0.04633352	1	1	0.004599458	1	0.2763665197351598	
+GO Biological Process	detection of nodal flow	GO:0003127	0.04645259	1	1	0.04506931	1	0.8102008883743169	
+GO Biological Process	tonic smooth muscle contraction	GO:0014820	0.04649954	1	1	0.01325171	1	0.4738566627445652	
+GO Biological Process	endothelial cell proliferation	GO:0001935	0.04671775	1	1	0.01484475	1	0.5073819876623377	
+GO Biological Process	positive regulation of voltage-gated chloride channel activity	GO:1902943	0.04683244	1	1	0.04506931	1	0.8102008883743169	
+GO Biological Process	tube closure	GO:0060606	0.0470276	1	1	0.01452178	1	0.500241107382199	
+GO Biological Process	stromal-epithelial cell signaling involved in prostate gland development	GO:0044345	0.04726057	1	1	0.02279384	1	0.6368240776220807	
+GO Biological Process	convergent extension involved in somitogenesis	GO:0090246	0.04726057	1	1	0.02279384	1	0.6368240776220807	
+GO Biological Process	negative regulation of canonical Wnt signaling pathway involved in controlling type B pancreatic cell proliferation	GO:2000080	0.04726057	1	1	0.02279384	1	0.6368240776220807	
+GO Biological Process	epithelial cell proliferation	GO:0050673	0.04730634	1	1	0.00285292	1	0.23611053006289306	
+GO Biological Process	immunological synapse formation	GO:0001771	0.04785546	1	1	0.02488193	1	0.5857268638103756	
+GO Biological Process	regulation of type B pancreatic cell development	GO:2000074	0.04791574	1	1	0.01325171	1	0.4738566627445652	
+GO Biological Process	regulation of axon regeneration	GO:0048679	0.04802718	1	1	0.01312647	1	0.4732362156986301	
+GO Biological Process	kidney vasculature morphogenesis	GO:0061439	0.04806861	1	1	0.01008997	1	0.39992143141566266	
+GO Biological Process	gonad morphogenesis	GO:0035262	0.04852161	1	1	0.04506931	1	0.8102008883743169	
+GO Biological Process	histone H3-K9 demethylation	GO:0033169	0.04918493	1	1	0.03936278	1	0.7583818770424597	
+GO Biological Process	nephron epithelium morphogenesis	GO:0072088	0.0494436	1	1	0.003598501	1	0.24535064590155442	
+GO Biological Process	atrial cardiac muscle tissue morphogenesis	GO:0055009	0.04951707	1	1	0.01008997	1	0.39992143141566266	
+GO Biological Process	nephron morphogenesis	GO:0072028	0.0496783	1	1	0.003883928	1	0.251766544591133	
+GO Cellular Component	basal plasma membrane	GO:0009925	0.00003406625	0.05886648	0.0058866479999999995	0.00005054278	0.08733792384	0.02911264128	
+GO Cellular Component	endosomal part	GO:0044440	0.0002552032	0.4409911296	0.02594065468235294	0.01397166	1	0.7316069236363637	
+GO Cellular Component	nuclear chromatin	GO:0000790	0.0004727487	0.8169097536000001	0.04084548768	0.002561001	1	0.491712192	
+GO Cellular Component	basal part of cell	GO:0045178	0.0006828334	1	0.05618743405714286	0.0006593117	1	0.22785812351999998	
+GO Cellular Component	cytoplasmic side of endoplasmic reticulum membrane	GO:0098554	0.0008778216	1	0.06595111846956522	0.02066579	1	0.9651482464864866	
+GO Cellular Component	dynactin complex	GO:0005869	0.001138518	1	0.07566765784615384	0.01678312	1	0.8529773929411765	
+GO Cellular Component	actin cytoskeleton	GO:0015629	0.001914692	1	0.11408923365517241	0.00452686	1	0.46014200470588235	
+GO Cellular Component	cytoplasmic side of membrane	GO:0098562	0.00269536	1	0.14113885090909092	0.01245326	1	0.694168815483871	
+GO Cellular Component	podosome	GO:0002102	0.004937217	1	0.2245134467368421	0.004025381	1	0.49684702628571425	
+GO Cellular Component	basolateral plasma membrane	GO:0016323	0.006087555	1	0.26298237599999996	0.00302981	1	0.43629264	
+GO Cellular Component	perichromatin fibrils	GO:0005726	0.007453723	1	0.29272803054545454	0.003016943	1	0.47393431854545454	
+GO Cellular Component	Golgi-associated vesicle membrane	GO:0030660	0.01006526	1	0.37810368	0.02689692	1	0.9295575552000002	
+GO Cellular Component	acrosomal vesicle	GO:0001669	0.01160849	1	0.3857590523076923	0.04474979	1	1	
+GO Cellular Component	node of Ranvier	GO:0033268	0.0122221	1	0.39848658113207547	0.004363123	1	0.5026317696	
+GO Cellular Component	Golgi-associated vesicle	GO:0005798	0.01269188	1	0.40614016	0.04110447	1	1	
+GO Cellular Component	aggresome	GO:0016235	0.01276001	1	0.39373745142857147	0.01166517	1	0.6950832331034483	
+GO Cellular Component	BAF-type complex	GO:0090544	0.0193033	1	0.5380016516129031	0.01004858	1	0.64310912	
+GO Cellular Component	clathrin adaptor complex	GO:0030131	0.01969799	1	0.523663488	0.0302847	1	0.9691104	
+GO Cellular Component	trans-Golgi network transport vesicle membrane	GO:0012510	0.02050412	1	0.5368351418181819	0.03936278	1	1	
+GO Cellular Component	costamere	GO:0043034	0.02133999	1	0.5422868047058823	0.008686069	1	0.6253969679999999	
+GO Cellular Component	clathrin coat	GO:0030118	0.02226429	1	0.5575752626086956	0.02518393	1	0.9259112987234042	
+GO Cellular Component	polycystin complex	GO:0002133	0.02233828	1	0.5514363977142857	0.04506931	1	1	
+GO Cellular Component	Golgi transport complex	GO:0017119	0.02260602	1	0.54254448	0.03936278	1	1	
+GO Cellular Component	CHOP-C/EBP complex	GO:0036488	0.03093638	1	0.6144605131034482	0.04506931	1	1	
+GO Cellular Component	collagen type XIII trimer	GO:0005600	0.0340079	1	0.65295168	0.02279384	1	0.984693888	
+GO Cellular Component	npBAF complex	GO:0071564	0.03445929	1	0.6472353599999999	0.0294144	1	0.9590204377358491	
+GO Cellular Component	cytoplasmic side of plasma membrane	GO:0009898	0.03492262	1	0.6488848103225807	0.04378592	1	1	
+GO Cellular Component	matrix side of mitochondrial inner membrane	GO:0099617	0.03525933	1	0.6481715131914894	0.02279384	1	0.984693888	
+GO Cellular Component	intercalated disc	GO:0014704	0.03555394	1	0.646707456	0.005484538	1	0.526515648	
+GO Cellular Component	Grb2-EGFR complex	GO:0070436	0.03610782	1	0.6432403397938145	0.04506931	1	1	
+GO Cellular Component	integrin alpha9-beta1 complex	GO:0034679	0.03725033	1	0.6568221453061224	0.02279384	1	0.984693888	
+GO Cellular Component	chloride channel complex	GO:0034707	0.03948524	1	0.6689264188235293	0.02353857	1	0.9038810880000001	
+GO Cellular Component	glomerular endothelium fenestra	GO:0036053	0.03990608	1	0.6630548676923076	0.02279384	1	0.984693888	
+GO Cellular Component	intracellular canaliculus	GO:0046691	0.04197405	1	0.6842562113207546	0.02279384	1	0.984693888	
+GO Cellular Component	ciliary base	GO:0097546	0.04670657	1	0.7206156514285714	0.02526207	1	0.90943452	
+GO Cellular Component	cell-cell contact zone	GO:0044291	0.04757558	1	0.7275274534513274	0.004504631	1	0.486500148	
+GO Molecular Function	G-protein coupled receptor binding	GO:0001664	0.0001882313	0.7947125486	0.26490418286666667	0.0003014499	1	0.6363607389	
+GO Molecular Function	cadherin binding	GO:0045296	0.0003928867	1	0.41469191185	0.004369675	1	1	
+GO Molecular Function	serpin family protein binding	GO:0097655	0.0004831522	1	0.3399780980666667	0.02279384	1	1	
+GO Molecular Function	sulfate binding	GO:0043199	0.002515025	1	1	0.003016943	1	1	
+GO Molecular Function	tRNA (guanosine-2'-O-)-methyltransferase activity	GO:0009020	0.002788311	1	1	0.02279384	1	1	
+GO Molecular Function	tRNA (cytosine-2'-O-)-methyltransferase activity	GO:0052666	0.002788311	1	1	0.02279384	1	1	
+GO Molecular Function	GDP binding	GO:0019003	0.004200407	1	1	0.04541079	1	1	
+GO Molecular Function	aralkylamine N-acetyltransferase activity	GO:0004059	0.004314499	1	1	0.02279384	1	1	
+GO Molecular Function	lysozyme activity	GO:0003796	0.004609346	1	1	0.004363123	1	1	
+GO Molecular Function	oxidoreductase activity, acting on the CH-OH group of donors, NAD or NADP as acceptor	GO:0016616	0.004897088	1	1	0.01773578	1	1	
+GO Molecular Function	peptidoglycan muralytic activity	GO:0061783	0.005175896	1	1	0.008686069	1	1	
+GO Molecular Function	retinol dehydrogenase activity	GO:0004745	0.005824467	1	1	0.007438719	1	1	
+GO Molecular Function	chylomicron binding	GO:0035478	0.006310501	1	1	0.02279384	1	1	
+GO Molecular Function	histone binding	GO:0042393	0.007519126	1	1	0.03815892	1	1	
+GO Molecular Function	guanylate kinase activity	GO:0004385	0.007943625	1	1	0.03424667	1	1	
+GO Molecular Function	activating transcription factor binding	GO:0033613	0.009026739	1	1	0.003883928	1	1	
+GO Molecular Function	thymidylate synthase activity	GO:0004799	0.009384875	1	1	0.02279384	1	1	
+GO Molecular Function	outward rectifier potassium channel activity	GO:0015271	0.009586014	1	1	0.002219551	1	1	
+GO Molecular Function	lipase binding	GO:0035473	0.009588013	1	1	0.007316963	1	1	
+GO Molecular Function	deoxynucleotide transmembrane transporter activity	GO:0030233	0.01060265	1	1	0.02279384	1	1	
+GO Molecular Function	oxidoreductase activity, acting on CH-OH group of donors	GO:0016614	0.01077532	1	1	0.03517158	1	1	
+GO Molecular Function	E-box binding	GO:0070888	0.01079253	1	1	0.00970538	1	1	
+GO Molecular Function	histone deacetylase activity	GO:0004407	0.0118222	1	1	0.01762195	1	1	
+GO Molecular Function	protein deacetylase activity	GO:0033558	0.01227122	1	1	0.01900269	1	1	
+GO Molecular Function	calcium-induced calcium release activity	GO:0048763	0.01245091	1	1	0.003016943	1	1	
+GO Molecular Function	L-fuconate dehydratase activity	GO:0050023	0.01262325	1	1	0.02279384	1	1	
+GO Molecular Function	histone acetyltransferase regulator activity	GO:0035034	0.01281269	1	1	0.04506931	1	1	
+GO Molecular Function	thiamine pyrophosphate transporter activity	GO:0090422	0.01292699	1	1	0.04506931	1	1	
+GO Molecular Function	phosphatidylinositol binding	GO:0035091	0.01343531	1	1	0.004579095	1	1	
+GO Molecular Function	calcium-release channel activity	GO:0015278	0.01441924	1	1	0.007438719	1	1	
+GO Molecular Function	palmitoleoyltransferase activity	GO:1990698	0.01494409	1	1	0.04506931	1	1	
+GO Molecular Function	phosphatidylinositol phosphate binding	GO:1901981	0.01594705	1	1	0.004009994	1	1	
+GO Molecular Function	NADP-retinol dehydrogenase activity	GO:0052650	0.01633191	1	1	0.01678312	1	1	
+GO Molecular Function	phosphatidylinositol-4-phosphate binding	GO:0070273	0.01898568	1	1	0.01152818	1	1	
+GO Molecular Function	neuromedin U receptor binding	GO:0042922	0.02066562	1	1	0.02279384	1	1	
+GO Molecular Function	frizzled binding	GO:0005109	0.02080446	1	1	0.001265541	1	1	
+GO Molecular Function	ephrin receptor binding	GO:0046875	0.02286504	1	1	0.02771246	1	1	
+GO Molecular Function	voltage-gated potassium channel activity involved in atrial cardiac muscle cell action potential repolarization	GO:0086089	0.02286816	1	1	0.003016943	1	1	
+GO Molecular Function	transcription factor activity, RNA polymerase II distal enhancer sequence-specific binding	GO:0003705	0.02581718	1	1	0.007925996	1	1	
+GO Molecular Function	transcriptional repressor activity, RNA polymerase II transcription factor binding	GO:0001191	0.02657411	1	1	0.006738264	1	1	
+GO Molecular Function	scaffold protein binding	GO:0097110	0.02744116	1	1	0.03443325	1	1	
+GO Molecular Function	deacetylase activity	GO:0019213	0.02850934	1	1	0.04307638	1	1	
+GO Molecular Function	nucleobase-containing compound transmembrane transporter activity	GO:0015932	0.02957391	1	1	0.04823185	1	1	
+GO Molecular Function	RNA N1-methyladenosine dioxygenase activity	GO:1990930	0.02957507	1	1	0.02279384	1	1	
+GO Molecular Function	receptor tyrosine kinase binding	GO:0030971	0.0298416	1	1	0.03861592	1	1	
+GO Molecular Function	neuropeptide receptor binding	GO:0071855	0.03040585	1	1	0.02771246	1	1	
+GO Molecular Function	opioid receptor binding	GO:0031628	0.03261359	1	1	0.01678312	1	1	
+GO Molecular Function	glycoprotein binding	GO:0001948	0.03512673	1	1	0.02044857	1	1	
+GO Molecular Function	formyltetrahydrofolate dehydrogenase activity	GO:0016155	0.03558409	1	1	0.04506931	1	1	
+GO Molecular Function	ligand-gated calcium channel activity	GO:0099604	0.03582534	1	1	0.01484475	1	1	
+GO Molecular Function	channel-conductance-controlling ATPase activity	GO:0005260	0.03588752	1	1	0.02279384	1	1	
+GO Molecular Function	repressing transcription factor binding	GO:0070491	0.03853225	1	1	0.04781455	1	1	
+GO Molecular Function	non-sequence-specific DNA binding, bending	GO:0044378	0.03922479	1	1	0.04506931	1	1	
+GO Molecular Function	voltage-gated potassium channel activity involved in bundle of His cell action potential repolarization	GO:0086087	0.04197405	1	1	0.02279384	1	1	
+GO Molecular Function	voltage-gated potassium channel activity involved in SA node cell action potential repolarization	GO:0086090	0.04197405	1	1	0.02279384	1	1	
+GO Molecular Function	phosphatidylinositol-5-phosphate binding	GO:0010314	0.0440733	1	1	0.0294144	1	1	
+GO Molecular Function	3-hydroxybutyrate dehydrogenase activity	GO:0003858	0.04448245	1	1	0.04506931	1	1	
+GO Molecular Function	platelet-derived growth factor alpha-receptor activity	GO:0005018	0.04480848	1	1	0.02279384	1	1	
+GO Molecular Function	14-3-3 protein binding	GO:0071889	0.0455564	1	1	0.01864504	1	1	
+GO Molecular Function	granulocyte colony-stimulating factor binding	GO:0051916	0.04574446	1	1	0.02279384	1	1	
+GO Molecular Function	histone demethylase activity (H3-K9 specific)	GO:0032454	0.04906168	1	1	0.03424667	1	1	
+GO Molecular Function	histone acetyltransferase binding	GO:0035035	0.04991486	1	1	0.02293394	1	1	
