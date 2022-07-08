@@ -329,7 +329,7 @@ def create_regdom(tss_file,chr_sizes_file,association_rule,max_extension:int=100
     ...    |  4 | chr1  |       23403 |     29867 | WASH7P    | 29370 | -        |
 
     """
-    if not validate_input(association_rule): 
+    if not validate_input(association_rule,max_extension,basal_upstream,basal_downstream): 
         print("Invalid input")
         return False
     df = pd.read_csv(tss_file,sep="\t",comment="#",names=["Chr","tss","Strand","name"])
