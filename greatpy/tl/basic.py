@@ -1,4 +1,3 @@
-from types import NoneType
 from anndata import AnnData
 import pandas as pd
 pd.options.display.float_format = '{:12.5e}'.format
