@@ -4,5 +4,6 @@ from .basic import (
     )
 
 from .GREAT import (
-    GREAT
+    GREAT, 
+    get_association
 )
