@@ -638,16 +638,18 @@ class GREAT:
 
         Parameters
         ----------
-        test : pd.DataFrame
+        test_file : pd.DataFrame
             Genomic set of peaks to be tested
-        regdom : pd.DataFrame 
+        regdom_file : pd.DataFrame 
             Regulatory domain of all genes in the genome 
-        chr_size :  pd.DataFrame
+        chr_size_file :  pd.DataFrame
             Table with the size of each chromosome
-        annotation : pd.DataFrame
+        annotation_file : pd.DataFrame
             Table with the annotation of each gene in the genome
-        asso : list 
-            List of the association between gene from regdom and peaks from test
+        binom : bool
+            If True, the binomial test is used.
+        hypergeom : bool
+            If True, the hypergeometric test is used.
 
         Returns
         -------
@@ -660,8 +662,8 @@ class GREAT:
         >>> enrichment = GREAT.enrichment(
         ...    test = test,
         ...    regdom = regdom,
+        ...    chr_size_file = size,
         ...    ann = ann,
-        ...    asso = get_association(test,regdom),
         ...    binom=True,
         ...    hypergeom=True
         ...    )
@@ -735,9 +737,16 @@ class GREAT:
         Exemples 
         --------
         >>> test,regdom,size,ann = GREAT.loader("../../data/human/test_genomic_region.bed", "../../data/human/regulatory_domain.bed", "../../data/human/chr_size.bed", "../../data/human/ontologies.csv")
-        >>> enrichment = GREAT.enrichment(test = test,regdom = regdom,ann = ann,asso = get_association(test,regdom),binom=True,hypergeom=True)
+        >>> enrichment = great.tl.GREAT.enrichment("../../data/human/test_genomic_region.bed", "../../data/human/regulatory_domain.bed", "../../data/human/chr_size.bed", "../../data/human/ontologies.csv",binom=True,hypergeom=True)
         >>> bonferroni = GREAT.set_bonferroni(enrichment,alpha=0.05)
         >>> bonferroni.head()
+        ...    |            | go_term                                                          |   binom_p_value |   hypergeom_p_value |   binom_bonferroni |   hypergeom_bonferroni |
+        ...    |:-----------|:-----------------------------------------------------------------|----------------:|--------------------:|-------------------:|-----------------------:|
+        ...    | GO:0045887 | positive regulation of synaptic growth at neuromuscular junction |     5.17744e-13 |          0.0029275  |        3.0754e-10  |                      1 |
+        ...    | GO:0044721 | protein import into peroxisome matrix, substrate release         |     4.83812e-10 |          0.0029275  |        2.87384e-07 |                      1 |
+        ...    | GO:0036250 | peroxisome transport along microtubule                           |     4.83812e-10 |          0.0029275  |        2.87384e-07 |                      1 |
+        ...    | GO:0016561 | protein import into peroxisome matrix, translocation             |     6.31131e-10 |          0.00584656 |        3.74892e-07 |                      1 |
+        ...    | GO:0047485 | protein N-terminus binding                                       |     1.2945e-09  |          0.0050377  |        7.68931e-07 |                      1 |
 
         """
         for col in self.columns: 
@@ -763,9 +772,16 @@ class GREAT:
         Exemples 
         --------
         >>> test,regdom,size,ann = GREAT.loader("../../data/human/test_genomic_region.bed", "../../data/human/regulatory_domain.bed", "../../data/human/chr_size.bed", "../../data/human/ontologies.csv")
-        >>> enrichment = GREAT.enrichment(test = test,regdom = regdom,ann = ann,asso = get_association(test,regdom),binom=True,hypergeom=True)
+        >>> enrichment = great.tl.GREAT.enrichment("../../data/human/test_genomic_region.bed", "../../data/human/regulatory_domain.bed", "../../data/human/chr_size.bed", "../../data/human/ontologies.csv",binom=True,hypergeom=True)
         >>> fdr = GREAT.set_fdr(enrichment,alpha=0.05)
         >>> fdr.head()
+        ...    |            | go_term                                                          |   binom_p_value |   hypergeom_p_value |   binom_fdr |   hypergeom_fdr |
+        ...    |:-----------|:-----------------------------------------------------------------|----------------:|--------------------:|------------:|----------------:|
+        ...    | GO:0045887 | positive regulation of synaptic growth at neuromuscular junction |     5.17744e-13 |          0.0029275  | 3.0754e-10  |       0.0913909 |
+        ...    | GO:0044721 | protein import into peroxisome matrix, substrate release         |     4.83812e-10 |          0.0029275  | 9.3723e-08  |       0.0913909 |
+        ...    | GO:0036250 | peroxisome transport along microtubule                           |     4.83812e-10 |          0.0029275  | 9.3723e-08  |       0.0913909 |
+        ...    | GO:0016561 | protein import into peroxisome matrix, translocation             |     6.31131e-10 |          0.00584656 | 9.3723e-08  |       0.0913909 |
+        ...    | GO:0047485 | protein N-terminus binding                                       |     1.2945e-09  |          0.0050377  | 1.53786e-07 |       0.0913909 |
 
         """
         for col in self.columns: 
@@ -792,9 +808,13 @@ class GREAT:
         Exemples 
         --------
         >>> test,regdom,size,ann = GREAT.loader("../../data/human/test_genomic_region.bed", "../../data/human/regulatory_domain.bed", "../../data/human/chr_size.bed", "../../data/human/ontologies.csv")
-        >>> enrichment = GREAT.enrichment(test = test,regdom = regdom,ann = ann,asso = get_association(test,regdom),binom=True,hypergeom=True)
+        >>> enrichment = great.tl.GREAT.enrichment("../../data/human/test_genomic_region.bed", "../../data/human/regulatory_domain.bed", "../../data/human/chr_size.bed", "../../data/human/ontologies.csv",binom=True,hypergeom=True)
+        >>> enrichment.shape[0]
+        ...    594
+
         >>> significant = GREAT.set_threshold(enrichment,colname="binom_p_value",alpha=0.05)
-        >>> significant.head()
+        >>> significant.shape[0]
+        ...    310
 
         """
         if colname in self.columns: 
