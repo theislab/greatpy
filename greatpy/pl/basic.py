@@ -2,6 +2,7 @@ from anndata import AnnData
 import pandas as pd 
 from numpy import log
 from seaborn import scatterplot as sp
+import matplotlib.pyplot as plt
 
 def basic_plot(adata: AnnData) -> int:
     """Generate a basic plot for an AnnData object."""
@@ -17,3 +18,4 @@ def scatterplot(great_df:pd.DataFrame,colname_x,colname_y,minus_log10=True):
         sp(data=great_df,x=f"-log({colname_x})",y=f"-log({colname_y})")
     else : 
         sp(data=great_df,x=colname_x,y=colname_y)
+    plt.show()
