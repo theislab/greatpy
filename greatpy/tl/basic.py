@@ -287,7 +287,7 @@ def create_one_closet_regdom(tss:pd.DataFrame,maximum_extension:int,chr_size:pd.
     tss["Chr_End"] = end
     return tss
 
-def create_regdom(tss_file,chr_sizes_file,association_rule,max_extension:int=1000000,basal_upstream:int=5000,basal_downstream:int=1000, out_path:str or NoneType=None): 
+def create_regdom(tss_file,chr_sizes_file,association_rule,max_extension:int=1000000,basal_upstream:int=5000,basal_downstream:int=1000, out_path:str or None=None): 
     """
     This function allows to create regdoms according to the three association rules, to write the result in a file or not and to return the result as a pd.DataFrame
 
