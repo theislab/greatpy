@@ -20,6 +20,7 @@ Great is a bioinformatics tool to analyze cis-regulatory regions of the genome. 
 This package is strongly inspired by [great][great_article] allowing Helmholtz to have a stable and perennial version of the package.
 
 <img align="center" src="./sketch/great_tool.jpg?raw=true">
+Credits : [great][great_figure]
 
 
 ### What can you do with greatpy : 
@@ -100,3 +101,4 @@ If you found a bug, please use the [issue tracker][issue-tracker].
 [great_article]: https://www.nature.com/articles/nbt.1630
 [association_rules]: https://great-help.atlassian.net/wiki/spaces/GREAT/pages/655443/Association+Rules
 [notebook1]: https://github.com/theislab/greatpy/blob/main/notebooks/01_create_regdom.ipynb
+[great_figure]:https://www.nature.com/articles/nbt.1630/figures/1
