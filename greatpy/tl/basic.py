@@ -15,7 +15,7 @@ def validate_input(association:str,max_extension:int,basal_upstream:int,basal_do
     Parameters
     ----------
     association : str 
-        The association rule to use.
+        The association rule to use. Documentation aviable at https://great-help.atlassian.net/wiki/spaces/GREAT/pages/655443/Association+Rules
     max_extension : int
         The maximum extension of the regulatory domain.
     basal_upstream : int
@@ -298,6 +298,7 @@ def create_regdom(tss_file,chr_sizes_file,association_rule,max_extension:int=100
         The path of the chromosome size file.
     association_rule : str
         The association rule to use. Could be : "OneCloset", "TwoCloset", "BasalPlusExtension".
+        Documentation aviable at https://great-help.atlassian.net/wiki/spaces/GREAT/pages/655443/Association+Rules
     maximumExtension : int : default 1000000
         The maximum extension of the regulatory domain.
     basalUp : int : default 5000
