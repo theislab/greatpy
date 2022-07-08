@@ -298,7 +298,7 @@ def create_regdom(tss_file,chr_sizes_file,association_rule,max_extension:int=100
         The path of the chromosome size file.
     association_rule : str
         The association rule to use. Could be : "OneCloset", "TwoCloset", "BasalPlusExtension".
-        Documentation aviable at https://great-help.atlassian.net/wiki/spaces/GREAT/pages/655443/Association+Rules
+        Documentation aviable at https://great-help.atlassian.net/wiki/spaces/GREAT/pages/655443/Association+Rules.
     maximumExtension : int : default 1000000
         The maximum extension of the regulatory domain.
     basalUp : int : default 5000
