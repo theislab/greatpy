@@ -367,7 +367,9 @@ class GREAT:
         
         """
 
-        if type(regdom_file) == str:
+        if regdom_file == None : 
+            pass 
+        elif type(regdom_file) == str:
             regdom = pd.read_csv(regdom_file,sep="\t",comment="#",
                         names=["Chr", "Chr_Start", "Chr_End","Name","tss","Strand"],dtype={"Chr":"object", "Chr_Start":"int64", "Chr_End":"int64","Name":"object","tss":"int64","Strand":"object"})
         else:
@@ -380,7 +382,9 @@ class GREAT:
                 print("The regdom file must have the following columns : Chr, Chr_Start, Chr_End, Name, tss, Strand")
                 return False 
 
-        if type(test_data) == str : 
+        if test_data == None : 
+            pass
+        elif type(test_data) == str : 
             test_data = pd.read_csv(test_data,sep="\t",comment="#",usecols=[0,1,2],
                             names=["Chr", "Chr_Start", "Chr_End"],dtype={"Chr":"object", "Chr_Start":"int64", "Chr_End":"int64"})
         else : 
@@ -392,8 +396,9 @@ class GREAT:
                 print("Error in test dataframe, please check your input")
                 print("Columns should be : chr...(type object), start(type int), end(type int)")
                 return False
-        
-        if type(chr_size_file) == str :
+        if chr_size_file == None : 
+            pass
+        elif type(chr_size_file) == str :
             size = pd.read_csv(chr_size_file,sep="\t",comment="#",
                             names=["Chrom","Size"],dtype={"Chrom":"object", "Size":"int64"})
         else :
@@ -405,7 +410,10 @@ class GREAT:
                 print("Error in the format of the chr_size file")
                 print("The chr_size file must have the following columns : Chrom, Size")
                 return False
-        if type(annotation_file) == str : 
+
+        if annotation_file == None :
+            pass
+        elif type(annotation_file) == str : 
             dask_df = dd.read_csv(annotation_file,sep=";",  comment = "#",
                             dtype={"ensembl":"object","id":"object","name":"object","ontology.group":"object","gene.name":"object","symbol":"object"},
                             usecols=["id","name","symbol"],low_memory=False)
@@ -820,3 +828,128 @@ class GREAT:
         if colname in self.columns: 
             self = self.loc[self[colname]<=alpha]
         return self 
+
+    def get_nb_asso_per_region(test,regdom) : 
+        """
+        Function allowing from a file of genomic regions from CHIPseq 
+        and a file of genomic regulatory domains to determine number of peaks 
+        associated with each gene in the regulatory domain. 
+
+        Parameters
+        ----------
+        test : str
+            path of the file with the tests pics => columns: ["Chr","Chr_Start","Chr_End"]
+        
+        regdom : str
+            path of the file with the regulatory domains => columns: ["Chr"	"Chr_Start"	"Chr_End"	"Name"	"tss"	"strand"].
+
+        Returns
+        -------
+        res : dict
+            dict with the number of associated genes per genomic region : key = associated gene, value = number of peaks associated with the gene 
+            
+        Exemples 
+        --------
+        test = pd.DataFrame({
+        ...    "Chr":["chr1"],
+        ...    "Chr_Start":[1052028],
+        ...    "Chr_End": [1052049]})
+
+        regdom = pd.DataFrame({
+        ...    "Chr":["chr1","chr1"],
+        ...    "Chr_Start":[1034992,1079306],
+        ...    "Chr_End": [1115089,1132016],
+        ...    "Name":["RNF223","C1orf159"],
+        ...    "tss":[1074306,1116089],
+        ...    "strand":['-','-']})
+
+        >>> get_association(test,regdom)        
+            {'RNF223':2}
+        
+        """
+        res = {}
+        test,regdom,_,_ = GREAT.loader(test,regdom,None,None)
+        for i in range(test.shape[0]):
+            currTest = test.iloc[i]
+            regdom_curr_test = regdom.loc[regdom["Chr"] == currTest["Chr"]].sort_values("Chr_Start")
+            regdom_inf = regdom_curr_test.loc[regdom_curr_test["tss"] <= currTest["Chr_Start"]]
+            regdom_sup = regdom_curr_test.loc[regdom_curr_test["tss"] >= currTest["Chr_End"]]
+            try : 
+                if regdom_inf.iloc[-1]["Name"] not in res.keys() : 
+                    res[regdom_inf.iloc[-1]["Name"]] = 1 
+                else :
+                    res[regdom_inf.iloc[-1]["Name"]] += 1
+            except :
+                pass
+
+            try :
+                if regdom_sup.iloc[-1]["Name"] not in res.keys() : 
+                    res[regdom_sup.iloc[-1]["Name"]] = 1 
+                else :
+                    res[regdom_sup.iloc[-1]["Name"]] += 1
+            except : 
+                pass
+        return res
+
+    def get_dist_to_tss(test,regdom) : 
+        """
+        Function allowing from a file of genomic regions from CHIPseq 
+        and a file of genomic regulatory domains to determine the distance from peaks 
+        to the transcription start site of the associated gene
+
+        Parameters
+        ----------
+        test : str
+            path of the file with the tests pics => columns: ["Chr","Chr_Start","Chr_End"]
+        
+        regdom : str
+            path of the file with the regulatory domains => columns: ["Chr"	"Chr_Start"	"Chr_End"	"Name"	"tss"	"strand"].
+
+        Returns
+        -------
+        res : dict
+            dict with the distance from tss to the associated genes : key = associated gene, value = distance from peaks to tss 
+            
+        Exemples 
+        --------
+        test = pd.DataFrame({
+        ...    "Chr":["chr1"],
+        ...    "Chr_Start":[1052028],
+        ...    "Chr_End": [1052049]})
+
+        regdom = pd.DataFrame({
+        ...    "Chr":["chr1","chr1"],
+        ...    "Chr_Start":[1034992,1079306],
+        ...    "Chr_End": [1115089,1132016],
+        ...    "Name":["RNF223","C1orf159"],
+        ...    "tss":[1074306,1116089],
+        ...    "strand":['-','-']})
+
+        >>> get_association(test,regdom)        
+            {'RNF223':[-22278]}
+        
+        """
+        res = {}
+        test,regdom,_,_ = GREAT.loader(test,regdom,None,None)
+        for i in range(test.shape[0]):
+            currTest = test.iloc[i]
+            regdom_curr_test = regdom.loc[regdom["Chr"] == currTest["Chr"]].sort_values("Chr_Start")
+            regdom_inf = regdom_curr_test.loc[regdom_curr_test["tss"] <= currTest["Chr_Start"]]
+            regdom_sup = regdom_curr_test.loc[regdom_curr_test["tss"] >= currTest["Chr_End"]]
+            try : 
+                if regdom_inf.iloc[-1]["Name"] not in res.keys() : 
+                    res[regdom_inf.iloc[-1]["Name"]] = [currTest["Chr_Start"] - res[regdom_inf.iloc[-1]["tss"]]]
+                else : 
+                    res[regdom_inf.iloc[-1]["Name"]].append(currTest["Chr_Start"] - res[regdom_inf.iloc[-1]["tss"]])
+            except :
+                pass
+
+            try :
+                if regdom_sup.iloc[-1]["Name"] not in res.keys() : 
+                    res[regdom_sup.iloc[-1]["Name"]] = [currTest["Chr_End"] - res[regdom_sup.iloc[-1]["tss"]]]
+                else :
+                    res[regdom_sup.iloc[-1]["Name"]].append(currTest["Chr_End"] - res[regdom_sup.iloc[-1]["tss"]])
+            except : 
+                pass
+        return res
+
