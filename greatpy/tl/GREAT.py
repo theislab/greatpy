@@ -294,7 +294,7 @@ def hypergeom_cdf(N, K, n, k):
     return np.sum([hypergeom_pmf(N, K, n, x) for x in range(k,min(K,n)+1)])
 
 class GREAT: 
-    def loader(test_data:str or pd.DataFrame,regdom_file:str or pd.DataFrame,chr_size_file:str or pd.DataFrame,annotation_file:str or pd.DataFrame):
+    def loader(test_data:None or str or pd.DataFrame,regdom_file:None or str or pd.DataFrame,chr_size_file:None or str or pd.DataFrame,annotation_file:None or str or pd.DataFrame):
         """
         This function is used to load all datasets needed for the enrichment calculation
 
@@ -373,10 +373,10 @@ class GREAT:
             regdom = pd.read_csv(regdom_file,sep="\t",comment="#",
                         names=["Chr", "Chr_Start", "Chr_End","Name","tss","Strand"],dtype={"Chr":"object", "Chr_Start":"int64", "Chr_End":"int64","Name":"object","tss":"int64","Strand":"object"})
         else:
-            regdomfile = regdom_file.iloc[:,:6]
-            colname = list(regdomfile.columns)
+            regdom = regdom_file.iloc[:,:6]
+            colname = list(regdom.columns)
             try : 
-                regdom_file = regdom_file.rename(columns={colname[0]:"Chr",colname[1]:"Chr_Start",colname[2]:"Chr_End","Name":"Name","tss":"tss","Strand":"Strand"})
+                regdom = regdom.rename(columns={colname[0]:"Chr",colname[1]:"Chr_Start",colname[2]:"Chr_End","Name":"Name","tss":"tss","Strand":"Strand"})
             except :
                 print("Error in the format of the regdom file")
                 print("The regdom file must have the following columns : Chr, Chr_Start, Chr_End, Name, tss, Strand")
