@@ -367,12 +367,10 @@ class GREAT:
         
         """
 
-        if regdom_file == None : 
-            pass 
-        elif type(regdom_file) == str:
+        if type(regdom_file) == str:
             regdom = pd.read_csv(regdom_file,sep="\t",comment="#",
                         names=["Chr", "Chr_Start", "Chr_End","Name","tss","Strand"],dtype={"Chr":"object", "Chr_Start":"int64", "Chr_End":"int64","Name":"object","tss":"int64","Strand":"object"})
-        else:
+        elif type(regdom_file) == pd.DataFrame:
             regdom = regdom_file.iloc[:,:6]
             colname = list(regdom.columns)
             try : 
@@ -381,13 +379,13 @@ class GREAT:
                 print("Error in the format of the regdom file")
                 print("The regdom file must have the following columns : Chr, Chr_Start, Chr_End, Name, tss, Strand")
                 return False 
+        else : 
+            regdom = regdom_file
 
-        if test_data == None : 
-            pass
-        elif type(test_data) == str : 
+        if type(test_data) == str : 
             test_data = pd.read_csv(test_data,sep="\t",comment="#",usecols=[0,1,2],
                             names=["Chr", "Chr_Start", "Chr_End"],dtype={"Chr":"object", "Chr_Start":"int64", "Chr_End":"int64"})
-        else : 
+        elif type(test_data) == pd.DataFrame : 
             test_data = test_data.iloc[:,:3]
             colname = list(test_data.columns)
             try : 
@@ -396,30 +394,32 @@ class GREAT:
                 print("Error in test dataframe, please check your input")
                 print("Columns should be : chr...(type object), start(type int), end(type int)")
                 return False
-        if chr_size_file == None : 
+        else :
             pass
-        elif type(chr_size_file) == str :
+
+        
+        if type(chr_size_file) == str :
             size = pd.read_csv(chr_size_file,sep="\t",comment="#",
                             names=["Chrom","Size"],dtype={"Chrom":"object", "Size":"int64"})
-        else :
-            chr_size_file = chr_size_file.iloc[:,:2]
-            colname = list(chr_size_file.columns)
+        elif type(chr_size_file) == pd.DataFrame :
+            size = chr_size_file.iloc[:,:2]
+            colname = list(size.columns)
             try : 
-                chr_size_file = chr_size_file.rename(columns={colname[0]:"Chrom",colname[1]:"Size"})
+                size = size.rename(columns={colname[0]:"Chrom",colname[1]:"Size"})
             except : 
                 print("Error in the format of the chr_size file")
                 print("The chr_size file must have the following columns : Chrom, Size")
                 return False
+        else :
+            size = chr_size_file
 
-        if annotation_file == None :
-            pass
-        elif type(annotation_file) == str : 
+        if type(annotation_file) == str : 
             dask_df = dd.read_csv(annotation_file,sep=";",  comment = "#",
                             dtype={"ensembl":"object","id":"object","name":"object","ontology.group":"object","gene.name":"object","symbol":"object"},
                             usecols=["id","name","symbol"],low_memory=False)
             ann = dask_df.compute()
             ann = ann[ann['id'].str.match('^GO.*')== True]
-        else : 
+        elif type(annotation_file) == pd.DataFrame : 
             ann = annotation_file.iloc[:,:4]
             colname = list(ann.columns)
             try : 
@@ -428,6 +428,9 @@ class GREAT:
                 print("Error in the format of the annotation file")
                 print("The annotation file must have the following columns : id, name, symbol")
                 return False
+        else :
+            ann = annotation_file
+
         return test_data,regdom,size,ann
 
     def __enrichment_binom_and_hypergeom(test,regdom,size,ann,asso) : 
