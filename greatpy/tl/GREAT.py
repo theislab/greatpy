@@ -48,20 +48,10 @@ def get_association(test,regdom):
     res = []
     for i in range(test.shape[0]):
         currTest = test.iloc[i]
-        regdom_curr_test = regdom.loc[regdom["Chr"] == currTest["Chr"]].sort_values("Chr_Start")
-        regdom_inf = regdom_curr_test.loc[regdom_curr_test["tss"] <= currTest["Chr_Start"]]
-        regdom_sup = regdom_curr_test.loc[regdom_curr_test["tss"] >= currTest["Chr_End"]]
-        try : 
-            if regdom_inf.iloc[-1]["Name"] not in res : 
-                res.append (regdom_inf.iloc[-1]["Name"])
-        except :
-            pass
-        try :
-            if regdom_sup.iloc[0]["Name"] not in res :
-                res.append(regdom_sup.iloc[0]["Name"])
-        except : 
-            pass
-    return res
+        regdom_curr_test = regdom.loc[(regdom["Chr"] == currTest["Chr"])].sort_values("Chr_Start")
+        regdom_curr_test = regdom_curr_test.loc[((regdom_curr_test["Chr_Start"] <= currTest["Chr_Start"]) & (regdom_curr_test["Chr_End"] >= currTest["Chr_End"])) | ((regdom_curr_test["Chr_Start"] >= currTest["Chr_Start"]) & (regdom_curr_test["Chr_End"] <= currTest["Chr_End"])) | ((regdom_curr_test["Chr_Start"] <= currTest["Chr_Start"]) & (regdom_curr_test["Chr_End"] >= currTest["Chr_End"]))] 
+        res = res + list(regdom_curr_test["Name"])
+    return list(dict.fromkeys(res))
 
 def len_regdom(regdom:pd.DataFrame): 
     """
