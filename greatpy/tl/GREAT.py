@@ -374,7 +374,7 @@ class GREAT:
             regdom = regdom_file.iloc[:,:6]
             colname = list(regdom.columns)
             try : 
-                regdom = regdom.rename(columns={colname[0]:"Chr",colname[1]:"Chr_Start",colname[2]:"Chr_End","Name":"Name","tss":"tss","Strand":"Strand"})
+                regdom = regdom.rename(columns={colname[0]:"Chr",colname[1]:"Chr_Start",colname[2]:"Chr_End",colname[3]:"Name",colname[4]:"tss",colname[5]:"Strand"})
             except :
                 print("Error in the format of the regdom file")
                 print("The regdom file must have the following columns : Chr, Chr_Start, Chr_End, Name, tss, Strand")
