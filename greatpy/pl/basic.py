@@ -9,15 +9,15 @@ def basic_plot(adata: AnnData) -> int:
     print("Import matplotlib and implement a plotting function here.")
     return 0
 
-def scatterplot(great_df:pd.DataFrame,colname_x,colname_y,title:str="",minus_log10=True):
+def scatterplot(great_df:pd.DataFrame,colname_x,colname_y,title:str="",minus_log10=True,ax=None):
     great_df = great_df.dropna()
     great_df = great_df.astype({colname_x:"float64",colname_y:"float64"})
     if minus_log10 :
         great_df[f"-log({colname_x})"] = -log(great_df[colname_x])
         great_df[f"-log({colname_y})"] = -log(great_df[colname_y])
-        sp(data=great_df,x=f"-log({colname_x})",y=f"-log({colname_y})").set_title(title)
+        sp(data=great_df,x=f"-log({colname_x})",y=f"-log({colname_y})",ax=ax).set_title(title)
     else : 
-        sp(data=great_df,x=colname_x,y=colname_y).set_title(title)
+        sp(data=great_df,x=colname_x,y=colname_y,ax=ax).set_title(title)
     plt.show()
 
 def graph_nb_asso_per_peaks(dict_nb_asso_per_peaks:dict) :
