@@ -191,7 +191,7 @@ def betacf(a,b,x):
 def betai(a,b,x):
     """Returns the incomplete beta function Ix(a, b)."""
     if x < 0 or x > 1 : 
-        print("bad x in routine betai")
+        # print("bad x in routine betai")
         return False
     if x == 0 or x == 1 : 
         bt = 0.0
