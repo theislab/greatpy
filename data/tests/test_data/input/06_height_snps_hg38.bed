@@ -1,5 +1,4 @@
-#browser position chr1:17306675-17306675
-#track name="heightSnps.hg19" description="All test regions in heightSnps.hg19 from GREAT" visibility=3 color=0,112,0
+#Chr	Chr_start	Chr_end
 chr1	17306674	17306675	SNP.1
 chr1	17331675	17331676	SNP.2
 chr1	24121946	24121947	SNP.3

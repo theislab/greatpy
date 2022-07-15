@@ -1,5 +1,4 @@
-# browser position chr5:60627982-60628031
-# track name="SRF.sigPeaks.hg19" description="All test regions in SRF.sigPeaks.hg19 from GREAT" visibility=3 color=0,112,0
+#Chr	Chr_start	Chr_end
 chr5	60627981	60628031	SRF.1
 chr5	137801055	137801105	SRF.2
 chr5	137800766	137800816	SRF.3
