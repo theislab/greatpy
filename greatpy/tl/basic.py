@@ -67,9 +67,14 @@ def write_Regdom(regdom:pd.DataFrame,file_name:str):
     """
     f = open(file_name,"w")
     f.write("#chr\tChrStart\tChrEnd\tname\ttss\tstrand\n")
-    for i in range(regdom.shape[0]): 
+    for i in range(regdom.shape[0]) : 
         curr = regdom.iloc[i]
-        chr = curr["Chr"];start = curr["Chr_Start"];end = curr["Chr_End"];name = curr["name"];tss = curr["tss"];strand = curr["Strand"]
+        chr = curr["Chr"]
+        start = curr["Chr_Start"]
+        end = curr["Chr_End"]
+        name = curr["name"]
+        tss = curr["tss"]
+        strand = curr["Strand"]
         f.write(f"{chr}\t{start}\t{end}\t{name}\t{tss}\t{strand}\n")
     f.close()
 
@@ -114,19 +119,21 @@ def create_basal_plus_extension_regdom(tss:pd.DataFrame,maximumExtension:int,bas
     ...    |  4 | chr1  |       22436 |     34370 | WASH7P    | 29370 | -        |
     
     """
-    prev = curr = next = 0
+    prev = 0
+    curr = 0
+    next = 0
     chr_strat_end = []
     start = []
     end = []
-    for i in range(tss.shape[0]):
+    for i in range(tss.shape[0]) :
         curr = tss.iloc[i]
         chr = curr["Chr"]
         curr_chr_size = int(chr_size.loc[chr_size["Chr"]==chr,"Size"])
         tmp = curr["tss"]
-        if curr["Strand"] == "+": 
+        if curr["Strand"] == "+" : 
             curr_chr_start = max(0,tmp-basalUp)
             curr_chr_end = min(curr_chr_size,tmp+basalDown)
-        elif curr["Strand"] == "-": 
+        elif curr["Strand"] == "-" : 
             curr_chr_start = max(0,tmp-basalDown)
             curr_chr_end = min(curr_chr_size,tmp+basalUp)
         elif curr["Strand"] == "." : 
@@ -138,7 +145,7 @@ def create_basal_plus_extension_regdom(tss:pd.DataFrame,maximumExtension:int,bas
             return False
         chr_strat_end.append([curr_chr_start,curr_chr_end])
 
-    for i in range(tss.shape[0]):
+    for i in range(tss.shape[0]) :
         curr = tss.iloc[i]
         chr = curr["Chr"]
         
@@ -151,8 +158,8 @@ def create_basal_plus_extension_regdom(tss:pd.DataFrame,maximumExtension:int,bas
         tmp_start = max(0,curr["tss"]-maximumExtension)
         basal_start = chr_strat_end[i][0]
         tmp_start = min(basal_start,tmp_start)
-        if type(prev) != int and prev["Chr"] == curr["Chr"]:
-            if prev["Strand"] == "+": 
+        if type(prev) != int and prev["Chr"] == curr["Chr"] :
+            if prev["Strand"] == "+" : 
                 prev_end = prev["tss"]+basalDown
             else : 
                 prev_end = prev["tss"]+basalUp
@@ -163,8 +170,8 @@ def create_basal_plus_extension_regdom(tss:pd.DataFrame,maximumExtension:int,bas
         basal_end = chr_strat_end[i][1]
         
         tmp_end = max(basal_end,tmp_end)
-        if type(next) != int and next["Chr"] == curr["Chr"]:
-            if next["Strand"] == "+": 
+        if type(next) != int and next["Chr"] == curr["Chr"] :
+            if next["Strand"] == "+" : 
                 nextStart = next["tss"]-basalUp
             else : 
                 nextStart = next["tss"]-basalDown
@@ -254,11 +261,13 @@ def create_one_closet_regdom(tss:pd.DataFrame,maximum_extension:int,chr_size:pd.
     ...    |  4 | chr1  |       23403 |     29867 | WASH7P    | 29370 | -        |
     
     """
-    prev = curr = next = 0
+    prev = 0
+    curr = 0
+    next = 0
     start = []
     end = []
 
-    for i in range(tss.shape[0]):
+    for i in range(tss.shape[0]) :
         curr = tss.iloc[i]
         chr = curr["Chr"]
         curr_chr_size = int(chr_size.loc[chr_size["Chr"]==chr,"Size"])
@@ -266,7 +275,7 @@ def create_one_closet_regdom(tss:pd.DataFrame,maximum_extension:int,chr_size:pd.
         else : next = 0
 
         if (type(prev) == int and prev == 0) or (type(prev) != int and prev["Chr"] != curr["Chr"]) : prev = 0 
-        if (type(next) == int and next == 0) or (type(next) != int and next["Chr"] != curr["Chr"]): next = 0
+        if (type(next) == int and next == 0) or (type(next) != int and next["Chr"] != curr["Chr"]) : next = 0
 
         tmp_start = max(0,curr["tss"]-maximum_extension)
         if type(prev) != int : 
@@ -274,7 +283,7 @@ def create_one_closet_regdom(tss:pd.DataFrame,maximum_extension:int,chr_size:pd.
             tmp_start = max(tmp_start,middle)
         
         tmp_end = min(curr["tss"]+maximum_extension,curr_chr_size)
-        if type(next) != int  :
+        if type(next) != int :
             middle = (curr["tss"]+next["tss"])//2
             tmp_end = min(tmp_end,middle)
         
@@ -330,7 +339,7 @@ def create_regdom(tss_file,chr_sizes_file,association_rule,max_extension:int=100
     ...    |  4 | chr1  |       23403 |     29867 | WASH7P    | 29370 | -        |
 
     """
-    if not validate_input(association_rule,max_extension,basal_upstream,basal_downstream): 
+    if not validate_input(association_rule,max_extension,basal_upstream,basal_downstream) : 
         print("Invalid input")
         return False
     df = pd.read_csv(tss_file,sep="\t",comment="#",names=["Chr","tss","Strand","name"])

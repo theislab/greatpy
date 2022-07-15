@@ -46,7 +46,7 @@ def get_association(test,regdom):
     
     """
     res = []
-    for i in range(test.shape[0]):
+    for i in range(test.shape[0]) :
         currTest = test.iloc[i]
         regdom_curr_test = regdom.loc[(regdom["Chr"] == currTest["Chr"])].sort_values("Chr_Start")
         regdom_curr_test = regdom_curr_test.loc[
@@ -90,7 +90,7 @@ def len_regdom(regdom:pd.DataFrame):
 
     """
     test = regdom["Chr_End"]-regdom["Chr_Start"]
-    return pd.DataFrame({"len":list(test)},index=regdom["Name"]).to_dict()["len"]
+    return pd.DataFrame({"len":list(test)},index = regdom["Name"]).to_dict()["len"]
 
 def number_of_hit(test,regdom): 
     """ 
@@ -129,9 +129,9 @@ def number_of_hit(test,regdom):
         1
     
     """
-    nb=0
+    nb = 0
     regdom = regdom[["Chr","Chr_Start","Chr_End"]]
-    for i in range(test.shape[0]): 
+    for i in range(test.shape[0]) : 
         chrom = test.iat[i,0]
         start = test.iat[i,1]
         end = test.iat[i,2]
@@ -139,8 +139,8 @@ def number_of_hit(test,regdom):
         reg_start = regdom["Chr_Start"].to_numpy()
         reg_end = regdom["Chr_End"].to_numpy()
         Chr_reduce = np.where(regdom_np == chrom)
-        reg_start = np.take(reg_start,Chr_reduce,axis=0)[0]
-        reg_end = np.take(reg_end,Chr_reduce,axis=0)[0]
+        reg_start = np.take(reg_start,Chr_reduce,axis = 0)[0]
+        reg_end = np.take(reg_end,Chr_reduce,axis = 0)[0]
 
         if any((reg_start <= start) & (reg_end >= end)):  
             nb += 1
@@ -160,9 +160,9 @@ def betacf(a,b,x):
         d = fpmin
     d = 1/d 
     h = d
-    for m in range(1,maxit+1): 
+    for m in range(1,maxit+1) : 
         m2 = 2*m
-        aa = m*(b-m)*x/((qam+m2)*(a+m2))
+        aa = m*(b-m)*x / ((qam+m2) * (a+m2))
         d = 1.0+aa*d
         if (fabs(d) < fpmin) : 
             d = fpmin
@@ -171,7 +171,7 @@ def betacf(a,b,x):
             c = fpmin
         d = 1.0/d
         h *= d*c
-        aa = -(a+m)*(qab+m)*x/((a+m2)*(qap+m2))
+        aa = -(a+m) * (qab+m)*x / ((a+m2) * (qap+m2))
         d = 1.0+aa*d  
         if (fabs(d) < fpmin):
             d = fpmin
@@ -197,9 +197,9 @@ def betai(a,b,x):
         bt = 0.0
     else : 
         bt = exp(lgamma(a+b)-lgamma(a)-lgamma(b)+a*log(x)+b*log(1.0-x))
-    if x < (a+1)/(a+b+2) : 
-        return bt*betacf(a,b,x)/a
-    return 1-bt*betacf(b,a,1-x)/b
+    if x < (a+1) / (a+b+2) : 
+        return bt * betacf(a,b,x)/a
+    return 1 - bt*betacf(b,a,1-x)/b
 
 def get_binom_pval(n:int,k:int,p:float) -> float:
     """
@@ -318,9 +318,9 @@ class GREAT:
         Exemples 
         --------
         >>> test,regdom,size,ann = GREAT.loader(
-        ...    "../../data/human/test_genomic_region.bed",
-        ...    "../../data/human/regulatory_domain.bed",
-        ...    "../../data/human/chr_size.bed",
+        ...    "../../data/tests/test_data/input/02_srf_hg38.bed",
+        ...    "../../data/human/hg38/regulatory_domain.bed",
+        ...    "../../data/human/hg38/chr_size.bed",
         ...    "../../data/human/ontologies.csv"
         ...    )
 
@@ -362,14 +362,15 @@ class GREAT:
         
         """
 
-        if type(regdom_file) == str:
-            regdom = pd.read_csv(regdom_file,sep="\t",comment="#",
-                        names=["Chr", "Chr_Start", "Chr_End","Name","tss","Strand"],dtype={"Chr":"object", "Chr_Start":"int64", "Chr_End":"int64","Name":"object","tss":"int64","Strand":"object"})
-        elif type(regdom_file) == pd.DataFrame:
+        if type(regdom_file) == str :
+            regdom = pd.read_csv(regdom_file,sep = "\t",comment="#",
+                        names = ["Chr", "Chr_Start", "Chr_End","Name","tss","Strand"],
+                        dtype = {"Chr":"object", "Chr_Start":"int64", "Chr_End":"int64","Name":"object","tss":"int64","Strand":"object"})
+        elif type(regdom_file) == pd.DataFrame :
             regdom = regdom_file.iloc[:,:6]
             colname = list(regdom.columns)
             try : 
-                regdom = regdom.rename(columns={colname[0]:"Chr",colname[1]:"Chr_Start",colname[2]:"Chr_End",colname[3]:"Name",colname[4]:"tss",colname[5]:"Strand"})
+                regdom = regdom.rename(columns = {colname[0]:"Chr",colname[1]:"Chr_Start",colname[2]:"Chr_End",colname[3]:"Name",colname[4]:"tss",colname[5]:"Strand"})
             except :
                 print("Error in the format of the regdom file")
                 print("The regdom file must have the following columns : Chr, Chr_Start, Chr_End, Name, tss, Strand")
@@ -378,8 +379,9 @@ class GREAT:
             regdom = regdom_file
 
         if type(test_data) == str : 
-            test_data = pd.read_csv(test_data,sep="\t",comment="#",usecols=[0,1,2],
-                            names=["Chr", "Chr_Start", "Chr_End"],dtype={"Chr":"object", "Chr_Start":"int64", "Chr_End":"int64"})
+            test_data = pd.read_csv(test_data,sep = "\t",comment = "#",usecols = [0,1,2],
+                            names = ["Chr", "Chr_Start", "Chr_End"],
+                            dtype = {"Chr":"object", "Chr_Start":"int64", "Chr_End":"int64"})
         elif type(test_data) == pd.DataFrame : 
             test_data = test_data.iloc[:,:3]
             colname = list(test_data.columns)
@@ -392,15 +394,15 @@ class GREAT:
         else :
             pass
 
-        
         if type(chr_size_file) == str :
-            size = pd.read_csv(chr_size_file,sep="\t",comment="#",
-                            names=["Chrom","Size"],dtype={"Chrom":"object", "Size":"int64"})
+            size = pd.read_csv(chr_size_file,sep = "\t",comment = "#",
+                            names = ["Chrom","Size"],
+                            dtype = {"Chrom":"object", "Size":"int64"})
         elif type(chr_size_file) == pd.DataFrame :
             size = chr_size_file.iloc[:,:2]
             colname = list(size.columns)
             try : 
-                size = size.rename(columns={colname[0]:"Chrom",colname[1]:"Size"})
+                size = size.rename(columns = {colname[0]:"Chrom",colname[1]:"Size"})
             except : 
                 print("Error in the format of the chr_size file")
                 print("The chr_size file must have the following columns : Chrom, Size")
@@ -409,9 +411,9 @@ class GREAT:
             size = chr_size_file
 
         if type(annotation_file) == str : 
-            dask_df = dd.read_csv(annotation_file,sep=";",  comment = "#",
-                            dtype={"ensembl":"object","id":"object","name":"object","ontology.group":"object","gene.name":"object","symbol":"object"},
-                            usecols=["id","name","symbol"],low_memory=False)
+            dask_df = dd.read_csv(annotation_file,sep = ";",  comment = "#",
+                            dtype = {"ensembl":"object","id":"object","name":"object","ontology.group":"object","gene.name":"object","symbol":"object"},
+                            usecols = ["id","name","symbol"],low_memory = False)
             ann = dask_df.compute()
             ann = ann[ann['id'].str.match('^GO.*')== True]
         elif type(annotation_file) == pd.DataFrame : 
@@ -452,7 +454,7 @@ class GREAT:
             
         Exemples 
         --------
-        >>> test,regdom,size,ann = GREAT.loader("../../data/human/test_genomic_region.bed", "../../data/human/regulatory_domain.bed", "../../data/human/chr_size.bed", "../../data/human/ontologies.csv")
+        >>> test,regdom,size,ann = GREAT.loader("../../data/tests/test_data/input/02_srf_hg38.bed","../../data/human/hg38/regulatory_domain.bed","../../data/human/hg38/chr_size.bed","../../data/human/ontologies.csv")
         >>> enrichment = GREAT.____enrichment_binom_and_hypergeom(
         ...    test = test,
         ...    regdom = regdom,
@@ -472,10 +474,10 @@ class GREAT:
         """
         # Init Great
         res = {}
-        hit={}
+        hit = {}
 
         # init Hypergeom
-        hypergeom_gene_set=len(asso) # get the number of genes in the test gene set.
+        hypergeom_gene_set = len(asso) # get the number of genes in the test gene set.
         hypergeom_total_number_gene = regdom.shape[0] #get the number of genes in the genome.
 
         # Init binom 
@@ -491,7 +493,7 @@ class GREAT:
             ann_name_gene = ann[ann["symbol"].isin([name])]
             id = ann_name_gene["id"]
             tmp = []
-            for i in (list(id.unique())): 
+            for i in (list(id.unique())) : 
                 gene_imply = ann[ann['id'].isin([i])]
                 K_hypergeom = gene_imply.shape[0] # get be the number of genes in the genome with annotation
                 curr_regdom = regdom.loc[regdom["Name"].isin(list(gene_imply["symbol"]))]
@@ -499,11 +501,11 @@ class GREAT:
 
                 if i not in list(hit.keys()) : 
                     hit[i] = number_of_hit(test,curr_regdom)# get the number of test genomic regions in the regulatory domain of a gene with annotation
-                k_binom=hit[i]
+                k_binom = hit[i]
                 nb_binom = sum([len_on_chr[i] for i in curr_regdom["Name"]])# get the portion of the genome in the regulatory domain of a gene with annotation
                 tmp.append((k_binom,nb_binom,i,gene_imply.iloc[0]["name"],K_hypergeom,k_hypergeom))
             res.update({elem[2]:[ elem[3],get_binom_pval(n_binom,elem[0],elem[1]/total_nu), hypergeom_cdf(hypergeom_total_number_gene,elem[4],hypergeom_gene_set,elem[5]) ] for elem in tmp})
-        return pd.DataFrame(res).transpose().rename(columns={0:"go_term",1:"binom_p_value",2:"hypergeom_p_value"}).replace(0,np.nan).sort_values(by="binom_p_value")
+        return pd.DataFrame(res).transpose().rename(columns = {0:"go_term",1:"binom_p_value",2:"hypergeom_p_value"}).replace(0,np.nan).sort_values(by = "binom_p_value")
     
     def __enrichment_binom(test,regdom,size,ann,asso):
         """
@@ -529,7 +531,7 @@ class GREAT:
             
         Exemples 
         --------
-        >>> test,regdom,size,ann = GREAT.loader("../../data/human/test_genomic_region.bed", "../../data/human/regulatory_domain.bed", "../../data/human/chr_size.bed", "../../data/human/ontologies.csv")
+        >>> test,regdom,size,ann = GREAT.loader("../../data/tests/test_data/input/02_srf_hg38.bed","../../data/human/hg38/regulatory_domain.bed","../../data/human/hg38/chr_size.bed","../../data/human/ontologies.csv")
         >>> enrichment = GREAT.____enrichment_binom(
         ...    test = test,
         ...    regdom = regdom,
@@ -563,18 +565,18 @@ class GREAT:
         for name in asso :
             ann_name_gene = ann[ann["symbol"].isin([name])]
             id = ann_name_gene["id"]
-            tmp=[]
-            for i in (list(id.unique())): 
+            tmp = []
+            for i in (list(id.unique())) : 
                 gene_imply = ann[ann['id'].isin([i])]
                 curr_regdom = regdom.loc[regdom["Name"].isin(list(gene_imply["symbol"]))]
 
                 if i not in list(hit.keys()) : 
                     hit[i] = number_of_hit(test,curr_regdom)# get the number of test genomic regions in the regulatory domain of a gene with annotation
-                k_binom=hit[i]
+                k_binom = hit[i]
                 nb_binom = sum([len_on_chr[i] for i in curr_regdom["Name"]])# get the portion of the genome in the regulatory domain of a gene with annotation
                 tmp.append((k_binom,nb_binom,i,gene_imply.iloc[0]["name"]))
             res.update({elem[2]:[ elem[3],get_binom_pval(n_binom,elem[0],elem[1]/total_nu) ] for elem in tmp})
-        return pd.DataFrame(res).transpose().rename(columns={0:"go_term",1:"binom_p_value"}).sort_values(by="binom_p_value").sort_values(by="binom_p_value")
+        return pd.DataFrame(res).transpose().rename(columns = {0:"go_term",1:"binom_p_value"}).sort_values(by = "binom_p_value")
 
     def __enrichment_hypergeom(test,regdom,ann,asso): 
         """
@@ -625,14 +627,14 @@ class GREAT:
             ann_name_gene = ann[ann["symbol"] == name]
             id = ann_name_gene["id"]
             tmp = []
-            for i in (list(id.unique())): 
+            for i in (list(id.unique())) : 
                 gene_imply = ann[ann['id']==i]
                 K_hypergeom = gene_imply.shape[0] # get be the number of genes in the genome with annotation
                 curr_regdom = regdom.loc[regdom["Name"].isin(list(gene_imply["symbol"]))]
                 k_hypergeom = curr_regdom.loc[curr_regdom["Name"].isin(asso)].shape[0] # get the number of genes in the test gene set with annotation                
                 tmp.append((i,gene_imply.iloc[0]["name"],K_hypergeom,k_hypergeom)) 
             res.update({elem[0]:[ elem[1], hypergeom_cdf(hypergeom_total_number_gene,elem[2],hypergeom_gene_set,elem[3]) ] for elem in tmp}) 
-        return pd.DataFrame(res).transpose().rename(columns={0:"go_term",1:"hypergeom_p_value"}).replace(0,3e-308).sort_values(by="hypergeom_p_value")
+        return pd.DataFrame(res).transpose().rename(columns = {0:"go_term",1:"hypergeom_p_value"}).replace(0,3e-308).sort_values(by = "hypergeom_p_value")
 
 
     def enrichment(test_file,regdom_file,chr_size_file, annotation_file, binom=True,hypergeom=True):
@@ -755,7 +757,7 @@ class GREAT:
         ...    | GO:0047485 | protein N-terminus binding                                       |     1.2945e-09  |          0.0050377  |        7.68931e-07 |                      1 |
 
         """
-        for col in self.columns: 
+        for col in self.columns : 
             if col in ["binom_p_value","hypergeom_p_value"] : 
                 col_split = col.split("_")
                 self[f"{col_split[0]}_bonferroni"] = multipletests(self[col], alpha=alpha, method='bonferroni')[1]
@@ -790,7 +792,7 @@ class GREAT:
         ...    | GO:0047485 | protein N-terminus binding                                       |     1.2945e-09  |          0.0050377  | 1.53786e-07 |       0.0913909 |
 
         """
-        for col in self.columns: 
+        for col in self.columns : 
             if col in ["binom_p_value","hypergeom_p_value"] : 
                 col_split = col.split("_")
                 # self[f"{col_split[0]}_fdr"] = fdrcorrection(self[col], alpha=alpha)[1]
@@ -826,6 +828,10 @@ class GREAT:
         if colname in self.columns: 
             self = self.loc[self[colname]<=alpha]
         return self 
+
+###################################################################
+########################### unfinish ##############################
+###################################################################
 
     def get_nb_asso_per_region(test,regdom) : 
         """
@@ -867,7 +873,7 @@ class GREAT:
         """
         res = {}
         test,regdom,_,_ = GREAT.loader(test,regdom,None,None)
-        for i in range(test.shape[0]):
+        for i in range(test.shape[0]) :
             currTest = test.iloc[i]
             regdom_curr_test = regdom.loc[regdom["Chr"] == currTest["Chr"]].sort_values("Chr_Start")
             regdom_inf = regdom_curr_test.loc[regdom_curr_test["tss"] <= currTest["Chr_Start"]]
@@ -929,7 +935,7 @@ class GREAT:
         """
         res = {}
         test,regdom,_,_ = GREAT.loader(test,regdom,None,None)
-        for i in range(test.shape[0]):
+        for i in range(test.shape[0]) :
             currTest = test.iloc[i]
             regdom_curr_test = regdom.loc[regdom["Chr"] == currTest["Chr"]].sort_values("Chr_Start")
             regdom_inf = regdom_curr_test.loc[regdom_curr_test["tss"] <= currTest["Chr_Start"]]
