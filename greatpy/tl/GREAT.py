@@ -255,10 +255,10 @@ def hypergeom_pmf(N, K, n, k):
         0.11270773995748315
     
     """
-    Achoosex = comb(K,k) if comb(K,k) != inf else 1e-308
-    NAchoosenx = comb(N-K, n-k) if comb(N-K, n-k) != inf else 1e-308
-    Nchoosen = comb(N,n) if comb(N,n) != inf else 1e-308
-    return ((Achoosex)*NAchoosenx)/Nchoosen if Nchoosen > 1e-308 and (Achoosex)*NAchoosenx != 0.0 else 1e-308
+    Achoosex = comb(K,k,exact=True) 
+    NAchoosenx = comb(N-K, n-k,exact=True) 
+    Nchoosen = comb(N,n,exact=True) 
+    return ((Achoosex)*NAchoosenx)/Nchoosen 
 
 def hypergeom_cdf(N, K, n, k):
     """
@@ -634,7 +634,7 @@ class GREAT:
                 k_hypergeom = curr_regdom.loc[curr_regdom["Name"].isin(asso)].shape[0] # get the number of genes in the test gene set with annotation                
                 tmp.append((i,gene_imply.iloc[0]["name"],K_hypergeom,k_hypergeom)) 
             res.update({elem[0]:[ elem[1], hypergeom_cdf(hypergeom_total_number_gene,elem[2],hypergeom_gene_set,elem[3]) ] for elem in tmp}) 
-        return pd.DataFrame(res).transpose().rename(columns = {0:"go_term",1:"hypergeom_p_value"}).replace(0,3e-308).sort_values(by = "hypergeom_p_value")
+        return pd.DataFrame(res).transpose().rename(columns = {0:"go_term",1:"hypergeom_p_value"}).replace(0,np.nan).dropna().sort_values(by = "hypergeom_p_value")
 
 
     def enrichment(test_file,regdom_file,chr_size_file, annotation_file, binom=True,hypergeom=True):
