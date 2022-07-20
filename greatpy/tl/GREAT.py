@@ -872,27 +872,17 @@ class GREAT:
         
         """
         res = {}
-        test,regdom,_,_ = GREAT.loader(test,regdom,None,None)
+        test,regdom,_,_ = GREAT.loader(test,regdom,None,None) 
         for i in range(test.shape[0]) :
             currTest = test.iloc[i]
-            regdom_curr_test = regdom.loc[regdom["Chr"] == currTest["Chr"]].sort_values("Chr_Start")
-            regdom_inf = regdom_curr_test.loc[regdom_curr_test["tss"] <= currTest["Chr_Start"]]
-            regdom_sup = regdom_curr_test.loc[regdom_curr_test["tss"] >= currTest["Chr_End"]]
-            try : 
-                if regdom_inf.iloc[-1]["Name"] not in res.keys() : 
-                    res[regdom_inf.iloc[-1]["Name"]] = 1 
-                else :
-                    res[regdom_inf.iloc[-1]["Name"]] += 1
-            except :
-                pass
-
-            try :
-                if regdom_sup.iloc[-1]["Name"] not in res.keys() : 
-                    res[regdom_sup.iloc[-1]["Name"]] = 1 
-                else :
-                    res[regdom_sup.iloc[-1]["Name"]] += 1
-            except : 
-                pass
+            regdom_curr_test = regdom.loc[(regdom["Chr"] == currTest["Chr"])].sort_values("Chr_Start")
+            regdom_curr_test = regdom_curr_test.loc[
+                ((regdom_curr_test["Chr_Start"] <= currTest["Chr_Start"]) & (regdom_curr_test["Chr_End"] >= currTest["Chr_End"])) | # regdom overlap totally test 
+                ((regdom_curr_test["Chr_Start"] >= currTest["Chr_Start"]) & (regdom_curr_test["Chr_End"] <= currTest["Chr_End"])) | # test overlap totally regdom 
+                ((regdom_curr_test["Chr_Start"] <= currTest["Chr_Start"]) & (regdom_curr_test["Chr_End"] <= currTest["Chr_End"]) & (regdom_curr_test["Chr_End"] >= currTest["Chr_Start"])) | # regdom overlap not totally test on left side 
+                ((regdom_curr_test["Chr_Start"] >= currTest["Chr_Start"]) & (regdom_curr_test["Chr_End"] >= currTest["Chr_End"]) & (regdom_curr_test["Chr_Start"] <= currTest["Chr_End"])) # regdom overlap not totally test on right side 
+                ] 
+            res[i] = regdom_curr_test.shape[0]
         return res
 
     def get_dist_to_tss(test,regdom) : 
