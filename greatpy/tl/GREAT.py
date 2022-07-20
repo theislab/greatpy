@@ -504,8 +504,8 @@ class GREAT:
                 k_binom = hit[i]
                 nb_binom = sum([len_on_chr[i] for i in curr_regdom["Name"]])# get the portion of the genome in the regulatory domain of a gene with annotation
                 tmp.append((k_binom,nb_binom,i,gene_imply.iloc[0]["name"],K_hypergeom,k_hypergeom))
-            res.update({elem[2]:[ elem[3],get_binom_pval(n_binom,elem[0],elem[1]/total_nu), hypergeom_cdf(hypergeom_total_number_gene,elem[4],hypergeom_gene_set,elem[5]) ] for elem in tmp})
-        return pd.DataFrame(res).transpose().rename(columns = {0:"go_term",1:"binom_p_value",2:"hypergeom_p_value"}).replace(0,np.nan).sort_values(by = "binom_p_value")
+            res.update({elem[2]:[ elem[3],get_binom_pval(n_binom,elem[0],elem[1]/total_nu),elem[0]/(elem[1]/total_nu), hypergeom_cdf(hypergeom_total_number_gene,elem[4],hypergeom_gene_set,elem[5]),(elem[5]*hypergeom_total_number_gene)/(hypergeom_gene_set*elem[4]) ] for elem in tmp})
+        return pd.DataFrame(res).transpose().rename(columns = {0:"go_term",1:"binom_p_value",2:"binom_fold_enrichment",3:"hypergeom_p_value",4:"hypergeometric_fold_enrichment"}).replace(0,np.nan).dropna().sort_values(by = "binom_p_value")
     
     def __enrichment_binom(test,regdom,size,ann,asso):
         """
@@ -575,8 +575,8 @@ class GREAT:
                 k_binom = hit[i]
                 nb_binom = sum([len_on_chr[i] for i in curr_regdom["Name"]])# get the portion of the genome in the regulatory domain of a gene with annotation
                 tmp.append((k_binom,nb_binom,i,gene_imply.iloc[0]["name"]))
-            res.update({elem[2]:[ elem[3],get_binom_pval(n_binom,elem[0],elem[1]/total_nu) ] for elem in tmp})
-        return pd.DataFrame(res).transpose().rename(columns = {0:"go_term",1:"binom_p_value"}).sort_values(by = "binom_p_value")
+            res.update({elem[2]:[ elem[3],get_binom_pval(n_binom,elem[0],elem[1]/total_nu),elem[0]/(elem[1]/total_nu) ] for elem in tmp})
+        return pd.DataFrame(res).transpose().rename(columns = {0:"go_term",1:"binom_p_value",2:"binom_fold_enrichment"}).sort_values(by = "binom_p_value")
 
     def __enrichment_hypergeom(test,regdom,ann,asso): 
         """
@@ -633,8 +633,8 @@ class GREAT:
                 curr_regdom = regdom.loc[regdom["Name"].isin(list(gene_imply["symbol"]))]
                 k_hypergeom = curr_regdom.loc[curr_regdom["Name"].isin(asso)].shape[0] # get the number of genes in the test gene set with annotation                
                 tmp.append((i,gene_imply.iloc[0]["name"],K_hypergeom,k_hypergeom)) 
-            res.update({elem[0]:[ elem[1], hypergeom_cdf(hypergeom_total_number_gene,elem[2],hypergeom_gene_set,elem[3]) ] for elem in tmp}) 
-        return pd.DataFrame(res).transpose().rename(columns = {0:"go_term",1:"hypergeom_p_value"}).replace(0,np.nan).dropna().sort_values(by = "hypergeom_p_value")
+            res.update({elem[0]:[ elem[1], hypergeom_cdf(hypergeom_total_number_gene,elem[2],hypergeom_gene_set,elem[3]),(elem[3]*hypergeom_total_number_gene)/(hypergeom_gene_set*elem[2]) ] for elem in tmp}) 
+        return pd.DataFrame(res).transpose().rename(columns = {0:"go_term",1:"hypergeom_p_value",2:"hypergeometric_fold_enrichment"}).replace(0,np.nan).dropna().sort_values(by = "hypergeom_p_value")
 
 
     def enrichment(test_file,regdom_file,chr_size_file, annotation_file, binom=True,hypergeom=True):
