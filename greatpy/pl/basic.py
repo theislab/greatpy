@@ -23,7 +23,24 @@ def scatterplot(great_df:pd.DataFrame,colname_x,colname_y,title:str="",minus_log
 ########################### unfinish ##############################
 ###################################################################
 def graph_nb_asso_per_peaks(dict_nb_asso_per_peaks:dict) :
-    pass
+    nb = {
+        "number" : [],
+        "number_genes" : [],
+        "percentage" : [],
+    }
+    for i in list(set(dict_nb_asso_per_peaks.values())) :
+        nb["number"].append(i)
+        nb["number_genes"].append(list(dict_nb_asso_per_peaks.values()).count(i))
+        nb["percentage"].append(round((list(dict_nb_asso_per_peaks.values()).count(i)/len(dict_nb_asso_per_peaks.keys()))*100))
+    nb = pd.DataFrame(nb,columns=["number","number_genes","percentage"],index=nb["number"])
+
+    g = bar(data = nb,x="number",y="percentage",)
+    g.set_title("Number of associated genes per region")
+
+    for i in range(nb.shape[0]):  
+        x = nb.iloc[i]["number"]
+        y = nb.iloc[i]["percentage"]
+        g.text(x = x -0.06,y=y+1,s = nb.number_genes[0])
 
 def graph_dist_tss(dist_tss:dict, abs:bool = False) : 
     """Plot the distribution of TSS distance."""
