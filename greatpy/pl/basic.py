@@ -3,6 +3,7 @@ import pandas as pd
 from numpy import log
 from seaborn import scatterplot as sp,barplot as bar 
 import matplotlib.pyplot as plt
+import greatpy as gp
 
 def basic_plot(adata: AnnData) -> int:
     """Generate a basic plot for an AnnData object."""
@@ -19,19 +20,41 @@ def scatterplot(great_df:pd.DataFrame,colname_x,colname_y,title:str="",minus_log
     else : 
         sp(data=great_df,x=colname_x,y=colname_y,ax=ax).set_title(title)
 
-###################################################################
-########################### unfinish ##############################
-###################################################################
-def graph_nb_asso_per_peaks(dict_nb_asso_per_peaks:dict) :
+
+def graph_nb_asso_per_peaks(test:str or pd.DataFrame,regdom:str or pd.DataFrame) :
+    """
+    This function creates a barplot representing the 
+    percentage of peaks for all possible association numbers  
+
+    Parameters
+    ----------
+    test : str or pd.DataFrame
+        Genomic set of peaks to be tested
+    regdom : str or pd.DataFrame 
+        Regulatory domain of all genes in the genome 
+
+    Returns
+    -------
+    None
+
+    Exemples 
+    --------
+    >>> g = graph_nb_asso_per_peaks(
+        test = '../../data/tests/test_data/input/02_srf_hg38.bed',
+        regdom = '../../data/human/hg38/regulatory_domain.bed'
+        )       
+    """
+    nb_asso_per_peaks = gp.tl.GREAT.get_nb_asso_per_region(test,regdom)
+
     nb = {
         "number" : [],
         "number_genes" : [],
         "percentage" : [],
     }
-    for i in list(set(dict_nb_asso_per_peaks.values())) :
+    for i in list(set(nb_asso_per_peaks.values())) :
         nb["number"].append(i)
-        nb["number_genes"].append(list(dict_nb_asso_per_peaks.values()).count(i))
-        nb["percentage"].append(round((list(dict_nb_asso_per_peaks.values()).count(i)/len(dict_nb_asso_per_peaks.keys()))*100))
+        nb["number_genes"].append(list(nb_asso_per_peaks.values()).count(i))
+        nb["percentage"].append(round((list(nb_asso_per_peaks.values()).count(i)/len(nb_asso_per_peaks.keys()))*100))
     nb = pd.DataFrame(nb,columns=["number","number_genes","percentage"],index=nb["number"])
 
     g = bar(data = nb,x="number",y="percentage",)
@@ -42,42 +65,107 @@ def graph_nb_asso_per_peaks(dict_nb_asso_per_peaks:dict) :
         y = nb.iloc[i]["percentage"]
         g.text(x = x -0.06,y=y+1,s = nb.number_genes[0])
 
-def graph_dist_tss(dist_tss:dict, abs:bool = False) : 
-    """Plot the distribution of TSS distance."""
-    if not abs : 
-        res = {"<-500":[0],"-500:-50":[0],"-50:-5":[0],"-5:0":[0],"0:5":[0],"5:50":[0],"50:500":[0],">500":[0]}
-        for dist in dist_tss.values() :
-            if dist < -500000 :
+def graph_dist_tss(test:str or pd.DataFrame,regdom:str or pd.DataFrame) : 
+    """
+    This function allows the creation of a barplot of the distance 
+    between the peaks and the TSS of the associated gene(s). 
+
+    Parameters
+    ----------
+    test : str or pd.DataFrame
+        Genomic set of peaks to be tested
+    regdom : str or pd.DataFrame 
+        Regulatory domain of all genes in the genome 
+
+    Returns
+    -------
+    None
+
+    Exemples 
+    --------
+    >>> g = graph_dist_tss(
+        test = '../../data/tests/test_data/input/02_srf_hg38.bed',
+        regdom = '../../data/human/hg38/regulatory_domain.bed'
+        )       
+   
+    """
+    res = {"<-500": [0],"-500:-50": [0],"-50:-5": [0],"-5:0": [0],"0:5": [0],"5:50": [0],"50:500": [0],">500": [0]}
+    nb = 0
+
+    dist = gp.tl.GREAT.get_dist_tss(test,regdom)
+    for i in dist.values() : 
+        for j in i : 
+            if j < -500000 : 
                 res["<-500"][0] += 1
-            elif dist < -50000 :
+            elif j < -50000 : 
                 res["-500:-50"][0] += 1
-            elif dist < -5000 :
+            elif j < -5000 :
                 res["-50:-5"][0] += 1
-            elif dist < 0 :
+            elif j < 0 :
                 res["-5:0"][0] += 1
-            elif dist < 5000 :
+            elif j < 5000 :
                 res["0:5"][0] += 1
-            elif dist < 50000 :
+            elif j < 50000 :
                 res["5:50"][0] += 1
-            elif dist < 500000 :
+            elif j < 500000 :
                 res["50:500"][0] += 1
             else :
                 res[">500"][0] += 1
-        res = pd.DataFrame(res,index=["count"]).transpose().reset_index(drop=False).rename(columns={"index":"dist"})
-        bar(x = "dist", y = "count",data = res).title("Distribution of distance to TSS")
-        plt.show()
-    else :
-        res = {"0:5":[0],"5:50":[0],"50:500":[0],">500":[0]}
-        for dist in dist_tss.values() :
-            dist = abs(dist)
-            if dist < 5000 :
+            nb += 1
+    df = pd.DataFrame(res).transpose().rename(columns={0:"count"})
+    df["percentage"] = (df["count"]/nb)*100
+    df = df.reset_index(drop=False).rename(columns={"index":"distance"})
+    g = bar(data=df,x="distance",y="percentage",color="#325fa8")
+    for idx,p in enumerate (g.patches) : 
+        g.annotate(str(df.iloc[idx]["count"]),(p.get_x()+p.get_width()/2,p.get_height()))
+    plt.xlabel("Distance to TSS")
+    plt.show(g)
+
+def graph_absolute_dist_tss(test:str or pd.DataFrame,regdom:str or pd.DataFrame) : 
+    """
+    This function allows the creation of a barplot of the absolute
+    distance between the peaks and the TSS of the associated gene(s). 
+
+    Parameters
+    ----------
+    test : str or pd.DataFrame
+        Genomic set of peaks to be tested
+    regdom : str or pd.DataFrame 
+        Regulatory domain of all genes in the genome 
+
+    Returns
+    -------
+    None
+
+    Exemples 
+    --------
+    >>> g = graph_absolute_dist_tss(
+        test = '../../data/tests/test_data/input/02_srf_hg38.bed',
+        regdom = '../../data/human/hg38/regulatory_domain.bed'
+        )       
+   
+    """
+    res = {"0:5": [0],"5:50": [0],"50:500": [0],">500": [0]}
+    nb = 0
+    dist = gp.tl.GREAT.get_dist_tss(test,regdom)
+
+    for i in dist.values() : 
+        for j in i : 
+            j = abs(j)
+            if j < 5000 :
                 res["0:5"][0] += 1
-            elif dist < 50000 :
+            elif j < 50000 :
                 res["5:50"][0] += 1
-            elif dist < 500000 :
+            elif j < 500000 :
                 res["50:500"][0] += 1
             else :
                 res[">500"][0] += 1
-        res = pd.DataFrame(res,index=["count"]).transpose().reset_index(drop=False).rename(columns={"index":"dist"})
-        bar(x = "dist", y = "count",data = res).title("Distribution of absolute distance to TSS")
-        plt.show()
+            nb += 1
+    df = pd.DataFrame(res).transpose().rename(columns={0:"count"})
+    df["percentage"] = (df["count"]/nb)*100
+    df = df.reset_index(drop=False).rename(columns={"index":"distance"})
+    g = bar(data=df,x="distance",y="percentage",color="#325fa8")
+    for idx,p in enumerate (g.patches) : 
+        g.annotate(str(df.iloc[idx]["count"]),(p.get_x()+p.get_width()/2,p.get_height()))
+    plt.xlabel("Absolute distance to TSS")
+    plt.show(g)
