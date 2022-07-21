@@ -124,7 +124,6 @@ def graph_dist_tss(test:str or pd.DataFrame,regdom:str or pd.DataFrame,ax=None) 
     for idx,p in enumerate (g.patches) : 
         g.annotate(str(df.iloc[idx]["count"]),(p.get_x()+p.get_width()/2,p.get_height()))
     plt.xlabel("Distance to TSS")
-    plt.show(g)
 
 def graph_absolute_dist_tss(test:str or pd.DataFrame,regdom:str or pd.DataFrame,ax=None) : 
     """
@@ -175,4 +174,3 @@ def graph_absolute_dist_tss(test:str or pd.DataFrame,regdom:str or pd.DataFrame,
     for idx,p in enumerate (g.patches) : 
         g.annotate(str(df.iloc[idx]["count"]),(p.get_x()+p.get_width()/2,p.get_height()))
     plt.xlabel("Absolute distance to TSS")
-    plt.show(g)
