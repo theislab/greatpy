@@ -44,7 +44,7 @@ def graph_nb_asso_per_peaks(test:str or pd.DataFrame,regdom:str or pd.DataFrame)
         regdom = '../../data/human/hg38/regulatory_domain.bed'
         )       
     """
-    nb_asso_per_peaks = gp.tl.GREAT.get_nb_asso_per_region(test,regdom)
+    nb_asso_per_peaks = gp.tl.get_nb_asso_per_region(test,regdom)
 
     nb = {
         "number" : [],
@@ -92,7 +92,7 @@ def graph_dist_tss(test:str or pd.DataFrame,regdom:str or pd.DataFrame) :
     res = {"<-500": [0],"-500:-50": [0],"-50:-5": [0],"-5:0": [0],"0:5": [0],"5:50": [0],"50:500": [0],">500": [0]}
     nb = 0
 
-    dist = gp.tl.GREAT.get_dist_tss(test,regdom)
+    dist = gp.tl.get_dist_to_tss(test,regdom)
     for i in dist.values() : 
         for j in i : 
             if j < -500000 : 
@@ -147,7 +147,7 @@ def graph_absolute_dist_tss(test:str or pd.DataFrame,regdom:str or pd.DataFrame)
     """
     res = {"0:5": [0],"5:50": [0],"50:500": [0],">500": [0]}
     nb = 0
-    dist = gp.tl.GREAT.get_dist_tss(test,regdom)
+    dist = gp.tl.get_dist_to_tss(test,regdom)
 
     for i in dist.values() : 
         for j in i : 
