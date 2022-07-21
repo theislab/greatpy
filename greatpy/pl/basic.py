@@ -2,6 +2,7 @@ from anndata import AnnData
 import pandas as pd 
 from numpy import log
 from seaborn import scatterplot as sp,barplot as bar 
+import matplotlib as mp 
 import matplotlib.pyplot as plt
 import greatpy as gp
 
@@ -21,7 +22,7 @@ def scatterplot(great_df:pd.DataFrame,colname_x,colname_y,title:str="",minus_log
         sp(data=great_df,x=colname_x,y=colname_y,ax=ax).set_title(title)
 
 
-def graph_nb_asso_per_peaks(test:str or pd.DataFrame,regdom:str or pd.DataFrame) :
+def graph_nb_asso_per_peaks(test:str or pd.DataFrame,regdom:str or pd.DataFrame,ax:None or mp.axes._subplots.AxesSubplot=None) :
     """
     This function creates a barplot representing the 
     percentage of peaks for all possible association numbers  
@@ -32,6 +33,8 @@ def graph_nb_asso_per_peaks(test:str or pd.DataFrame,regdom:str or pd.DataFrame)
         Genomic set of peaks to be tested
     regdom : str or pd.DataFrame 
         Regulatory domain of all genes in the genome 
+    ax : None or matplotlib.axes._subplots.AxesSubplot
+        Define the position of the plot in a figure 
 
     Returns
     -------
@@ -57,7 +60,7 @@ def graph_nb_asso_per_peaks(test:str or pd.DataFrame,regdom:str or pd.DataFrame)
         nb["percentage"].append(round((list(nb_asso_per_peaks.values()).count(i)/len(nb_asso_per_peaks.keys()))*100))
     nb = pd.DataFrame(nb,columns=["number","number_genes","percentage"],index=nb["number"])
 
-    g = bar(data = nb,x="number",y="percentage",)
+    g = bar(data = nb,x="number",y="percentage",ax=ax)
     g.set_title("Number of associated genes per region")
 
     for i in range(nb.shape[0]):  
@@ -65,7 +68,7 @@ def graph_nb_asso_per_peaks(test:str or pd.DataFrame,regdom:str or pd.DataFrame)
         y = nb.iloc[i]["percentage"]
         g.text(x = x -0.06,y=y+1,s = nb.number_genes[0])
 
-def graph_dist_tss(test:str or pd.DataFrame,regdom:str or pd.DataFrame) : 
+def graph_dist_tss(test:str or pd.DataFrame,regdom:str or pd.DataFrame,ax:None or mp.axes._subplots.AxesSubplot=None) : 
     """
     This function allows the creation of a barplot of the distance 
     between the peaks and the TSS of the associated gene(s). 
@@ -76,6 +79,8 @@ def graph_dist_tss(test:str or pd.DataFrame,regdom:str or pd.DataFrame) :
         Genomic set of peaks to be tested
     regdom : str or pd.DataFrame 
         Regulatory domain of all genes in the genome 
+    ax : None or matplotlib.axes._subplots.AxesSubplot
+        Define the position of the plot in a figure
 
     Returns
     -------
@@ -115,13 +120,13 @@ def graph_dist_tss(test:str or pd.DataFrame,regdom:str or pd.DataFrame) :
     df = pd.DataFrame(res).transpose().rename(columns={0:"count"})
     df["percentage"] = (df["count"]/nb)*100
     df = df.reset_index(drop=False).rename(columns={"index":"distance"})
-    g = bar(data=df,x="distance",y="percentage",color="#325fa8")
+    g = bar(data=df,x="distance",y="percentage",color="#325fa8",ax=ax)
     for idx,p in enumerate (g.patches) : 
         g.annotate(str(df.iloc[idx]["count"]),(p.get_x()+p.get_width()/2,p.get_height()))
     plt.xlabel("Distance to TSS")
     plt.show(g)
 
-def graph_absolute_dist_tss(test:str or pd.DataFrame,regdom:str or pd.DataFrame) : 
+def graph_absolute_dist_tss(test:str or pd.DataFrame,regdom:str or pd.DataFrame,ax:None or mp.axes._subplots.AxesSubplot=None) : 
     """
     This function allows the creation of a barplot of the absolute
     distance between the peaks and the TSS of the associated gene(s). 
@@ -132,6 +137,8 @@ def graph_absolute_dist_tss(test:str or pd.DataFrame,regdom:str or pd.DataFrame)
         Genomic set of peaks to be tested
     regdom : str or pd.DataFrame 
         Regulatory domain of all genes in the genome 
+    ax : None or matplotlib.axes._subplots.AxesSubplot
+        Define the position of the plot in a figure
 
     Returns
     -------
@@ -164,7 +171,7 @@ def graph_absolute_dist_tss(test:str or pd.DataFrame,regdom:str or pd.DataFrame)
     df = pd.DataFrame(res).transpose().rename(columns={0:"count"})
     df["percentage"] = (df["count"]/nb)*100
     df = df.reset_index(drop=False).rename(columns={"index":"distance"})
-    g = bar(data=df,x="distance",y="percentage",color="#325fa8")
+    g = bar(data=df,x="distance",y="percentage",color="#325fa8",ax=ax)
     for idx,p in enumerate (g.patches) : 
         g.annotate(str(df.iloc[idx]["count"]),(p.get_x()+p.get_width()/2,p.get_height()))
     plt.xlabel("Absolute distance to TSS")
