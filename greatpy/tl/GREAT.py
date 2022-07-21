@@ -12,13 +12,13 @@ class GREAT:
 
         Parameters
         ----------
-        test_data : str or pd.DataFrame
+        test_data : None or str or pd.DataFrame
             Genomic set of peaks to be tested
-        regdom_file : str or pd.DataFrame 
+        regdom_file : None or str or pd.DataFrame 
             Regulatory domain of all genes in the genome 
-        chr_size_file : str or pd.DataFrame
+        chr_size_file : None or str or pd.DataFrame
             Table with the size of each chromosome
-        annotation_file : str or pd.DataFrame
+        annotation_file : None or str or pd.DataFrame
             Table with the annotation of each gene in the genome
 
         Returns
@@ -354,7 +354,7 @@ class GREAT:
         return pd.DataFrame(res).transpose().rename(columns = {0:"go_term",1:"hypergeom_p_value",2:"hypergeometric_fold_enrichment"}).replace(0,np.nan).dropna().sort_values(by = "hypergeom_p_value")
 
 
-    def enrichment(test_file,regdom_file,chr_size_file, annotation_file, binom=True,hypergeom=True):
+    def enrichment(test_file: str or pd.DataFrame,regdom_file: str or pd.DataFrame,chr_size_file: str or pd.DataFrame, annotation_file: str or pd.DataFrame, binom=True,hypergeom=True):
         """
         This function is a wrapper of the 3 private methods: 
         * GREAT.__enrichment_binom_and_hypergeom 
@@ -363,17 +363,17 @@ class GREAT:
 
         Parameters
         ----------
-        test_file : pd.DataFrame
+        test_file : str or pd.DataFrame
             Genomic set of peaks to be tested
-        regdom_file : pd.DataFrame 
+        regdom_file : str or pd.DataFrame 
             Regulatory domain of all genes in the genome 
-        chr_size_file :  pd.DataFrame
+        chr_size_file : str or pd.DataFrame
             Table with the size of each chromosome
-        annotation_file : pd.DataFrame
+        annotation_file : str or pd.DataFrame
             Table with the annotation of each gene in the genome
-        binom : bool
+        binom : bool (default True)
             If True, the binomial test is used.
-        hypergeom : bool
+        hypergeom : bool (default True)
             If True, the hypergeometric test is used.
 
         Returns
