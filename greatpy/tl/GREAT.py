@@ -4,7 +4,6 @@ from math import lgamma, log, exp,fabs,inf
 from scipy.special import comb
 from statsmodels.stats.multitest import multipletests
 import dask.dataframe as dd 
-import greatpy as gp 
 pd.options.display.float_format = '{:12.5e}'.format
 
 class GREAT: 
