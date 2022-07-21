@@ -13,7 +13,6 @@ from .utils import (
 
 from .GREAT import (
     GREAT, 
-    get_association
 )
 
 from .REGDOM import (
