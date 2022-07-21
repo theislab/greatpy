@@ -22,7 +22,7 @@ def scatterplot(great_df:pd.DataFrame,colname_x,colname_y,title:str="",minus_log
         sp(data=great_df,x=colname_x,y=colname_y,ax=ax).set_title(title)
 
 
-def graph_nb_asso_per_peaks(test:str or pd.DataFrame,regdom:str or pd.DataFrame,ax:None or mp.axes._subplots.AxesSubplot=None) :
+def graph_nb_asso_per_peaks(test:str or pd.DataFrame,regdom:str or pd.DataFrame,ax=None) :
     """
     This function creates a barplot representing the 
     percentage of peaks for all possible association numbers  
@@ -33,7 +33,7 @@ def graph_nb_asso_per_peaks(test:str or pd.DataFrame,regdom:str or pd.DataFrame,
         Genomic set of peaks to be tested
     regdom : str or pd.DataFrame 
         Regulatory domain of all genes in the genome 
-    ax : None or matplotlib.axes._subplots.AxesSubplot
+    ax : 
         Define the position of the plot in a figure 
 
     Returns
@@ -68,7 +68,7 @@ def graph_nb_asso_per_peaks(test:str or pd.DataFrame,regdom:str or pd.DataFrame,
         y = nb.iloc[i]["percentage"]
         g.text(x = x -0.06,y=y+1,s = nb.number_genes[0])
 
-def graph_dist_tss(test:str or pd.DataFrame,regdom:str or pd.DataFrame,ax:None or mp.axes._subplots.AxesSubplot=None) : 
+def graph_dist_tss(test:str or pd.DataFrame,regdom:str or pd.DataFrame,ax=None) : 
     """
     This function allows the creation of a barplot of the distance 
     between the peaks and the TSS of the associated gene(s). 
@@ -79,7 +79,7 @@ def graph_dist_tss(test:str or pd.DataFrame,regdom:str or pd.DataFrame,ax:None o
         Genomic set of peaks to be tested
     regdom : str or pd.DataFrame 
         Regulatory domain of all genes in the genome 
-    ax : None or matplotlib.axes._subplots.AxesSubplot
+    ax : 
         Define the position of the plot in a figure
 
     Returns
@@ -126,7 +126,7 @@ def graph_dist_tss(test:str or pd.DataFrame,regdom:str or pd.DataFrame,ax:None o
     plt.xlabel("Distance to TSS")
     plt.show(g)
 
-def graph_absolute_dist_tss(test:str or pd.DataFrame,regdom:str or pd.DataFrame,ax:None or mp.axes._subplots.AxesSubplot=None) : 
+def graph_absolute_dist_tss(test:str or pd.DataFrame,regdom:str or pd.DataFrame,ax=None) : 
     """
     This function allows the creation of a barplot of the absolute
     distance between the peaks and the TSS of the associated gene(s). 
@@ -137,7 +137,7 @@ def graph_absolute_dist_tss(test:str or pd.DataFrame,regdom:str or pd.DataFrame,
         Genomic set of peaks to be tested
     regdom : str or pd.DataFrame 
         Regulatory domain of all genes in the genome 
-    ax : None or matplotlib.axes._subplots.AxesSubplot
+    ax : 
         Define the position of the plot in a figure
 
     Returns
