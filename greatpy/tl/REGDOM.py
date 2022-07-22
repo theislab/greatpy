@@ -1,12 +1,5 @@
-from anndata import AnnData
 import pandas as pd
 pd.options.display.float_format = '{:12.5e}'.format
-
-
-def basic_tool(adata: AnnData) -> int:
-    """Run a tool on the AnnData object."""
-    print("Implement a tool to run on the AnnData object.")
-    return 0
 
 class REGDOM : 
     def __validate_input(association:str,max_extension:int,basal_upstream:int,basal_downstream:int): 

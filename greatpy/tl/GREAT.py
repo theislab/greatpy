@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np 
-from math import lgamma, log, exp,fabs,inf
+from math import lgamma, log, exp,fabs
 from scipy.special import comb
 from statsmodels.stats.multitest import multipletests
 import dask.dataframe as dd 
