@@ -19,11 +19,6 @@ Please refer to the [documentation][link-docs]. In particular, the
 Great is a bioinformatics tool to analyze cis-regulatory regions of the genome. This method can be used to assign probable biological meanings to unannotated genes based on the annotations carried by neighboring genes. This tool allows going from peaks in .bed format to enrichment ontology terms associated with these peaks using several statistical tests. 
 This package is strongly inspired by [great][great_article] allowing Helmholtz to have a stable and perennial version of the package.
 
-<!-- <figure align="center">
-    <img src="./sketch/great_tool.jpg?raw=true" style="width:75%">
-    <figcaption> Principle of great </figcaption>
-</figure> -->
-
 <p align="center">
   <img src="./sketch/great_tool.jpg?raw=true" style="width:75%">
 </p>
