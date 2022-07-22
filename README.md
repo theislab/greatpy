@@ -19,10 +19,11 @@ Please refer to the [documentation][link-docs]. In particular, the
 Great is a bioinformatics tool to analyze cis-regulatory regions of the genome. This method can be used to assign probable biological meanings to unannotated genes based on the annotations carried by neighboring genes. This tool allows going from peaks in .bed format to enrichment ontology terms associated with these peaks using several statistical tests. 
 This package is strongly inspired by [great][great_article] allowing Helmholtz to have a stable and perennial version of the package.
 
-<img align="center" src="./sketch/great_tool.jpg?raw=true">
-
+<figure>
+    <img src="./sketch/great_tool.jpg?raw=true" style="width:100%">
+    <figcaption> Principle of great </figcaption>
+</figure>
 Credits : [GREAT article][great_figure]
-
 
 ### What can you do with greatpy : 
 #### <ins>1. Create regulatory domain from tss</ins>
@@ -43,7 +44,6 @@ The [association rules][association_rules] could be :
 * `TwoCloset`
 <figure>
     <img src="./sketch/association_rule.jpg?raw=true" style="width:100%">
-    <figcaption> Association rules </figcaption>
 </figure>
 
 
