@@ -22,7 +22,7 @@ def scatterplot(great_df:pd.DataFrame,colname_x,colname_y,title:str="",minus_log
         sp(data=great_df,x=colname_x,y=colname_y,ax=ax).set_title(title)
 
 
-def graph_nb_asso_per_peaks(test:str or pd.DataFrame,regdom:str or pd.DataFrame,ax=None) :
+def graph_nb_asso_per_peaks(test:str or pd.DataFrame,regdom:str or pd.DataFrame,ax=None,color=None) :
     """
     This function creates a barplot representing the 
     percentage of peaks for all possible association numbers  
@@ -60,7 +60,7 @@ def graph_nb_asso_per_peaks(test:str or pd.DataFrame,regdom:str or pd.DataFrame,
         nb["percentage"].append(round((list(nb_asso_per_peaks.values()).count(i)/len(nb_asso_per_peaks.keys()))*100))
     nb = pd.DataFrame(nb,columns=["number","number_genes","percentage"],index=nb["number"])
 
-    g = bar(data = nb,x="number",y="percentage",ax=ax)
+    g = bar(data = nb,x="number",y="percentage",ax=ax,color=color)
     g.set_title("Number of associated genes per region")
     g.set_xlabel("Number of associated genes per region")
     g.set_ylabel("Genomic region (%)")
@@ -70,7 +70,7 @@ def graph_nb_asso_per_peaks(test:str or pd.DataFrame,regdom:str or pd.DataFrame,
         y = nb.iloc[i]["percentage"]
         g.text(x = x -0.06,y=y+1,s = nb.number_genes[0])
 
-def graph_dist_tss(test:str or pd.DataFrame,regdom:str or pd.DataFrame,ax=None) : 
+def graph_dist_tss(test:str or pd.DataFrame,regdom:str or pd.DataFrame,ax=None,color="#325fa8") : 
     """
     This function allows the creation of a barplot of the distance 
     between the peaks and the TSS of the associated gene(s). 
@@ -122,13 +122,14 @@ def graph_dist_tss(test:str or pd.DataFrame,regdom:str or pd.DataFrame,ax=None) 
     df = pd.DataFrame(res).transpose().rename(columns={0:"count"})
     df["percentage"] = (df["count"]/nb)*100
     df = df.reset_index(drop=False).rename(columns={"index":"distance"})
-    g = bar(data=df,x="distance",y="percentage",color="#325fa8",ax=ax)
+    g = bar(data=df,x="distance",y="percentage",color=color,ax=ax)
     for idx,p in enumerate (g.patches) : 
         g.annotate(str(df.iloc[idx]["count"]),(p.get_x()+p.get_width()/2,p.get_height()))
     g.set_xlabel("Distance to TSS (kb)")
+    g.set_ylabel("Genomic region (%)")
     g.set_title("Binned by absolute distance to TSS")
 
-def graph_absolute_dist_tss(test:str or pd.DataFrame,regdom:str or pd.DataFrame,ax=None) : 
+def graph_absolute_dist_tss(test:str or pd.DataFrame,regdom:str or pd.DataFrame,ax=None,color="#325fa8") : 
     """
     This function allows the creation of a barplot of the absolute
     distance between the peaks and the TSS of the associated gene(s). 
@@ -173,8 +174,9 @@ def graph_absolute_dist_tss(test:str or pd.DataFrame,regdom:str or pd.DataFrame,
     df = pd.DataFrame(res).transpose().rename(columns={0:"count"})
     df["percentage"] = (df["count"]/nb)*100
     df = df.reset_index(drop=False).rename(columns={"index":"distance"})
-    g = bar(data=df,x="distance",y="percentage",color="#325fa8",ax=ax)
+    g = bar(data=df,x="distance",y="percentage",color=color,ax=ax)
     for idx,p in enumerate (g.patches) : 
         g.annotate(str(df.iloc[idx]["count"]),(p.get_x()+p.get_width()/2,p.get_height()))
     g.set_xlabel("Absolute distance to TSS (kb)")
+    g.set_ylabel("Genomic region (%)")
     g.set_title("Binned by absolute distance to TSS")
