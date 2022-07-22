@@ -2,7 +2,7 @@ import pandas as pd
 pd.options.display.float_format = '{:12.5e}'.format
 
 class REGDOM : 
-    def __validate_input(association:str,max_extension:int,basal_upstream:int,basal_downstream:int): 
+    def __validate_input(association:str,max_extension:int,basal_upstream:int,basal_downstream:int) -> bool : 
         """
         This function checks that the inputs (association_rule, max_extension, basal_upstream, basal_downstream) are valid 
 
@@ -44,7 +44,7 @@ class REGDOM :
             return False
         return True
 
-    def __write_regdom(regdom:pd.DataFrame,file_name:str):
+    def __write_regdom(regdom:pd.DataFrame,file_name:str) -> None :
         """
         This method allows you to write the regulatory regions calculated in a file given in argument
 
@@ -72,7 +72,7 @@ class REGDOM :
             f.write(f"{chr}\t{start}\t{end}\t{name}\t{tss}\t{strand}\n")
         f.close()
 
-    def __create_basal_plus_extension_regdom(tss:pd.DataFrame,maximumExtension:int,basalUp:int,basalDown:int,chr_size:pd.DataFrame):
+    def __create_basal_plus_extension_regdom(tss:pd.DataFrame,maximumExtension:int,basalUp:int,basalDown:int,chr_size:pd.DataFrame) -> pd.DataFrame :
         """
         This function allows to create the regulatory domains using the Basalplusextention association rule
 
@@ -122,7 +122,7 @@ class REGDOM :
         for i in range(tss.shape[0]) :
             curr = tss.iloc[i]
             chr = curr["Chr"]
-            curr_chr_size = int(chr_size.loc[chr_size["Chr"]==chr,"Size"])
+            curr_chr_size = int(chr_size.loc[chr_size["Chr"] == chr,"Size"])
             tmp = curr["tss"]
             if curr["Strand"] == "+" : 
                 curr_chr_start = max(0,tmp-basalUp)
@@ -143,9 +143,9 @@ class REGDOM :
             curr = tss.iloc[i]
             chr = curr["Chr"]
             
-            curr_chr_size = int(chr_size.loc[chr_size["Chr"]==chr,"Size"])
-            if i != tss.shape[0]-1 : 
-                next = tss.iloc[i+1]
+            curr_chr_size = int(chr_size.loc[chr_size["Chr"] == chr,"Size"])
+            if i != tss.shape[0] - 1 : 
+                next = tss.iloc[i + 1]
             else : next = 0
 
 
@@ -154,21 +154,21 @@ class REGDOM :
             tmp_start = min(basal_start,tmp_start)
             if type(prev) != int and prev["Chr"] == curr["Chr"] :
                 if prev["Strand"] == "+" : 
-                    prev_end = prev["tss"]+basalDown
+                    prev_end = prev["tss"] + basalDown
                 else : 
-                    prev_end = prev["tss"]+basalUp
+                    prev_end = prev["tss"] + basalUp
                 tmp_start = min(basal_start,max(prev_end,tmp_start))
 
 
-            tmp_end = min(curr_chr_size,curr["tss"]+1000000)
+            tmp_end = min(curr_chr_size,curr["tss"] + 1000000)
             basal_end = chr_strat_end[i][1]
             
             tmp_end = max(basal_end,tmp_end)
             if type(next) != int and next["Chr"] == curr["Chr"] :
                 if next["Strand"] == "+" : 
-                    nextStart = next["tss"]-basalUp
+                    nextStart = next["tss"] - basalUp
                 else : 
-                    nextStart = next["tss"]-basalDown
+                    nextStart = next["tss"] - basalDown
                 tmp_end = max(basal_end,min(nextStart,tmp_end))
                 
             prev = tss.iloc[i]
@@ -178,7 +178,7 @@ class REGDOM :
         tss["Chr_End"] = end
         return tss
 
-    def __create_two_closet_regdom(tss:pd.DataFrame,max_extension:int,chr_size:pd.DataFrame):
+    def __create_two_closet_regdom(tss:pd.DataFrame,max_extension:int,chr_size:pd.DataFrame) -> pd.DataFrame :
         """
         This function allows to create the regulatory domains using the TwoCloset association rule. 
         It is based on the basal plus extension rule but with basalUp and basalDown equals to 0.
@@ -216,7 +216,7 @@ class REGDOM :
         """
         return REGDOM.__create_basal_plus_extension_regdom(tss,max_extension,0,0,chr_size)
 
-    def create_one_closet_regdom(tss:pd.DataFrame,maximum_extension:int,chr_size:pd.DataFrame):
+    def create_one_closet_regdom(tss:pd.DataFrame,maximum_extension:int,chr_size:pd.DataFrame) -> pd.DataFrame :
         """
         This function allows to create the regulatory domains using the OneCloset association rule
 
@@ -289,7 +289,7 @@ class REGDOM :
         tss["Chr_End"] = end
         return tss
 
-    def create_regdom(tss_file,chr_sizes_file,association_rule,max_extension:int=1000000,basal_upstream:int=5000,basal_downstream:int=1000, out_path:str or None=None): 
+    def create_regdom(tss_file:str,chr_sizes_file:str,association_rule:str,max_extension:int=1000000,basal_upstream:int=5000,basal_downstream:int=1000, out_path:str or None=None) -> pd.DataFrame : 
         """
         This function allows to create regdoms according to the three association rules, to write the result in a file or not and to return the result as a pd.DataFrame
 

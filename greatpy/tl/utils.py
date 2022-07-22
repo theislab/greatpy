@@ -1,6 +1,7 @@
 import greatpy as gp
+import pandas as pd 
 
-def get_nb_asso_per_region(test,regdom) : 
+def get_nb_asso_per_region(test : str or pd.DataFrame ,regdom:str or pd.DataFrame) -> dict : 
     """
     Function allowing from a file of genomic regions from CHIPseq 
     and a file of genomic regulatory domains to determine number of peaks 
@@ -8,10 +9,10 @@ def get_nb_asso_per_region(test,regdom) :
 
     Parameters
     ----------
-    test : str
+    test : str or pd.DataFrame
         path of the file with the tests pics => columns: ["Chr","Chr_Start","Chr_End"]
     
-    regdom : str
+    regdom : str or pd.DataFrame
         path of the file with the regulatory domains => columns: ["Chr"	"Chr_Start"	"Chr_End"	"Name"	"tss"	"strand"].
 
     Returns
@@ -52,7 +53,7 @@ def get_nb_asso_per_region(test,regdom) :
         res[i] = regdom_curr_test.shape[0]
     return res
 
-def get_dist_to_tss(test,regdom) : 
+def get_dist_to_tss(test : str or pd.DataFrame ,regdom:str or pd.DataFrame) -> dict : 
     """
     Function allowing from a file of genomic regions from CHIPseq 
     and a file of genomic regulatory domains to determine the distance from peaks 

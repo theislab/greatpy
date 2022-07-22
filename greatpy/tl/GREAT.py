@@ -7,7 +7,7 @@ import dask.dataframe as dd
 pd.options.display.float_format = '{:12.5e}'.format
 
 class GREAT: 
-    def loader(test_data:None or str or pd.DataFrame,regdom_file:None or str or pd.DataFrame,chr_size_file:None or str or pd.DataFrame,annotation_file:None or str or pd.DataFrame):
+    def loader(test_data:None or str or pd.DataFrame,regdom_file:None or str or pd.DataFrame,chr_size_file:None or str or pd.DataFrame,annotation_file:None or str or pd.DataFrame) -> tuple[str, pd.DataFrame | False] : 
         """
         This function is used to load all datasets needed for the enrichment calculation
 
@@ -148,7 +148,7 @@ class GREAT:
 
         return test_data,regdom,size,ann
 
-    def __enrichment_binom_and_hypergeom(test,regdom,size,ann,asso) : 
+    def __enrichment_binom_and_hypergeom(test:pd.DataFrame, regdom:pd.DataFrame, size: pd.DataFrame, ann:pd.DataFrame, asso:list) -> pd.DataFrame : 
         """
         This private function is used to compute the enrichment of the test data using the binomial test and the hypergeometric test.
 
@@ -222,10 +222,18 @@ class GREAT:
                 k_binom = hit[i]
                 nb_binom = sum([len_on_chr[i] for i in curr_regdom["Name"]])# get the portion of the genome in the regulatory domain of a gene with annotation
                 tmp.append((k_binom,nb_binom,i,gene_imply.iloc[0]["name"],K_hypergeom,k_hypergeom))
-            res.update({elem[2]:[ elem[3],get_binom_pval(n_binom,elem[0],elem[1]/total_nu),elem[0]/(elem[1]/total_nu), hypergeom_cdf(hypergeom_total_number_gene,elem[4],hypergeom_gene_set,elem[5]),(elem[5]*hypergeom_total_number_gene)/(hypergeom_gene_set*elem[4]) ] for elem in tmp})
-        return pd.DataFrame(res).transpose().rename(columns = {0:"go_term",1:"binom_p_value",2:"binom_fold_enrichment",3:"hypergeom_p_value",4:"hypergeometric_fold_enrichment"}).replace(0,np.nan).dropna().sort_values(by = "binom_p_value")
+
+            res.update({elem[2] : [ 
+                elem[3],
+                get_binom_pval(n_binom,elem[0],elem[1]/total_nu),
+                elem[0]/(elem[1]/total_nu), #binom enrichment 
+                hypergeom_cdf(hypergeom_total_number_gene,elem[4],hypergeom_gene_set,elem[5]),
+                (elem[5]*hypergeom_total_number_gene)/(hypergeom_gene_set*elem[4]) # Hypergeom enrichment 
+                ] for elem in tmp})
+
+        return pd.DataFrame(res).transpose().rename(columns = {0 : "go_term",1 : "binom_p_value",2 : "binom_fold_enrichment",3 : "hypergeom_p_value",4 : "hypergeometric_fold_enrichment"}).replace(0,np.nan).dropna().sort_values(by = "binom_p_value")
     
-    def __enrichment_binom(test,regdom,size,ann,asso):
+    def __enrichment_binom(test:pd.DataFrame, regdom:pd.DataFrame, size: pd.DataFrame, ann:pd.DataFrame, asso:list) -> pd.DataFrame :
         """
         This private function is used to compute the enrichment of the test data using the binomial test.
 
@@ -293,10 +301,16 @@ class GREAT:
                 k_binom = hit[i]
                 nb_binom = sum([len_on_chr[i] for i in curr_regdom["Name"]])# get the portion of the genome in the regulatory domain of a gene with annotation
                 tmp.append((k_binom,nb_binom,i,gene_imply.iloc[0]["name"]))
-            res.update({elem[2]:[ elem[3],get_binom_pval(n_binom,elem[0],elem[1]/total_nu),elem[0]/(elem[1]/total_nu) ] for elem in tmp})
-        return pd.DataFrame(res).transpose().rename(columns = {0:"go_term",1:"binom_p_value",2:"binom_fold_enrichment"}).sort_values(by = "binom_p_value")
 
-    def __enrichment_hypergeom(test,regdom,ann,asso): 
+            res.update({elem[2] : [ 
+                elem[3],
+                get_binom_pval(n_binom,elem[0],elem[1]/total_nu),
+                elem[0]/(elem[1]/total_nu) # binom enrichment 
+                ] for elem in tmp})
+
+        return pd.DataFrame(res).transpose().rename(columns = {0 : "go_term",1 : "binom_p_value",2 : "binom_fold_enrichment"}).sort_values(by = "binom_p_value")
+
+    def __enrichment_hypergeom(test:pd.DataFrame,regdom:pd.DataFrame,ann:pd.DataFrame,asso:list) -> pd.DataFrame : 
         """
         This private function is used to compute the enrichment of the test data using the hypergeometric test.
 
@@ -350,12 +364,18 @@ class GREAT:
                 K_hypergeom = gene_imply.shape[0] # get be the number of genes in the genome with annotation
                 curr_regdom = regdom.loc[regdom["Name"].isin(list(gene_imply["symbol"]))]
                 k_hypergeom = curr_regdom.loc[curr_regdom["Name"].isin(asso)].shape[0] # get the number of genes in the test gene set with annotation                
-                tmp.append((i,gene_imply.iloc[0]["name"],K_hypergeom,k_hypergeom)) 
-            res.update({elem[0]:[ elem[1], hypergeom_cdf(hypergeom_total_number_gene,elem[2],hypergeom_gene_set,elem[3]),(elem[3]*hypergeom_total_number_gene)/(hypergeom_gene_set*elem[2]) ] for elem in tmp}) 
-        return pd.DataFrame(res).transpose().rename(columns = {0:"go_term",1:"hypergeom_p_value",2:"hypergeometric_fold_enrichment"}).replace(0,np.nan).dropna().sort_values(by = "hypergeom_p_value")
+                tmp.append((i,gene_imply.iloc[0]["name"],K_hypergeom,k_hypergeom))
+
+            res.update({elem[0]:[
+                elem[1], 
+                hypergeom_cdf(hypergeom_total_number_gene,elem[2],hypergeom_gene_set,elem[3]),
+                (elem[3]*hypergeom_total_number_gene)/(hypergeom_gene_set*elem[2]) # hypergeom enrichment 
+                ] for elem in tmp}) 
+
+        return pd.DataFrame(res).transpose().rename(columns = {0 : "go_term",1 : "hypergeom_p_value",2 : "hypergeometric_fold_enrichment"}).replace(0,np.nan).dropna().sort_values(by = "hypergeom_p_value")
 
 
-    def enrichment(test_file: str or pd.DataFrame,regdom_file: str or pd.DataFrame,chr_size_file: str or pd.DataFrame, annotation_file: str or pd.DataFrame, binom=True,hypergeom=True):
+    def enrichment(test_file: str or pd.DataFrame,regdom_file: str or pd.DataFrame,chr_size_file: str or pd.DataFrame, annotation_file: str or pd.DataFrame, binom=True,hypergeom=True) -> pd.DataFrame :
         """
         This function is a wrapper of the 3 private methods: 
         * GREAT.__enrichment_binom_and_hypergeom 
@@ -446,7 +466,7 @@ class GREAT:
         else : 
               return GREAT.__enrichment_hypergeom(test,regdom,ann,asso)
 
-    def set_bonferroni(self,alpha:float=0.05): 
+    def set_bonferroni(self,alpha:float=0.05) -> pd.DataFrame : 
         """
         This function create new columns in the dataframe with the Bonferroni correction
 
@@ -481,7 +501,7 @@ class GREAT:
                 self[f"{col_split[0]}_bonferroni"] = multipletests(self[col], alpha=alpha, method='bonferroni')[1]
         return self 
 
-    def set_fdr(self,alpha:float=0.05) : 
+    def set_fdr(self,alpha:float=0.05) -> pd.DataFrame : 
         """
         This function create new columns in the dataframe with the fdr correction
 
@@ -513,11 +533,10 @@ class GREAT:
         for col in self.columns : 
             if col in ["binom_p_value","hypergeom_p_value"] : 
                 col_split = col.split("_")
-                # self[f"{col_split[0]}_fdr"] = fdrcorrection(self[col], alpha=alpha)[1]
                 self[f"{col_split[0]}_fdr"] = multipletests(self[col], alpha=alpha, method='fdr_bh')[1]
         return self 
 
-    def set_threshold(self,colname:str, alpha:int=0.05) : 
+    def set_threshold(self,colname:str, alpha:int=0.05) -> pd.DataFrame : 
         """
         This function allows to delete rows according to the p-value of the column taken as argument. By default the alpha value is 0.05
 
@@ -544,10 +563,14 @@ class GREAT:
 
         """
         if colname in self.columns: 
-            self = self.loc[self[colname]<=alpha]
+            self = self.loc[self[colname] <= alpha]
         return self 
 
-def get_association(test,regdom): 
+
+######################################################################
+################# Utils function used by GREAT class #################
+######################################################################
+def get_association(test,regdom) -> list : 
     """
     Function allowing from a file of genomic regions from CHIPseq 
     and a file of genomic regulatory domains to determine the names 
@@ -598,7 +621,7 @@ def get_association(test,regdom):
         res = res + list(regdom_curr_test["Name"])
     return list(dict.fromkeys(res))
 
-def len_regdom(regdom:pd.DataFrame): 
+def len_regdom(regdom:pd.DataFrame) -> dict :  
     """
     Function to calculate for each gene name from regdom the
      size of the regulatory region for this gene in the genome 
@@ -629,10 +652,10 @@ def len_regdom(regdom:pd.DataFrame):
         {'RNF223': 80097, 'C1orf159': 52710}
 
     """
-    test = regdom["Chr_End"]-regdom["Chr_Start"]
-    return pd.DataFrame({"len":list(test)},index = regdom["Name"]).to_dict()["len"]
+    test = regdom["Chr_End"] - regdom["Chr_Start"]
+    return pd.DataFrame({"len" : list(test)},index = regdom["Name"]).to_dict()["len"]
 
-def number_of_hit(test,regdom): 
+def number_of_hit(test,regdom) -> int : 
     """ 
     Function to calculate the number of hits from several 
     genomic regions and the file describing the regulatory regions
@@ -686,40 +709,40 @@ def number_of_hit(test,regdom):
             nb += 1
     return nb
 
-def betacf(a,b,x): 
+def betacf(a,b,x) : 
     """ Used by betai: Evaluates continued fraction for incomplete beta function """
     maxit = 10000
     eps = 3.0e-7 
     fpmin = 1.0e-30
-    qab = a+b
-    qap = a+1
-    qam = a-1
+    qab = a + b
+    qap = a + 1
+    qam = a - 1
     c = 1
-    d = 1-qab*x/qap
+    d = 1 - qab * x / qap
     if fabs(d) < fpmin :
         d = fpmin
-    d = 1/d 
+    d = 1 / d 
     h = d
-    for m in range(1,maxit+1) : 
-        m2 = 2*m
-        aa = m*(b-m)*x / ((qam+m2) * (a+m2))
-        d = 1.0+aa*d
+    for m in range(1,maxit + 1) : 
+        m2 = 2 * m
+        aa = m * (b - m) * x / ((qam + m2) * (a + m2))
+        d = 1.0 + aa * d
         if (fabs(d) < fpmin) : 
             d = fpmin
-        c = 1.0+aa/c
+        c = 1.0 + aa / c
         if (fabs(c) < fpmin):
             c = fpmin
-        d = 1.0/d
-        h *= d*c
-        aa = -(a+m) * (qab+m)*x / ((a+m2) * (qap+m2))
-        d = 1.0+aa*d  
+        d = 1.0 / d
+        h *= d * c
+        aa = -(a + m) * (qab + m) * x / ((a + m2) * (qap + m2))
+        d = 1.0 + aa * d  
         if (fabs(d) < fpmin):
             d = fpmin
-        c = 1.0+aa/c
+        c = 1.0 + aa / c
         if (fabs(c) < fpmin):
             c = fpmin
-        d = 1.0/d
-        dell = d*c
+        d = 1.0 / d
+        dell = d * c
         h *= dell
         if (fabs(dell-1.0) < eps):
             break
@@ -728,7 +751,7 @@ def betacf(a,b,x):
         return False
     return h
 
-def betai(a,b,x):
+def betai(a,b,x) :
     """Returns the incomplete beta function Ix(a, b)."""
     if x < 0 or x > 1 : 
         # print("bad x in routine betai")
@@ -736,12 +759,12 @@ def betai(a,b,x):
     if x == 0 or x == 1 : 
         bt = 0.0
     else : 
-        bt = exp(lgamma(a+b)-lgamma(a)-lgamma(b)+a*log(x)+b*log(1.0-x))
-    if x < (a+1) / (a+b+2) : 
-        return bt * betacf(a,b,x)/a
-    return 1 - bt*betacf(b,a,1-x)/b
+        bt = exp(lgamma(a + b) - lgamma(a) - lgamma(b) + a * log(x) + b * log(1.0 - x))
+    if x < (a + 1) / (a + b + 2) : 
+        return bt * betacf(a,b,x) / a
+    return 1 - bt * betacf(b,a,1-x) / b
 
-def get_binom_pval(n:int,k:int,p:float) -> float:
+def get_binom_pval(n:int,k:int,p:float) -> float :
     """
     This function allows to calculate the binomial probability 
     of obtaining k in a set of size n and whose probability is p 
@@ -767,9 +790,9 @@ def get_binom_pval(n:int,k:int,p:float) -> float:
     
     """
     if k == 0 : return 1
-    else : return betai(k,n-k+1,p)
+    else : return betai(k , n - k + 1,p)
 
-def hypergeom_pmf(N, K, n, k):
+def hypergeom_pmf(N:int, K:int, n:int, k:int) -> float :  
     """
     Function to calculate the probability mass function for hypergeometric distribution
 
@@ -796,11 +819,11 @@ def hypergeom_pmf(N, K, n, k):
     
     """
     Achoosex = comb(K,k,exact=True) 
-    NAchoosenx = comb(N-K, n-k,exact=True) 
+    NAchoosenx = comb(N - K, n - k,exact=True) 
     Nchoosen = comb(N,n,exact=True) 
-    return ((Achoosex)*NAchoosenx)/Nchoosen 
+    return ((Achoosex) * NAchoosenx) / Nchoosen 
 
-def hypergeom_cdf(N, K, n, k):
+def hypergeom_cdf(N:int, K:int, n:int, k:int) -> float :
     """
     Function to calculate the cumulative density funtion for hypergeometric distribution
 
@@ -826,4 +849,4 @@ def hypergeom_cdf(N, K, n, k):
         0.9770827595419788
     
     """
-    return np.sum([hypergeom_pmf(N, K, n, x) for x in range(k,min(K,n)+1)])
+    return np.sum([hypergeom_pmf(N, K, n, x) for x in range(k , min(K,n) + 1)])

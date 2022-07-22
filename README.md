@@ -140,4 +140,4 @@ If you found a bug, please use the [issue tracker][issue-tracker].
 [notebook1]: https://github.com/theislab/greatpy/blob/main/notebooks/01_create_regdom.ipynb
 [great_figure]:https://www.nature.com/articles/nbt.1630/figures/1
 [notebook2]: https://github.com/theislab/greatpy/blob/main/notebooks/02_binom_vs_hypergeom.ipynb
-[notebook3]:https://github.com/theislab/greatpy/blob/main/notebooks/08_plot.ipynb
+[notebook3]: https://github.com/theislab/greatpy/blob/main/notebooks/08_plot.ipynb
