@@ -7,7 +7,7 @@ import dask.dataframe as dd
 pd.options.display.float_format = '{:12.5e}'.format
 
 class GREAT: 
-    def loader(test_data:None or str or pd.DataFrame,regdom_file:None or str or pd.DataFrame,chr_size_file:None or str or pd.DataFrame,annotation_file:None or str or pd.DataFrame) -> tuple[str, pd.DataFrame | False] : 
+    def loader(test_data:None or str or pd.DataFrame,regdom_file:None or str or pd.DataFrame,chr_size_file:None or str or pd.DataFrame,annotation_file:None or str or pd.DataFrame) : 
         """
         This function is used to load all datasets needed for the enrichment calculation
 
