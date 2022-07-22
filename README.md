@@ -20,9 +20,10 @@ Great is a bioinformatics tool to analyze cis-regulatory regions of the genome. 
 This package is strongly inspired by [great][great_article] allowing Helmholtz to have a stable and perennial version of the package.
 
 <figure>
-    <img src="./sketch/great_tool.jpg?raw=true" style="width:100%">
+    <img src="./sketch/great_tool.jpg?raw=true" style="width:75%">
     <figcaption> Principle of great </figcaption>
 </figure>
+
 Credits : [GREAT article][great_figure]
 
 ### What can you do with greatpy : 
