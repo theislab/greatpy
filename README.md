@@ -25,13 +25,15 @@ Credits : [GREAT article][great_figure]
 
 
 ### What can you do with greatpy : 
-* Translate a genetic file in .bed format and containing the following information: chromosome number, start position on the chromosome, end position, gene name and tss. Into a regulatory region file that can then be used in the great : 
+* Translate a genetic file in .bed format and containing the following information: chromosome number, start position on the chromosome, end position, gene name and tss. 
+Into a regulatory region file that can then be used in the great : 
+
 ```python 
-regdom = great.tl.create_regdom(
+regdom = greatpy.tl.REGDOM.create_regdom(
     tss_file=path_of_the_file,
     chr_sizes_file="path_of_the_file",
     association_rule="Basalplusextention",
-    out_path=path_output
+    out_path=path_save_output
     )
 ```
 The association's rules could be : 
@@ -43,22 +45,56 @@ Documentation available [here][association_rules]:
 
 * Analyzes the significance of proximal and distal cis-regulatory regions in the genome. To do this: 
 ```python 
-res = great.tl.enrichment(
+res = greatpy.tl.GREAT.enrichment(
     test=path_of_genomic_region_to_test,
     regdom_file=path_of_regdom_file,
     chr_size_file=path_each_chromosome_size,
     annotation=path_of_the_csv_file_of_ontologies,
 ```
 Several arguments can be added to this function such as : 
-* binom (default true): should the binomial p-value be calculated 
-* hypergeom (default true): should the hypergeometric p-value be computed 
-* alpha (default 0.05) : significance threshold 
-* correction (default ("fdr",0.05)): Which correction should be applied, correction[0] = "bonferroni" | "fdr" | 0 ; correction[1] = initial significance threshold. 
-* sort_by: by which column the results should be sorted 
+* binom (default True): should the binomial p-value be calculated 
+* hypergeom (default True): should the hypergeometric p-value be computed 
+
+It is then possible to apply a bonferroni and/or fdr correction to the found p-values: 
+```python
+res = greatpy.tl.GREAT.enrichment(
+    test_file=path_or_dataframe_of_genomic_region_to_test,
+    regdom_file=path_or_dataframe_of_regdom_file,
+    chr_size_file=path_or_dataframe_each_chromosome_size,
+    annotation_file=path_or_dataframe_of_the_csv_file_of_ontologies,
+great.tl.GREAT.set_fdr(res,alpha=0.05)
+great.tl.GREAT.set_bonferroni(res,alpha=0.05)
+```
+
+It is also possible to create several types of plot: 
+* Number of genetic associations per genomic region 
+* Distance to the associated gene tss for each genomic region studied 
+* Absolute distance to the associated gene tss for each genomic region studied
+
+```python
+fig,ax = plt.subplots(1,3,figsize=(30,8))
+greatpy.pl.graph_nb_asso_per_peaks(
+    path_or_dataframe_of_genomic_region_to_test,
+    path_or_dataframe_of_regdom_file,
+    ax[0]
+    )
+greatpy.pl.graph_dist_tss(
+    path_or_dataframe_of_genomic_region_to_test,
+    path_or_dataframe_of_regdom_file,
+    ax[1]
+    )
+greatpy.pl.graph_absolute_dist_tss(
+    path_or_dataframe_of_genomic_region_to_test,
+    path_or_dataframe_of_regdom_file,
+    ax[2]
+    )
+plt.show()
+``` 
 
 Several examples of uses can be found in the notebook part of the package: 
 * For the create_regdom option: [explanatory notebook][notebook1]
-* For the enrichment function: [explanatory notebook] []
+* For the enrichment function: [explanatory notebook][notebook2]
+* Plot : [explanatory notebook][notebook3]
 
 ## Installation
 
@@ -103,3 +139,5 @@ If you found a bug, please use the [issue tracker][issue-tracker].
 [association_rules]: https://great-help.atlassian.net/wiki/spaces/GREAT/pages/655443/Association+Rules
 [notebook1]: https://github.com/theislab/greatpy/blob/main/notebooks/01_create_regdom.ipynb
 [great_figure]:https://www.nature.com/articles/nbt.1630/figures/1
+[notebook2]: https://github.com/theislab/greatpy/blob/main/notebooks/02_binom_vs_hypergeom.ipynb
+[notebook3]:https://github.com/theislab/greatpy/blob/main/notebooks/08_plot.ipynb
