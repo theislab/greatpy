@@ -25,7 +25,7 @@ Credits : [GREAT article][great_figure]
 
 
 ### What can you do with greatpy : 
-#### 1. Create regulatory domain from tss
+#### <ins>1. Create regulatory domain from tss</ins> a 
 * Translate a genetic file in .bed format and containing the following information: chromosome number, start position on the chromosome, end position, gene name and tss. 
 Into a regulatory region file that can then be used in the great : 
 
