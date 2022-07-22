@@ -697,6 +697,7 @@ def number_of_hit(test,regdom) -> int :
     """
     nb = 0
     regdom = regdom[["Chr","Chr_Start","Chr_End"]]
+    regdom = regdom[regdom["Chr"].isin(list(test["Chr"]))]
     for i in range(test.shape[0]) : 
         chrom = test.iat[i,0]
         start = test.iat[i,1]
