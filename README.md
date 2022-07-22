@@ -37,12 +37,10 @@ regdom = greatpy.tl.REGDOM.create_regdom(
     out_path=path_save_output
     )
 ```
-The association's rules could be : 
+The [association rules][association_rules] could be : 
 * `Basalplusextention` 
 * `OneCloset` 
 * `TwoCloset`
-
-Documentation available [here][association_rules]: 
 
 #### <ins>2. Get enrichment of GO term in the tests genomics regions</ins>
 * Analyzes the significance of proximal and distal cis-regulatory regions in the genome. To do this: 
@@ -55,8 +53,8 @@ res = greatpy.tl.GREAT.enrichment(
     annotation=path_of_the_csv_file_of_ontologies,
 ```
 Several arguments can be added to this function such as : 
-* `binom` (default True): should the binomial p-value be calculated 
-* `hypergeom` (default True): should the hypergeometric p-value be computed 
+* `binom` (default True): should the binomial p-value be calculated ? 
+* `hypergeom` (default True): should the hypergeometric p-value be computed ? 
 
 It is then possible to apply a bonferroni and/or fdr correction to the found p-values: 
 ```python
@@ -96,9 +94,9 @@ plt.show()
 ``` 
 
 Several examples of uses can be found in the notebook part of the package: 
-* For the create_regdom option: [explanatory notebook][notebook1]
-* For the enrichment function: [explanatory notebook][notebook2]
-* Plot : [explanatory notebook][notebook3]
+* For the create_regdom option: [notebook][notebook1]
+* For the enrichment function: [notebook][notebook2]
+* Plot : [notebook][notebook3]
 
 ## Installation
 
