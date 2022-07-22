@@ -63,7 +63,7 @@ def graph_nb_asso_per_peaks(test:str or pd.DataFrame,regdom:str or pd.DataFrame,
 
     Exemples 
     --------
-    Example available here: https://github.com/theislab/greatpy/blob/main/notebooks/08_plot.ipynb   
+    Example available here: https://github.com/theislab/greatpy/blob/main/notebooks/07_plot.ipynb   
     """
     nb_asso_per_peaks = gp.tl.get_nb_asso_per_region(test,regdom)
 
@@ -108,7 +108,7 @@ def graph_dist_tss(test:str or pd.DataFrame,regdom:str or pd.DataFrame,ax=None,c
 
     Exemples 
     --------
-    Example available here: https://github.com/theislab/greatpy/blob/main/notebooks/08_plot.ipynb 
+    Example available here: https://github.com/theislab/greatpy/blob/main/notebooks/07_plot.ipynb 
    
     """
     res = {"<-500": [0],"-500:-50": [0],"-50:-5": [0],"-5:0": [0],"0:5": [0],"5:50": [0],"50:500": [0],">500": [0]}
@@ -164,7 +164,7 @@ def graph_absolute_dist_tss(test:str or pd.DataFrame,regdom:str or pd.DataFrame,
 
     Exemples 
     --------
-    Example available here: https://github.com/theislab/greatpy/blob/main/notebooks/08_plot.ipynb    
+    Example available here: https://github.com/theislab/greatpy/blob/main/notebooks/07_plot.ipynb    
    
     """
     res = {"0:5": [0],"5:50": [0],"50:500": [0],">500": [0]}
