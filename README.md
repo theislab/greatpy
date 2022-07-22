@@ -25,7 +25,7 @@ Credits : [GREAT article][great_figure]
 
 
 ### What can you do with greatpy : 
-#### <u>1. Create regulatory domain from tss</u>
+#### 1. Create regulatory domain from tss
 * Translate a genetic file in .bed format and containing the following information: chromosome number, start position on the chromosome, end position, gene name and tss. 
 Into a regulatory region file that can then be used in the great : 
 
@@ -38,14 +38,15 @@ regdom = greatpy.tl.REGDOM.create_regdom(
     )
 ```
 The association's rules could be : 
-* Basalplusextention 
-* OneCloset 
-* TwoCloset
+* `Basalplusextention` 
+* `OneCloset` 
+* `TwoCloset`
 
 Documentation available [here][association_rules]: 
 
 #### 2. Get enrichment of GO term in the tests genomics regions
 * Analyzes the significance of proximal and distal cis-regulatory regions in the genome. To do this: 
+
 ```python 
 res = greatpy.tl.GREAT.enrichment(
     test=path_of_genomic_region_to_test,
@@ -54,8 +55,8 @@ res = greatpy.tl.GREAT.enrichment(
     annotation=path_of_the_csv_file_of_ontologies,
 ```
 Several arguments can be added to this function such as : 
-* binom (default True): should the binomial p-value be calculated 
-* hypergeom (default True): should the hypergeometric p-value be computed 
+* `binom` (default True): should the binomial p-value be calculated 
+* `hypergeom` (default True): should the hypergeometric p-value be computed 
 
 It is then possible to apply a bonferroni and/or fdr correction to the found p-values: 
 ```python
