@@ -25,7 +25,7 @@ Credits : [GREAT article][great_figure]
 
 
 ### What can you do with greatpy : 
-#### Create regulatory domain from tss
+#### <u>1. Create regulatory domain from tss</u>
 * Translate a genetic file in .bed format and containing the following information: chromosome number, start position on the chromosome, end position, gene name and tss. 
 Into a regulatory region file that can then be used in the great : 
 
@@ -44,7 +44,7 @@ The association's rules could be :
 
 Documentation available [here][association_rules]: 
 
-#### Get enrichment of GO term in the tests genomics regions
+#### 2. Get enrichment of GO term in the tests genomics regions
 * Analyzes the significance of proximal and distal cis-regulatory regions in the genome. To do this: 
 ```python 
 res = greatpy.tl.GREAT.enrichment(
@@ -68,7 +68,7 @@ great.tl.GREAT.set_fdr(res,alpha=0.05)
 great.tl.GREAT.set_bonferroni(res,alpha=0.05)
 ```
 
-#### Plot 
+#### 3. Plot 
 It is also possible to create several types of plot: 
 * Number of genetic associations per genomic region 
 * Distance to the associated gene tss for each genomic region studied 
