@@ -42,9 +42,9 @@ The [association rules][association_rules] could be :
 * `Basalplusextention` 
 * `OneCloset` 
 * `TwoCloset`
-<figure>
-    <img src="./sketch/association_rule.jpg?raw=true" style="width:100%">
-</figure>
+<p align="center">
+  <img src="./sketch/association_rule.jpg?raw=true" style="width:75%">
+</p>
 
 
 #### <ins>2. Get enrichment of GO term in the tests genomics regions</ins>
