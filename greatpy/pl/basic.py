@@ -1,15 +1,8 @@
-from anndata import AnnData
 import pandas as pd 
 from numpy import log
 from seaborn import scatterplot as sp,barplot as bar 
-import matplotlib as mp 
 import matplotlib.pyplot as plt
 import greatpy as gp
-
-def basic_plot(adata: AnnData) -> int:
-    """Generate a basic plot for an AnnData object."""
-    print("Import matplotlib and implement a plotting function here.")
-    return 0
 
 def scatterplot(great_df:pd.DataFrame,colname_x,colname_y,title:str="",minus_log10=True,ax=None):
     great_df = great_df.dropna()
