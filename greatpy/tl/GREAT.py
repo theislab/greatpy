@@ -210,9 +210,10 @@ class GREAT:
         for name in asso :
             ann_name_gene = ann[ann["symbol"].isin([name])]
             id = ann_name_gene["id"]
+            ann_reduce = ann[ann["id"].isin(list(id))]
             tmp = []
             for i in (list(id.unique())) : 
-                gene_imply = ann[ann['id'].isin([i])]
+                gene_imply = ann_reduce[ann_reduce['id'].isin([i])]
                 K_hypergeom = gene_imply.shape[0] # get be the number of genes in the genome with annotation
                 curr_regdom = regdom.loc[regdom["Name"].isin(list(gene_imply["symbol"]))]
                 k_hypergeom = curr_regdom.loc[curr_regdom["Name"].isin(asso)].shape[0] # get the number of genes in the test gene set with annotation
@@ -291,9 +292,10 @@ class GREAT:
         for name in asso :
             ann_name_gene = ann[ann["symbol"].isin([name])]
             id = ann_name_gene["id"]
+            ann_reduce = ann[ann["id"].isin(list(id))]
             tmp = []
             for i in (list(id.unique())) : 
-                gene_imply = ann[ann['id'].isin([i])]
+                gene_imply = ann_reduce[ann_reduce['id'].isin([i])]
                 curr_regdom = regdom.loc[regdom["Name"].isin(list(gene_imply["symbol"]))]
 
                 if i not in list(hit.keys()) : 
@@ -358,9 +360,10 @@ class GREAT:
         for name in asso :
             ann_name_gene = ann[ann["symbol"] == name]
             id = ann_name_gene["id"]
+            ann_reduce = ann[ann["id"].isin(list(id))]
             tmp = []
             for i in (list(id.unique())) : 
-                gene_imply = ann[ann['id']==i]
+                gene_imply = ann_reduce[ann_reduce['id']==i]
                 K_hypergeom = gene_imply.shape[0] # get be the number of genes in the genome with annotation
                 curr_regdom = regdom.loc[regdom["Name"].isin(list(gene_imply["symbol"]))]
                 k_hypergeom = curr_regdom.loc[curr_regdom["Name"].isin(asso)].shape[0] # get the number of genes in the test gene set with annotation                
@@ -694,6 +697,7 @@ def number_of_hit(test,regdom) -> int :
     """
     nb = 0
     regdom = regdom[["Chr","Chr_Start","Chr_End"]]
+    regdom = regdom[regdom["Chr"].isin(list(test["Chr"]))]
     for i in range(test.shape[0]) : 
         chrom = test.iat[i,0]
         start = test.iat[i,1]
