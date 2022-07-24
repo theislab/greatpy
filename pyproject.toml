@@ -22,7 +22,12 @@ version = "0.0.1"
 requires-python = ">=3.8"
 license = {file = "LICENSE"}
 readme = "README.md"
-dependencies = ["anndata"]
+dependencies = [
+    "statsmodels",
+    "seaborn",
+    "dask", 
+    "scipy", 
+    ]
 
 [project.optional-dependencies]
 dev = [

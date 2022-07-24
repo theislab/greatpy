@@ -1,307 +1,25 @@
 import pandas as pd
-from math import lgamma, log, exp,fabs,inf
+import numpy as np 
+from math import lgamma, log, exp,fabs
 from scipy.special import comb
 from statsmodels.stats.multitest import multipletests
 import dask.dataframe as dd 
-import numpy as np 
-
 pd.options.display.float_format = '{:12.5e}'.format
 
-def get_association(test,regdom): 
-    """
-    Function allowing from a file of genomic regions from CHIPseq 
-    and a file of genomic regulatory domains to determine the names 
-    of genes associated with at least one genomic region 
-
-    Parameters
-    ----------
-    test : pd.dataFrame
-        df of the tests pics => columns: ["Chr","Chr_Start","Chr_End"]
-    
-    regdom : pd.dataFrame
-        df of the regulatory domains => columns: ["Chr"	"Chr_Start"	"Chr_End"	"Name"	"tss"	"strand"].
-
-    Returns
-    -------
-    res : list
-        list of gene associated with at least with one test peak
-        
-    Exemples 
-    --------
-    test = pd.DataFrame({
-    ...    "Chr":["chr1"],
-    ...    "Chr_Start":[1052028],
-    ...    "Chr_End": [1052049]})
-
-    regdom = pd.DataFrame({
-    ...    "Chr":["chr1","chr1"],
-    ...    "Chr_Start":[1034992,1079306],
-    ...    "Chr_End": [1115089,1132016],
-    ...    "Name":["RNF223","C1orf159"],
-    ...    "tss":[1074306,1116089],
-    ...    "strand":['-','-']})
-
-    >>> get_association(test,regdom)        
-        ['RNF223']
-    
-    """
-    res = []
-    for i in range(test.shape[0]) :
-        currTest = test.iloc[i]
-        regdom_curr_test = regdom.loc[(regdom["Chr"] == currTest["Chr"])].sort_values("Chr_Start")
-        regdom_curr_test = regdom_curr_test.loc[
-            ((regdom_curr_test["Chr_Start"] <= currTest["Chr_Start"]) & (regdom_curr_test["Chr_End"] >= currTest["Chr_End"])) | # regdom overlap totally test 
-            ((regdom_curr_test["Chr_Start"] >= currTest["Chr_Start"]) & (regdom_curr_test["Chr_End"] <= currTest["Chr_End"])) | # test overlap totally regdom 
-            ((regdom_curr_test["Chr_Start"] <= currTest["Chr_Start"]) & (regdom_curr_test["Chr_End"] <= currTest["Chr_End"]) & (regdom_curr_test["Chr_End"] >= currTest["Chr_Start"])) | # regdom overlap not totally test on left side 
-            ((regdom_curr_test["Chr_Start"] >= currTest["Chr_Start"]) & (regdom_curr_test["Chr_End"] >= currTest["Chr_End"]) & (regdom_curr_test["Chr_Start"] <= currTest["Chr_End"])) # regdom overlap not totally test on right side 
-            ] 
-        res = res + list(regdom_curr_test["Name"])
-    return list(dict.fromkeys(res))
-
-def len_regdom(regdom:pd.DataFrame): 
-    """
-    Function to calculate for each gene name from regdom the
-     size of the regulatory region for this gene in the genome 
-
-    Parameters
-    ----------    
-    regdom : pd.dataFrame
-        df of the regulatory domains => columns: ["Chr"	"Chr_Start"	"Chr_End"	"Name"	"tss"	"strand"].
-
-    Returns
-    -------
-    dict
-        dictionary in which each key corresponds to a gene name 
-        from regdom and the value is the size of the regulatory 
-        region for that gene
-        
-    Exemples 
-    --------
-    regdom = pd.DataFrame({
-    ...    "Chr":["chr1","chr1"],
-    ...    "Chr_Start":[1034992,1079306],
-    ...    "Chr_End": [1115089,1132016],
-    ...    "Name":["RNF223","C1orf159"],
-    ...    "tss":[1074306,1116089],
-    ...    "strand":['-','-']}))
-
-    >>> len_regdom(regdom)
-        {'RNF223': 80097, 'C1orf159': 52710}
-
-    """
-    test = regdom["Chr_End"]-regdom["Chr_Start"]
-    return pd.DataFrame({"len":list(test)},index = regdom["Name"]).to_dict()["len"]
-
-def number_of_hit(test,regdom): 
-    """ 
-    Function to calculate the number of hits from several 
-    genomic regions and the file describing the regulatory regions
-
-    Parameters
-    ----------
-    test : pd.dataFrame
-        df of the tests pics => columns: ["Chr","Chr_Start","Chr_End"]
-    
-    regdom : pd.dataFrame
-        df of the regulatory domains => columns: ["Chr"	"Chr_Start"	"Chr_End"	"Name"	"tss"	"strand"].
-
-    Returns
-    -------
-    nb : int
-        number of hit 
-        
-    Exemples 
-    --------
-    test = pd.DataFrame({
-    ...    "Chr":["chr1"],
-    ...    "Chr_Start":[1052028],
-    ...    "Chr_End": [1052049]})
-
-    regdom = pd.DataFrame({
-    ...    "Chr":["chr1","chr1"],
-    ...    "Chr_Start":[1034992,1079306],
-    ...    "Chr_End": [1115089,1132016],
-    ...    "Name":["RNF223","C1orf159"],
-    ...    "tss":[1074306,1116089],
-    ...    "strand":['-','-']})
-
-    >>> number_of_hit(test,regdom)        
-        1
-    
-    """
-    nb = 0
-    regdom = regdom[["Chr","Chr_Start","Chr_End"]]
-    for i in range(test.shape[0]) : 
-        chrom = test.iat[i,0]
-        start = test.iat[i,1]
-        end = test.iat[i,2]
-        regdom_np = regdom["Chr"].to_numpy()
-        reg_start = regdom["Chr_Start"].to_numpy()
-        reg_end = regdom["Chr_End"].to_numpy()
-        Chr_reduce = np.where(regdom_np == chrom)
-        reg_start = np.take(reg_start,Chr_reduce,axis = 0)[0]
-        reg_end = np.take(reg_end,Chr_reduce,axis = 0)[0]
-
-        if any((reg_start <= start) & (reg_end >= end)):  
-            nb += 1
-    return nb
-
-def betacf(a,b,x): 
-    """ Used by betai: Evaluates continued fraction for incomplete beta function """
-    maxit = 10000
-    eps = 3.0e-7 
-    fpmin = 1.0e-30
-    qab = a+b
-    qap = a+1
-    qam = a-1
-    c = 1
-    d = 1-qab*x/qap
-    if fabs(d) < fpmin :
-        d = fpmin
-    d = 1/d 
-    h = d
-    for m in range(1,maxit+1) : 
-        m2 = 2*m
-        aa = m*(b-m)*x / ((qam+m2) * (a+m2))
-        d = 1.0+aa*d
-        if (fabs(d) < fpmin) : 
-            d = fpmin
-        c = 1.0+aa/c
-        if (fabs(c) < fpmin):
-            c = fpmin
-        d = 1.0/d
-        h *= d*c
-        aa = -(a+m) * (qab+m)*x / ((a+m2) * (qap+m2))
-        d = 1.0+aa*d  
-        if (fabs(d) < fpmin):
-            d = fpmin
-        c = 1.0+aa/c
-        if (fabs(c) < fpmin):
-            c = fpmin
-        d = 1.0/d
-        dell = d*c
-        h *= dell
-        if (fabs(dell-1.0) < eps):
-            break
-    if (m > maxit):
-        print("a or b too big, or MAXIT too small in betacf")
-        return False
-    return h
-
-def betai(a,b,x):
-    """Returns the incomplete beta function Ix(a, b)."""
-    if x < 0 or x > 1 : 
-        # print("bad x in routine betai")
-        return False
-    if x == 0 or x == 1 : 
-        bt = 0.0
-    else : 
-        bt = exp(lgamma(a+b)-lgamma(a)-lgamma(b)+a*log(x)+b*log(1.0-x))
-    if x < (a+1) / (a+b+2) : 
-        return bt * betacf(a,b,x)/a
-    return 1 - bt*betacf(b,a,1-x)/b
-
-def get_binom_pval(n:int,k:int,p:float) -> float:
-    """
-    This function allows to calculate the binomial probability 
-    of obtaining k in a set of size n and whose probability is p 
-
-    Parameters
-    ----------
-    n : int
-        Number of genomic region in the test set 
-    k : int 
-        Number of test genomic regions in the regulatory domain of a gene with annotation
-    p : float
-        Percentage of genome annotated
-
-    Returns
-    -------
-    float
-        binomial probability
-        
-    Exemples 
-    --------
-    >>> get_binom_pval(100,2,0.2)
-        0.9999999947037065
-    
-    """
-    if k == 0 : return 1
-    else : return betai(k,n-k+1,p)
-
-def hypergeom_pmf(N, K, n, k):
-    """
-    Function to calculate the probability mass function for hypergeometric distribution
-
-    Parameters
-    ----------
-    N : int
-        Total number of gene in the genome
-    K : int 
-        Number of genes in the genome with annotation
-    n : int
-        Number of gene in the test set
-    k : int
-        Number of genes in the test gene set with annotation
-
-    Returns
-    -------
-    float
-        proability mass function
-        
-    Exemples 
-    --------
-    >>> hypergeom_pmf(100,10,30,1)
-        0.11270773995748315
-    
-    """
-    Achoosex = comb(K,k) if comb(K,k) != inf else 1e-308
-    NAchoosenx = comb(N-K, n-k) if comb(N-K, n-k) != inf else 1e-308
-    Nchoosen = comb(N,n) if comb(N,n) != inf else 1e-308
-    return ((Achoosex)*NAchoosenx)/Nchoosen if Nchoosen > 1e-308 and (Achoosex)*NAchoosenx != 0.0 else 1e-308
-
-def hypergeom_cdf(N, K, n, k):
-    """
-    Function to calculate the cumulative density funtion for hypergeometric distribution
-
-    Parameters
-    ----------
-    N : int
-        Total number of gene in the genome
-    K : int 
-        Number of genes in the genome with annotation
-    n : int
-        Number of gene in the test set
-    k : int
-        Number of genes in the test gene set with annotation
-
-    Returns
-    -------
-    float
-        Cumulative density function
-        
-    Exemples 
-    --------
-    >>> hypergeom_cdf(100,10,30,1)
-        0.9770827595419788
-    
-    """
-    return np.sum([hypergeom_pmf(N, K, n, x) for x in range(k,min(K,n)+1)])
-
 class GREAT: 
-    def loader(test_data:None or str or pd.DataFrame,regdom_file:None or str or pd.DataFrame,chr_size_file:None or str or pd.DataFrame,annotation_file:None or str or pd.DataFrame):
+    def loader(test_data:None or str or pd.DataFrame,regdom_file:None or str or pd.DataFrame,chr_size_file:None or str or pd.DataFrame,annotation_file:None or str or pd.DataFrame) : 
         """
         This function is used to load all datasets needed for the enrichment calculation
 
         Parameters
         ----------
-        test_data : str or pd.DataFrame
+        test_data : None or str or pd.DataFrame
             Genomic set of peaks to be tested
-        regdom_file : str or pd.DataFrame 
+        regdom_file : None or str or pd.DataFrame 
             Regulatory domain of all genes in the genome 
-        chr_size_file : str or pd.DataFrame
+        chr_size_file : None or str or pd.DataFrame
             Table with the size of each chromosome
-        annotation_file : str or pd.DataFrame
+        annotation_file : None or str or pd.DataFrame
             Table with the annotation of each gene in the genome
 
         Returns
@@ -430,7 +148,7 @@ class GREAT:
 
         return test_data,regdom,size,ann
 
-    def __enrichment_binom_and_hypergeom(test,regdom,size,ann,asso) : 
+    def __enrichment_binom_and_hypergeom(test:pd.DataFrame, regdom:pd.DataFrame, size: pd.DataFrame, ann:pd.DataFrame, asso:list) -> pd.DataFrame : 
         """
         This private function is used to compute the enrichment of the test data using the binomial test and the hypergeometric test.
 
@@ -492,9 +210,10 @@ class GREAT:
         for name in asso :
             ann_name_gene = ann[ann["symbol"].isin([name])]
             id = ann_name_gene["id"]
+            ann_reduce = ann[ann["id"].isin(list(id))]
             tmp = []
             for i in (list(id.unique())) : 
-                gene_imply = ann[ann['id'].isin([i])]
+                gene_imply = ann_reduce[ann_reduce['id'].isin([i])]
                 K_hypergeom = gene_imply.shape[0] # get be the number of genes in the genome with annotation
                 curr_regdom = regdom.loc[regdom["Name"].isin(list(gene_imply["symbol"]))]
                 k_hypergeom = curr_regdom.loc[curr_regdom["Name"].isin(asso)].shape[0] # get the number of genes in the test gene set with annotation
@@ -504,10 +223,18 @@ class GREAT:
                 k_binom = hit[i]
                 nb_binom = sum([len_on_chr[i] for i in curr_regdom["Name"]])# get the portion of the genome in the regulatory domain of a gene with annotation
                 tmp.append((k_binom,nb_binom,i,gene_imply.iloc[0]["name"],K_hypergeom,k_hypergeom))
-            res.update({elem[2]:[ elem[3],get_binom_pval(n_binom,elem[0],elem[1]/total_nu), hypergeom_cdf(hypergeom_total_number_gene,elem[4],hypergeom_gene_set,elem[5]) ] for elem in tmp})
-        return pd.DataFrame(res).transpose().rename(columns = {0:"go_term",1:"binom_p_value",2:"hypergeom_p_value"}).replace(0,np.nan).sort_values(by = "binom_p_value")
+
+            res.update({elem[2] : [ 
+                elem[3],
+                get_binom_pval(n_binom,elem[0],elem[1]/total_nu),
+                elem[0]/(elem[1]/total_nu), #binom enrichment 
+                hypergeom_cdf(hypergeom_total_number_gene,elem[4],hypergeom_gene_set,elem[5]),
+                (elem[5]*hypergeom_total_number_gene)/(hypergeom_gene_set*elem[4]) # Hypergeom enrichment 
+                ] for elem in tmp})
+
+        return pd.DataFrame(res).transpose().rename(columns = {0 : "go_term",1 : "binom_p_value",2 : "binom_fold_enrichment",3 : "hypergeom_p_value",4 : "hypergeometric_fold_enrichment"}).replace(0,np.nan).dropna().sort_values(by = "binom_p_value")
     
-    def __enrichment_binom(test,regdom,size,ann,asso):
+    def __enrichment_binom(test:pd.DataFrame, regdom:pd.DataFrame, size: pd.DataFrame, ann:pd.DataFrame, asso:list) -> pd.DataFrame :
         """
         This private function is used to compute the enrichment of the test data using the binomial test.
 
@@ -565,9 +292,10 @@ class GREAT:
         for name in asso :
             ann_name_gene = ann[ann["symbol"].isin([name])]
             id = ann_name_gene["id"]
+            ann_reduce = ann[ann["id"].isin(list(id))]
             tmp = []
             for i in (list(id.unique())) : 
-                gene_imply = ann[ann['id'].isin([i])]
+                gene_imply = ann_reduce[ann_reduce['id'].isin([i])]
                 curr_regdom = regdom.loc[regdom["Name"].isin(list(gene_imply["symbol"]))]
 
                 if i not in list(hit.keys()) : 
@@ -575,10 +303,16 @@ class GREAT:
                 k_binom = hit[i]
                 nb_binom = sum([len_on_chr[i] for i in curr_regdom["Name"]])# get the portion of the genome in the regulatory domain of a gene with annotation
                 tmp.append((k_binom,nb_binom,i,gene_imply.iloc[0]["name"]))
-            res.update({elem[2]:[ elem[3],get_binom_pval(n_binom,elem[0],elem[1]/total_nu) ] for elem in tmp})
-        return pd.DataFrame(res).transpose().rename(columns = {0:"go_term",1:"binom_p_value"}).sort_values(by = "binom_p_value")
 
-    def __enrichment_hypergeom(test,regdom,ann,asso): 
+            res.update({elem[2] : [ 
+                elem[3],
+                get_binom_pval(n_binom,elem[0],elem[1]/total_nu),
+                elem[0]/(elem[1]/total_nu) # binom enrichment 
+                ] for elem in tmp})
+
+        return pd.DataFrame(res).transpose().rename(columns = {0 : "go_term",1 : "binom_p_value",2 : "binom_fold_enrichment"}).sort_values(by = "binom_p_value")
+
+    def __enrichment_hypergeom(test:pd.DataFrame,regdom:pd.DataFrame,ann:pd.DataFrame,asso:list) -> pd.DataFrame : 
         """
         This private function is used to compute the enrichment of the test data using the hypergeometric test.
 
@@ -626,18 +360,25 @@ class GREAT:
         for name in asso :
             ann_name_gene = ann[ann["symbol"] == name]
             id = ann_name_gene["id"]
+            ann_reduce = ann[ann["id"].isin(list(id))]
             tmp = []
             for i in (list(id.unique())) : 
-                gene_imply = ann[ann['id']==i]
+                gene_imply = ann_reduce[ann_reduce['id']==i]
                 K_hypergeom = gene_imply.shape[0] # get be the number of genes in the genome with annotation
                 curr_regdom = regdom.loc[regdom["Name"].isin(list(gene_imply["symbol"]))]
                 k_hypergeom = curr_regdom.loc[curr_regdom["Name"].isin(asso)].shape[0] # get the number of genes in the test gene set with annotation                
-                tmp.append((i,gene_imply.iloc[0]["name"],K_hypergeom,k_hypergeom)) 
-            res.update({elem[0]:[ elem[1], hypergeom_cdf(hypergeom_total_number_gene,elem[2],hypergeom_gene_set,elem[3]) ] for elem in tmp}) 
-        return pd.DataFrame(res).transpose().rename(columns = {0:"go_term",1:"hypergeom_p_value"}).replace(0,3e-308).sort_values(by = "hypergeom_p_value")
+                tmp.append((i,gene_imply.iloc[0]["name"],K_hypergeom,k_hypergeom))
+
+            res.update({elem[0]:[
+                elem[1], 
+                hypergeom_cdf(hypergeom_total_number_gene,elem[2],hypergeom_gene_set,elem[3]),
+                (elem[3]*hypergeom_total_number_gene)/(hypergeom_gene_set*elem[2]) # hypergeom enrichment 
+                ] for elem in tmp}) 
+
+        return pd.DataFrame(res).transpose().rename(columns = {0 : "go_term",1 : "hypergeom_p_value",2 : "hypergeometric_fold_enrichment"}).replace(0,np.nan).dropna().sort_values(by = "hypergeom_p_value")
 
 
-    def enrichment(test_file,regdom_file,chr_size_file, annotation_file, binom=True,hypergeom=True):
+    def enrichment(test_file: str or pd.DataFrame,regdom_file: str or pd.DataFrame,chr_size_file: str or pd.DataFrame, annotation_file: str or pd.DataFrame, binom=True,hypergeom=True) -> pd.DataFrame :
         """
         This function is a wrapper of the 3 private methods: 
         * GREAT.__enrichment_binom_and_hypergeom 
@@ -646,17 +387,17 @@ class GREAT:
 
         Parameters
         ----------
-        test_file : pd.DataFrame
+        test_file : str or pd.DataFrame
             Genomic set of peaks to be tested
-        regdom_file : pd.DataFrame 
+        regdom_file : str or pd.DataFrame 
             Regulatory domain of all genes in the genome 
-        chr_size_file :  pd.DataFrame
+        chr_size_file : str or pd.DataFrame
             Table with the size of each chromosome
-        annotation_file : pd.DataFrame
+        annotation_file : str or pd.DataFrame
             Table with the annotation of each gene in the genome
-        binom : bool
+        binom : bool (default True)
             If True, the binomial test is used.
-        hypergeom : bool
+        hypergeom : bool (default True)
             If True, the hypergeometric test is used.
 
         Returns
@@ -728,7 +469,7 @@ class GREAT:
         else : 
               return GREAT.__enrichment_hypergeom(test,regdom,ann,asso)
 
-    def set_bonferroni(self,alpha:float=0.05): 
+    def set_bonferroni(self,alpha:float=0.05) -> pd.DataFrame : 
         """
         This function create new columns in the dataframe with the Bonferroni correction
 
@@ -763,7 +504,7 @@ class GREAT:
                 self[f"{col_split[0]}_bonferroni"] = multipletests(self[col], alpha=alpha, method='bonferroni')[1]
         return self 
 
-    def set_fdr(self,alpha:float=0.05) : 
+    def set_fdr(self,alpha:float=0.05) -> pd.DataFrame : 
         """
         This function create new columns in the dataframe with the fdr correction
 
@@ -795,11 +536,10 @@ class GREAT:
         for col in self.columns : 
             if col in ["binom_p_value","hypergeom_p_value"] : 
                 col_split = col.split("_")
-                # self[f"{col_split[0]}_fdr"] = fdrcorrection(self[col], alpha=alpha)[1]
                 self[f"{col_split[0]}_fdr"] = multipletests(self[col], alpha=alpha, method='fdr_bh')[1]
         return self 
 
-    def set_threshold(self,colname:str, alpha:int=0.05) : 
+    def set_threshold(self,colname:str, alpha:int=0.05) -> pd.DataFrame : 
         """
         This function allows to delete rows according to the p-value of the column taken as argument. By default the alpha value is 0.05
 
@@ -826,134 +566,291 @@ class GREAT:
 
         """
         if colname in self.columns: 
-            self = self.loc[self[colname]<=alpha]
+            self = self.loc[self[colname] <= alpha]
         return self 
 
-###################################################################
-########################### unfinish ##############################
-###################################################################
 
-    def get_nb_asso_per_region(test,regdom) : 
-        """
-        Function allowing from a file of genomic regions from CHIPseq 
-        and a file of genomic regulatory domains to determine number of peaks 
-        associated with each gene in the regulatory domain. 
+######################################################################
+################# Utils function used by GREAT class #################
+######################################################################
+def get_association(test,regdom) -> list : 
+    """
+    Function allowing from a file of genomic regions from CHIPseq 
+    and a file of genomic regulatory domains to determine the names 
+    of genes associated with at least one genomic region 
 
-        Parameters
-        ----------
-        test : str
-            path of the file with the tests pics => columns: ["Chr","Chr_Start","Chr_End"]
+    Parameters
+    ----------
+    test : pd.dataFrame
+        df of the tests pics => columns: ["Chr","Chr_Start","Chr_End"]
+    
+    regdom : pd.dataFrame
+        df of the regulatory domains => columns: ["Chr"	"Chr_Start"	"Chr_End"	"Name"	"tss"	"strand"].
+
+    Returns
+    -------
+    res : list
+        list of gene associated with at least with one test peak
         
-        regdom : str
-            path of the file with the regulatory domains => columns: ["Chr"	"Chr_Start"	"Chr_End"	"Name"	"tss"	"strand"].
+    Exemples 
+    --------
+    test = pd.DataFrame({
+    ...    "Chr":["chr1"],
+    ...    "Chr_Start":[1052028],
+    ...    "Chr_End": [1052049]})
 
-        Returns
-        -------
-        res : dict
-            dict with the number of associated genes per genomic region : key = associated gene, value = number of peaks associated with the gene 
-            
-        Exemples 
-        --------
-        test = pd.DataFrame({
-        ...    "Chr":["chr1"],
-        ...    "Chr_Start":[1052028],
-        ...    "Chr_End": [1052049]})
+    regdom = pd.DataFrame({
+    ...    "Chr":["chr1","chr1"],
+    ...    "Chr_Start":[1034992,1079306],
+    ...    "Chr_End": [1115089,1132016],
+    ...    "Name":["RNF223","C1orf159"],
+    ...    "tss":[1074306,1116089],
+    ...    "strand":['-','-']})
 
-        regdom = pd.DataFrame({
-        ...    "Chr":["chr1","chr1"],
-        ...    "Chr_Start":[1034992,1079306],
-        ...    "Chr_End": [1115089,1132016],
-        ...    "Name":["RNF223","C1orf159"],
-        ...    "tss":[1074306,1116089],
-        ...    "strand":['-','-']})
+    >>> get_association(test,regdom)        
+        ['RNF223']
+    
+    """
+    res = []
+    for i in range(test.shape[0]) :
+        currTest = test.iloc[i]
+        regdom_curr_test = regdom.loc[(regdom["Chr"] == currTest["Chr"])].sort_values("Chr_Start")
+        regdom_curr_test = regdom_curr_test.loc[
+            ((regdom_curr_test["Chr_Start"] <= currTest["Chr_Start"]) & (regdom_curr_test["Chr_End"] >= currTest["Chr_End"])) | # regdom overlap totally test 
+            ((regdom_curr_test["Chr_Start"] >= currTest["Chr_Start"]) & (regdom_curr_test["Chr_End"] <= currTest["Chr_End"])) | # test overlap totally regdom 
+            ((regdom_curr_test["Chr_Start"] <= currTest["Chr_Start"]) & (regdom_curr_test["Chr_End"] <= currTest["Chr_End"]) & (regdom_curr_test["Chr_End"] >= currTest["Chr_Start"])) | # regdom overlap not totally test on left side 
+            ((regdom_curr_test["Chr_Start"] >= currTest["Chr_Start"]) & (regdom_curr_test["Chr_End"] >= currTest["Chr_End"]) & (regdom_curr_test["Chr_Start"] <= currTest["Chr_End"])) # regdom overlap not totally test on right side 
+            ] 
+        res = res + list(regdom_curr_test["Name"])
+    return list(dict.fromkeys(res))
 
-        >>> get_association(test,regdom)        
-            {'RNF223':2}
+def len_regdom(regdom:pd.DataFrame) -> dict :  
+    """
+    Function to calculate for each gene name from regdom the
+     size of the regulatory region for this gene in the genome 
+
+    Parameters
+    ----------    
+    regdom : pd.dataFrame
+        df of the regulatory domains => columns: ["Chr"	"Chr_Start"	"Chr_End"	"Name"	"tss"	"strand"].
+
+    Returns
+    -------
+    dict
+        dictionary in which each key corresponds to a gene name 
+        from regdom and the value is the size of the regulatory 
+        region for that gene
         
-        """
-        res = {}
-        test,regdom,_,_ = GREAT.loader(test,regdom,None,None)
-        for i in range(test.shape[0]) :
-            currTest = test.iloc[i]
-            regdom_curr_test = regdom.loc[regdom["Chr"] == currTest["Chr"]].sort_values("Chr_Start")
-            regdom_inf = regdom_curr_test.loc[regdom_curr_test["tss"] <= currTest["Chr_Start"]]
-            regdom_sup = regdom_curr_test.loc[regdom_curr_test["tss"] >= currTest["Chr_End"]]
-            try : 
-                if regdom_inf.iloc[-1]["Name"] not in res.keys() : 
-                    res[regdom_inf.iloc[-1]["Name"]] = 1 
-                else :
-                    res[regdom_inf.iloc[-1]["Name"]] += 1
-            except :
-                pass
+    Exemples 
+    --------
+    regdom = pd.DataFrame({
+    ...    "Chr":["chr1","chr1"],
+    ...    "Chr_Start":[1034992,1079306],
+    ...    "Chr_End": [1115089,1132016],
+    ...    "Name":["RNF223","C1orf159"],
+    ...    "tss":[1074306,1116089],
+    ...    "strand":['-','-']}))
 
-            try :
-                if regdom_sup.iloc[-1]["Name"] not in res.keys() : 
-                    res[regdom_sup.iloc[-1]["Name"]] = 1 
-                else :
-                    res[regdom_sup.iloc[-1]["Name"]] += 1
-            except : 
-                pass
-        return res
+    >>> len_regdom(regdom)
+        {'RNF223': 80097, 'C1orf159': 52710}
 
-    def get_dist_to_tss(test,regdom) : 
-        """
-        Function allowing from a file of genomic regions from CHIPseq 
-        and a file of genomic regulatory domains to determine the distance from peaks 
-        to the transcription start site of the associated gene
+    """
+    test = regdom["Chr_End"] - regdom["Chr_Start"]
+    return pd.DataFrame({"len" : list(test)},index = regdom["Name"]).to_dict()["len"]
 
-        Parameters
-        ----------
-        test : str
-            path of the file with the tests pics => columns: ["Chr","Chr_Start","Chr_End"]
+def number_of_hit(test,regdom) -> int : 
+    """ 
+    Function to calculate the number of hits from several 
+    genomic regions and the file describing the regulatory regions
+
+    Parameters
+    ----------
+    test : pd.dataFrame
+        df of the tests pics => columns: ["Chr","Chr_Start","Chr_End"]
+    
+    regdom : pd.dataFrame
+        df of the regulatory domains => columns: ["Chr"	"Chr_Start"	"Chr_End"	"Name"	"tss"	"strand"].
+
+    Returns
+    -------
+    nb : int
+        number of hit 
         
-        regdom : str
-            path of the file with the regulatory domains => columns: ["Chr"	"Chr_Start"	"Chr_End"	"Name"	"tss"	"strand"].
+    Exemples 
+    --------
+    test = pd.DataFrame({
+    ...    "Chr":["chr1"],
+    ...    "Chr_Start":[1052028],
+    ...    "Chr_End": [1052049]})
 
-        Returns
-        -------
-        res : dict
-            dict with the distance from tss to the associated genes : key = associated gene, value = distance from peaks to tss 
-            
-        Exemples 
-        --------
-        test = pd.DataFrame({
-        ...    "Chr":["chr1"],
-        ...    "Chr_Start":[1052028],
-        ...    "Chr_End": [1052049]})
+    regdom = pd.DataFrame({
+    ...    "Chr":["chr1","chr1"],
+    ...    "Chr_Start":[1034992,1079306],
+    ...    "Chr_End": [1115089,1132016],
+    ...    "Name":["RNF223","C1orf159"],
+    ...    "tss":[1074306,1116089],
+    ...    "strand":['-','-']})
 
-        regdom = pd.DataFrame({
-        ...    "Chr":["chr1","chr1"],
-        ...    "Chr_Start":[1034992,1079306],
-        ...    "Chr_End": [1115089,1132016],
-        ...    "Name":["RNF223","C1orf159"],
-        ...    "tss":[1074306,1116089],
-        ...    "strand":['-','-']})
+    >>> number_of_hit(test,regdom)        
+        1
+    
+    """
+    nb = 0
+    regdom = regdom[["Chr","Chr_Start","Chr_End"]]
+    regdom = regdom[regdom["Chr"].isin(list(test["Chr"]))]
+    for i in range(test.shape[0]) : 
+        chrom = test.iat[i,0]
+        start = test.iat[i,1]
+        end = test.iat[i,2]
+        regdom_np = regdom["Chr"].to_numpy()
+        reg_start = regdom["Chr_Start"].to_numpy()
+        reg_end = regdom["Chr_End"].to_numpy()
+        Chr_reduce = np.where(regdom_np == chrom)
+        reg_start = np.take(reg_start,Chr_reduce,axis = 0)[0]
+        reg_end = np.take(reg_end,Chr_reduce,axis = 0)[0]
 
-        >>> get_association(test,regdom)        
-            {'RNF223':[-22278]}
+        if any((reg_start <= start) & (reg_end >= end)):  
+            nb += 1
+    return nb
+
+def betacf(a,b,x) : 
+    """ Used by betai: Evaluates continued fraction for incomplete beta function """
+    maxit = 10000
+    eps = 3.0e-7 
+    fpmin = 1.0e-30
+    qab = a + b
+    qap = a + 1
+    qam = a - 1
+    c = 1
+    d = 1 - qab * x / qap
+    if fabs(d) < fpmin :
+        d = fpmin
+    d = 1 / d 
+    h = d
+    for m in range(1,maxit + 1) : 
+        m2 = 2 * m
+        aa = m * (b - m) * x / ((qam + m2) * (a + m2))
+        d = 1.0 + aa * d
+        if (fabs(d) < fpmin) : 
+            d = fpmin
+        c = 1.0 + aa / c
+        if (fabs(c) < fpmin):
+            c = fpmin
+        d = 1.0 / d
+        h *= d * c
+        aa = -(a + m) * (qab + m) * x / ((a + m2) * (qap + m2))
+        d = 1.0 + aa * d  
+        if (fabs(d) < fpmin):
+            d = fpmin
+        c = 1.0 + aa / c
+        if (fabs(c) < fpmin):
+            c = fpmin
+        d = 1.0 / d
+        dell = d * c
+        h *= dell
+        if (fabs(dell-1.0) < eps):
+            break
+    if (m > maxit):
+        print("a or b too big, or MAXIT too small in betacf")
+        return False
+    return h
+
+def betai(a,b,x) :
+    """Returns the incomplete beta function Ix(a, b)."""
+    if x < 0 or x > 1 : 
+        # print("bad x in routine betai")
+        return False
+    if x == 0 or x == 1 : 
+        bt = 0.0
+    else : 
+        bt = exp(lgamma(a + b) - lgamma(a) - lgamma(b) + a * log(x) + b * log(1.0 - x))
+    if x < (a + 1) / (a + b + 2) : 
+        return bt * betacf(a,b,x) / a
+    return 1 - bt * betacf(b,a,1-x) / b
+
+def get_binom_pval(n:int,k:int,p:float) -> float :
+    """
+    This function allows to calculate the binomial probability 
+    of obtaining k in a set of size n and whose probability is p 
+
+    Parameters
+    ----------
+    n : int
+        Number of genomic region in the test set 
+    k : int 
+        Number of test genomic regions in the regulatory domain of a gene with annotation
+    p : float
+        Percentage of genome annotated
+
+    Returns
+    -------
+    float
+        binomial probability
         
-        """
-        res = {}
-        test,regdom,_,_ = GREAT.loader(test,regdom,None,None)
-        for i in range(test.shape[0]) :
-            currTest = test.iloc[i]
-            regdom_curr_test = regdom.loc[regdom["Chr"] == currTest["Chr"]].sort_values("Chr_Start")
-            regdom_inf = regdom_curr_test.loc[regdom_curr_test["tss"] <= currTest["Chr_Start"]]
-            regdom_sup = regdom_curr_test.loc[regdom_curr_test["tss"] >= currTest["Chr_End"]]
-            try : 
-                if regdom_inf.iloc[-1]["Name"] not in res.keys() : 
-                    res[regdom_inf.iloc[-1]["Name"]] = [currTest["Chr_Start"] - res[regdom_inf.iloc[-1]["tss"]]]
-                else : 
-                    res[regdom_inf.iloc[-1]["Name"]].append(currTest["Chr_Start"] - res[regdom_inf.iloc[-1]["tss"]])
-            except :
-                pass
+    Exemples 
+    --------
+    >>> get_binom_pval(100,2,0.2)
+        0.9999999947037065
+    
+    """
+    if k == 0 : return 1
+    else : return betai(k , n - k + 1,p)
 
-            try :
-                if regdom_sup.iloc[-1]["Name"] not in res.keys() : 
-                    res[regdom_sup.iloc[-1]["Name"]] = [currTest["Chr_End"] - res[regdom_sup.iloc[-1]["tss"]]]
-                else :
-                    res[regdom_sup.iloc[-1]["Name"]].append(currTest["Chr_End"] - res[regdom_sup.iloc[-1]["tss"]])
-            except : 
-                pass
-        return res
+def hypergeom_pmf(N:int, K:int, n:int, k:int) -> float :  
+    """
+    Function to calculate the probability mass function for hypergeometric distribution
 
+    Parameters
+    ----------
+    N : int
+        Total number of gene in the genome
+    K : int 
+        Number of genes in the genome with annotation
+    n : int
+        Number of gene in the test set
+    k : int
+        Number of genes in the test gene set with annotation
+
+    Returns
+    -------
+    float
+        proability mass function
+        
+    Exemples 
+    --------
+    >>> hypergeom_pmf(100,10,30,1)
+        0.11270773995748315
+    
+    """
+    Achoosex = comb(K,k,exact=True) 
+    NAchoosenx = comb(N - K, n - k,exact=True) 
+    Nchoosen = comb(N,n,exact=True) 
+    return ((Achoosex) * NAchoosenx) / Nchoosen 
+
+def hypergeom_cdf(N:int, K:int, n:int, k:int) -> float :
+    """
+    Function to calculate the cumulative density funtion for hypergeometric distribution
+
+    Parameters
+    ----------
+    N : int
+        Total number of gene in the genome
+    K : int 
+        Number of genes in the genome with annotation
+    n : int
+        Number of gene in the test set
+    k : int
+        Number of genes in the test gene set with annotation
+
+    Returns
+    -------
+    float
+        Cumulative density function
+        
+    Exemples 
+    --------
+    >>> hypergeom_cdf(100,10,30,1)
+        0.9770827595419788
+    
+    """
+    return np.sum([hypergeom_pmf(N, K, n, x) for x in range(k , min(K,n) + 1)])
