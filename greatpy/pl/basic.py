@@ -232,7 +232,8 @@ def plot_enrich(data, n_terms=20, color="cool", save=False):
 
     Exemples 
     --------
-   
+   Example available here: https://github.com/theislab/greatpy/blob/Dotplot/notebooks/04_hypergeom_vs_gprofiler.ipynb 
+
     """
     # Test data input
     if not isinstance(data, pd.DataFrame):
