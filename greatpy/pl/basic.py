@@ -230,7 +230,6 @@ def plot_enrich(data, n_terms=20, save=False):
 
     Exemples 
     --------
-    Example available here: https://github.com/theislab/greatpy/blob/main/notebooks/07_plot.ipynb    
    
     """
     # Test data input
