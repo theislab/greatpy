@@ -210,7 +210,7 @@ def scale_data_5_75(data):
     return ((((data - mind)/drange*0.70)+0.05)*100)
 
 
-def plot_enrich(data, n_terms=20, save=False):
+def plot_enrich(data, n_terms=20, color="cool", save=False):
     """
     This function allows the creation of a dotplot of the enrichment
     GO term in the inputs datas  
@@ -250,14 +250,14 @@ def plot_enrich(data, n_terms=20, save=False):
     data_to_plot['scaled.overlap'] = scale_data_5_75(data_to_plot['intersection_size'])
     
     norm = colors.LogNorm(min_pval, max_pval)
-    sm = plt.cm.ScalarMappable(cmap="cool", norm=norm)
+    sm = plt.cm.ScalarMappable(cmap=color, norm=norm)
     sm.set_array([])
 
     rcParams.update({'font.size': 14, 'font.weight': 'bold'})
 
     sb.set(style="whitegrid")
 
-    path = plt.scatter(x='recall', y="name", c='p_value', cmap='cool', 
+    path = plt.scatter(x='recall', y="name", c='p_value', cmap=color, 
                     norm=colors.LogNorm(min_pval, max_pval), 
                     data=data_to_plot, linewidth=1, edgecolor="grey", 
                     s=[(i+10)**1.5 for i in data_to_plot['scaled.overlap']])
