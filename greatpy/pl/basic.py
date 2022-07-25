@@ -221,6 +221,8 @@ def plot_enrich(data, n_terms=20, color="cool", save=False):
         Results for greatpy 
     n_terms : int 
         the number of term to be shown 
+    color : str 
+        The color of the cmap in the plot 
     save : bool 
         Is the plot should be save 
 
