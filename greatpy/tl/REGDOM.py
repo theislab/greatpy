@@ -22,7 +22,7 @@ class REGDOM :
         bool
             True if the inputs are valid, False otherwise.
 
-        Exemples 
+        Examples 
         --------
         >>> validate_input("Two_Closet")
             True
@@ -94,7 +94,7 @@ class REGDOM :
         tss : pd.DataFrame
             The regulatory domains.
 
-        Exemples 
+        Examples 
         --------
         >>> regdom = create_basal_plus_extension_regdom(
         ...    tss_file=pd.read_csv("../../data/human/tss.bed",sep="\t",names=["Chr","tss","Strand"]),
@@ -197,7 +197,7 @@ class REGDOM :
         pd.DataFrame
             The regulatory domains.
 
-        Exemples 
+        Examples 
         --------
         >>> regdom = __create_two_closet_regdom(
         ...    tss_file=pd.read_csv("../../data/human/tss.bed",sep="\t",names=["Chr","tss","Strand"]),
@@ -238,7 +238,7 @@ class REGDOM :
         tss : pd.DataFrame
             The regulatory domains.
 
-        Exemples 
+        Examples 
         --------
         >>> regdom = create_basal_plus_extension_regdom(
         ...    tss_file=pd.read_csv("../../data/human/tss.bed",sep="\t",names=["Chr","tss","Strand"]),
@@ -316,7 +316,7 @@ class REGDOM :
         out : pd.DataFrame
             The regulatory domains.
 
-        Exemples 
+        Examples 
         --------
         >>> regdom = create_regdom(
         ...    tss_file="../../data/human/tss.bed",

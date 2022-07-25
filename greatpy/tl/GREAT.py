@@ -33,7 +33,7 @@ class GREAT:
         ann : pd.DataFrame
             Table with the annotation of each gene in the genome in the good format
             
-        Exemples 
+        Examples 
         --------
         >>> test,regdom,size,ann = GREAT.loader(
         ...    "../../data/tests/test_data/input/02_srf_hg38.bed",
@@ -170,7 +170,7 @@ class GREAT:
         pd.DataFrame
             dataframe contains for every GO ID associate with a every associated gene the p-value for the binomial test and the the hypergeometric test
             
-        Exemples 
+        Examples 
         --------
         >>> test,regdom,size,ann = GREAT.loader("../../data/tests/test_data/input/02_srf_hg38.bed","../../data/human/hg38/regulatory_domain.bed","../../data/human/hg38/chr_size.bed","../../data/human/ontologies.csv")
         >>> enrichment = GREAT.____enrichment_binom_and_hypergeom(
@@ -258,7 +258,7 @@ class GREAT:
         pd.DataFrame
             dataframe contains for every GO ID associate with a every associated gene the p-value for the binomial test
             
-        Exemples 
+        Examples 
         --------
         >>> test,regdom,size,ann = GREAT.loader("../../data/tests/test_data/input/02_srf_hg38.bed","../../data/human/hg38/regulatory_domain.bed","../../data/human/hg38/chr_size.bed","../../data/human/ontologies.csv")
         >>> enrichment = GREAT.____enrichment_binom(
@@ -339,7 +339,7 @@ class GREAT:
         pd.DataFrame
             dataframe contains for every GO ID associate with a every associated gene the p-value for the hypergeometric test
             
-        Exemples 
+        Examples 
         --------
         >>> test,regdom,size,ann = GREAT.loader("../../data/human/test_genomic_region.bed", "../../data/human/regulatory_domain.bed", "../../data/human/chr_size.bed", "../../data/human/ontologies.csv")
         >>> enrichment = GREAT.____enrichment_hypergeom(
@@ -412,7 +412,7 @@ class GREAT:
         pd.DataFrame
             dataframe contains for every GO ID associate with a every associated gene the p-value for the hypergeometric test
             
-        Exemples 
+        Examples 
         --------
         >>> test,regdom,size,ann = GREAT.loader("../../data/human/test_genomic_region.bed", "../../data/human/regulatory_domain.bed", "../../data/human/chr_size.bed", "../../data/human/ontologies.csv")
         >>> enrichment = GREAT.enrichment(
@@ -490,7 +490,7 @@ class GREAT:
         pd.DataFrame
             dataframe new columns with the Bonferroni correction for each p-value
             
-        Exemples 
+        Examples 
         --------
         >>> test,regdom,size,ann = GREAT.loader("../../data/human/test_genomic_region.bed", "../../data/human/regulatory_domain.bed", "../../data/human/chr_size.bed", "../../data/human/ontologies.csv")
         >>> enrichment = great.tl.GREAT.enrichment("../../data/human/test_genomic_region.bed", "../../data/human/regulatory_domain.bed", "../../data/human/chr_size.bed", "../../data/human/ontologies.csv",binom=True,hypergeom=True)
@@ -525,7 +525,7 @@ class GREAT:
         pd.DataFrame
             dataframe new columns with the fdr correction for each p-value
             
-        Exemples 
+        Examples 
         --------
         >>> test,regdom,size,ann = GREAT.loader("../../data/human/test_genomic_region.bed", "../../data/human/regulatory_domain.bed", "../../data/human/chr_size.bed", "../../data/human/ontologies.csv")
         >>> enrichment = great.tl.GREAT.enrichment("../../data/human/test_genomic_region.bed", "../../data/human/regulatory_domain.bed", "../../data/human/chr_size.bed", "../../data/human/ontologies.csv",binom=True,hypergeom=True)
@@ -560,7 +560,7 @@ class GREAT:
         pd.DataFrame
             dataframe with the rows deleted according to the p-value threshold
             
-        Exemples 
+        Examples 
         --------
         >>> test,regdom,size,ann = GREAT.loader("../../data/human/test_genomic_region.bed", "../../data/human/regulatory_domain.bed", "../../data/human/chr_size.bed", "../../data/human/ontologies.csv")
         >>> enrichment = great.tl.GREAT.enrichment("../../data/human/test_genomic_region.bed", "../../data/human/regulatory_domain.bed", "../../data/human/chr_size.bed", "../../data/human/ontologies.csv",binom=True,hypergeom=True)
@@ -599,7 +599,7 @@ def get_association(test,regdom) -> list :
     res : list
         list of gene associated with at least with one test peak
         
-    Exemples 
+    Examples 
     --------
     test = pd.DataFrame({
     ...    "Chr":["chr1"],
@@ -648,7 +648,7 @@ def len_regdom(regdom:pd.DataFrame) -> dict :
         from regdom and the value is the size of the regulatory 
         region for that gene
         
-    Exemples 
+    Examples 
     --------
     regdom = pd.DataFrame({
     ...    "Chr":["chr1","chr1"],
@@ -683,7 +683,7 @@ def number_of_hit(test,regdom) -> int :
     nb : int
         number of hit 
         
-    Exemples 
+    Examples 
     --------
     test = pd.DataFrame({
     ...    "Chr":["chr1"],
@@ -794,7 +794,7 @@ def get_binom_pval(n:int,k:int,p:float) -> float :
     float
         binomial probability
         
-    Exemples 
+    Examples 
     --------
     >>> get_binom_pval(100,2,0.2)
         0.9999999947037065
@@ -823,7 +823,7 @@ def hypergeom_pmf(N:int, K:int, n:int, k:int) -> float :
     float
         proability mass function
         
-    Exemples 
+    Examples 
     --------
     >>> hypergeom_pmf(100,10,30,1)
         0.11270773995748315
@@ -854,7 +854,7 @@ def hypergeom_cdf(N:int, K:int, n:int, k:int) -> float :
     float
         Cumulative density function
         
-    Exemples 
+    Examples 
     --------
     >>> hypergeom_cdf(100,10,30,1)
         0.9770827595419788

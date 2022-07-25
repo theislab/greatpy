@@ -20,7 +20,7 @@ def get_nb_asso_per_region(test : str or pd.DataFrame ,regdom:str or pd.DataFram
     res : dict
         dict with the number of associated genes per genomic region : key = associated gene, value = number of peaks associated with the gene 
         
-    Exemples 
+    Examples 
     --------
     test = pd.DataFrame({
     ...    "Chr":["chr1"],
@@ -72,7 +72,7 @@ def get_dist_to_tss(test : str or pd.DataFrame ,regdom:str or pd.DataFrame) -> d
     res : dict
         dict with the distance from tss to the associated genes : key = number of the input, value = distance from peaks to tss of associated genes 
         
-    Exemples 
+    Examples 
     --------
     test = pd.DataFrame({
     ...    "Chr":["chr1"],

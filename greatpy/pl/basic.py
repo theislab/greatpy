@@ -32,7 +32,7 @@ def scatterplot(great_df:pd.DataFrame,colname_x:str,colname_y:str,title:str="",m
     -------
     None
 
-    Exemples 
+    Examples 
     --------
     Example available here: https://github.com/theislab/greatpy/blob/main/notebooks/02_binom_vs_hypergeom.ipynb
 
@@ -65,7 +65,7 @@ def graph_nb_asso_per_peaks(test:str or pd.DataFrame,regdom:str or pd.DataFrame,
     -------
     None
 
-    Exemples 
+    Examples 
     --------
     Example available here: https://github.com/theislab/greatpy/blob/main/notebooks/07_plot.ipynb   
     """
@@ -110,7 +110,7 @@ def graph_dist_tss(test:str or pd.DataFrame,regdom:str or pd.DataFrame,ax=None,c
     -------
     None
 
-    Exemples 
+    Examples 
     --------
     Example available here: https://github.com/theislab/greatpy/blob/main/notebooks/07_plot.ipynb 
    
@@ -166,7 +166,7 @@ def graph_absolute_dist_tss(test:str or pd.DataFrame,regdom:str or pd.DataFrame,
     -------
     None
 
-    Exemples 
+    Examples 
     --------
     Example available here: https://github.com/theislab/greatpy/blob/main/notebooks/07_plot.ipynb    
    
@@ -230,9 +230,9 @@ def plot_enrich(data, n_terms=20, color="cool", save=False):
     -------
     None
 
-    Exemples 
+    Examples 
     --------
-   Example available here: https://github.com/theislab/greatpy/blob/Dotplot/notebooks/04_hypergeom_vs_gprofiler.ipynb 
+    Example available here: https://github.com/theislab/greatpy/blob/Dotplot/notebooks/04_hypergeom_vs_gprofiler.ipynb 
 
     """
     # Test data input
