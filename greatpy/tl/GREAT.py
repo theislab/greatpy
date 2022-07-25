@@ -229,10 +229,11 @@ class GREAT:
                 get_binom_pval(n_binom,elem[0],elem[1]/total_nu),
                 elem[0]/(elem[1]/total_nu), #binom enrichment 
                 hypergeom_cdf(hypergeom_total_number_gene,elem[4],hypergeom_gene_set,elem[5]),
-                (elem[5]*hypergeom_total_number_gene)/(hypergeom_gene_set*elem[4]) # Hypergeom enrichment 
+                (elem[5]*hypergeom_total_number_gene)/(hypergeom_gene_set*elem[4]), # Hypergeom enrichment 
+                elem[0] 
                 ] for elem in tmp})
 
-        return pd.DataFrame(res).transpose().rename(columns = {0 : "go_term",1 : "binom_p_value",2 : "binom_fold_enrichment",3 : "hypergeom_p_value",4 : "hypergeometric_fold_enrichment"}).replace(0,np.nan).dropna().sort_values(by = "binom_p_value")
+        return pd.DataFrame(res).transpose().rename(columns = {0 : "go_term",1 : "binom_p_value",2 : "binom_fold_enrichment",3 : "hypergeom_p_value",4 : "hypergeometric_fold_enrichment",5:"intersection_size"}).replace(0,np.nan).dropna().sort_values(by = "binom_p_value")
     
     def __enrichment_binom(test:pd.DataFrame, regdom:pd.DataFrame, size: pd.DataFrame, ann:pd.DataFrame, asso:list) -> pd.DataFrame :
         """
@@ -307,10 +308,11 @@ class GREAT:
             res.update({elem[2] : [ 
                 elem[3],
                 get_binom_pval(n_binom,elem[0],elem[1]/total_nu),
-                elem[0]/(elem[1]/total_nu) # binom enrichment 
+                elem[0]/(elem[1]/total_nu), # binom enrichment 
+                elem[0]
                 ] for elem in tmp})
 
-        return pd.DataFrame(res).transpose().rename(columns = {0 : "go_term",1 : "binom_p_value",2 : "binom_fold_enrichment"}).sort_values(by = "binom_p_value")
+        return pd.DataFrame(res).transpose().rename(columns = {0 : "go_term",1 : "binom_p_value",2 : "binom_fold_enrichment",3:"intersection_size"}).sort_values(by = "binom_p_value")
 
     def __enrichment_hypergeom(test:pd.DataFrame,regdom:pd.DataFrame,ann:pd.DataFrame,asso:list) -> pd.DataFrame : 
         """
@@ -372,10 +374,11 @@ class GREAT:
             res.update({elem[0]:[
                 elem[1], 
                 hypergeom_cdf(hypergeom_total_number_gene,elem[2],hypergeom_gene_set,elem[3]),
-                (elem[3]*hypergeom_total_number_gene)/(hypergeom_gene_set*elem[2]) # hypergeom enrichment 
+                (elem[3]*hypergeom_total_number_gene)/(hypergeom_gene_set*elem[2]), # hypergeom enrichment 
+                elem[3]
                 ] for elem in tmp}) 
 
-        return pd.DataFrame(res).transpose().rename(columns = {0 : "go_term",1 : "hypergeom_p_value",2 : "hypergeometric_fold_enrichment"}).replace(0,np.nan).dropna().sort_values(by = "hypergeom_p_value")
+        return pd.DataFrame(res).transpose().rename(columns = {0 : "go_term",1 : "hypergeom_p_value",2 : "hypergeometric_fold_enrichment",3:"intersection_size"}).replace(0,np.nan).dropna().sort_values(by = "hypergeom_p_value")
 
 
     def enrichment(test_file: str or pd.DataFrame,regdom_file: str or pd.DataFrame,chr_size_file: str or pd.DataFrame, annotation_file: str or pd.DataFrame, binom=True,hypergeom=True) -> pd.DataFrame :
