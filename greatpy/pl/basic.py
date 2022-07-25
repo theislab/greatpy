@@ -211,6 +211,28 @@ def scale_data_5_75(data):
 
 
 def plot_enrich(data, n_terms=20, save=False):
+    """
+    This function allows the creation of a dotplot of the enrichment
+    GO term in the inputs datas  
+
+    Parameters
+    ----------
+    data : pd.DataFrame
+        Results for greatpy 
+    n_terms : int 
+        the number of term to be shown 
+    save : bool 
+        Is the plot should be save 
+
+    Returns
+    -------
+    None
+
+    Exemples 
+    --------
+    Example available here: https://github.com/theislab/greatpy/blob/main/notebooks/07_plot.ipynb    
+   
+    """
     # Test data input
     if not isinstance(data, pd.DataFrame):
         raise ValueError('Please input a Pandas Dataframe output by gprofiler.')
