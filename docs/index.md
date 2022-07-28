@@ -11,7 +11,6 @@ changelog.md
 developer_docs.md
 references.md
 
-notebooks/
-    01_create_regdom.ipynb
+notebooks/01_create_regdom.ipynb
 
 ```
