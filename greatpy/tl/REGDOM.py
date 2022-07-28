@@ -290,7 +290,7 @@ class REGDOM :
         return tss
 
     def create_regdom(tss_file:str,chr_sizes_file:str,association_rule:str,max_extension:int=1000000,basal_upstream:int=5000,basal_downstream:int=1000, out_path:str or None=None) -> pd.DataFrame : 
-        """
+        """\
         This function allows to create regdoms according to the three association rules, to write the result in a file or not and to return the result as a pd.DataFrame
 
         Parameters
@@ -319,10 +319,10 @@ class REGDOM :
         Examples 
         --------
         >>> regdom = create_regdom(
-        ...    tss_file="../../data/human/tss.bed",
-        ...    chr_sizes_file="../../data/human/chr_size.bed",sep="\t",names=["Chr","Size"],
-        ...    association_rule="OneCloset",
-        ... )
+            tss_file="../../data/human/tss.bed",
+            chr_sizes_file="../../data/human/chr_size.bed",sep="\t",names=["Chr","Size"],
+            association_rule="OneCloset",
+            )
         >>> regdom.head()
         ...    |    | Chr   |   Chr_Start |   Chr_End | name      |   tss | Strand   |
         ...    |---:|:------|------------:|----------:|:----------|------:|:---------|
