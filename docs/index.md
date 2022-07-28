@@ -11,6 +11,6 @@ changelog.md
 developer_docs.md
 references.md
 
-notebooks
+notebooks/index
 
 ```
