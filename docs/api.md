@@ -7,7 +7,6 @@
 ```
 ### Create regulatory domain 
 ```{eval-rst}
-<!-- .. module:: greatpy.tl.REGDOM -->
 .. autosummary::
     :toctree: generated/
 
