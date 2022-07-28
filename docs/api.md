@@ -3,7 +3,7 @@
 ## Tools : `tl`
 ```{eval-rst}
 .. module:: greatpy.tl
-..currentmodule:: greatpy
+.. currentmodule:: greatpy
 ```
 ### Create regulatory domain 
 ```{eval-rst}
