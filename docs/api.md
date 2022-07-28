@@ -48,8 +48,7 @@
     tl.hypergeom_cdf
 ```
 
-## Plotting
-
+## Plotting : `tl`
 ```{eval-rst}
 .. module:: greatpy.pl
 .. currentmodule:: greatpy
