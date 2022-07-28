@@ -1,3 +1,12 @@
+```{eval-rst}
+.. module:: greatpy
+```
+
+```{eval-rst}
+.. automodule:: greatpy
+   :noindex:
+```
+
 # API
 
 ## Tools : `tl`
@@ -5,8 +14,8 @@
 .. module:: greatpy.tl
 ```
 
-```
-..currentmodule:: greatpy
+```{eval-rst}
+.. currentmodule:: greatpy
 ```
 ### Create regulatory domain 
 ```{eval-rst}
