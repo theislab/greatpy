@@ -27,6 +27,8 @@ dependencies = [
     "seaborn",
     "dask", 
     "scipy", 
+    "gprofiler",
+    "rpy2"
     ]
 
 [project.optional-dependencies]
