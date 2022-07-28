@@ -1,15 +1,18 @@
 # API
 
-## Create regulatory domain 
+## Tools
+
+### Create regulatory domain 
 ```{eval-rst}
 .. module:: greatpy.tl.REGDOM
 
 .. autosummary::
     :toctree: generated
+
     REGDOM.create_regdom
 ```
 
-## greatpy computation
+### greatpy computation
 ```{eval-rst}
 .. module:: greatpy.tl.GREAT
 
@@ -22,8 +25,7 @@
     GREAT.set_fdr
     GREAT.set_threshold
 ```
-## Tools
-
+### utils side tools
 ```{eval-rst}
 .. module:: greatpy.tl
 .. currentmodule:: greatpy
