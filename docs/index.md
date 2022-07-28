@@ -4,13 +4,14 @@
 
 ```{toctree}
 :hidden: true
-:maxdepth: 2
+:maxdepth: 1
 
 api.md
 changelog.md
 developer_docs.md
 references.md
 
-notebooks/index
+notebooks/
+    01_create_regdom.ipynb
 
 ```
