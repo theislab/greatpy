@@ -1,5 +1,27 @@
 # API
 
+## Create regulatory domain 
+```{eval-rst}
+.. module:: greatpy.tl.REGDOM
+
+.. autosummary::
+    :toctree: generated
+    REGDOM.create_regdom
+```
+
+## greatpy computation
+```{eval-rst}
+.. module:: greatpy.tl.GREAT
+
+.. autosummary::
+    :toctree: generated
+
+    GREAT.loader
+    GREAT.enrichment
+    GREAT.set_bonferroni
+    GREAT.set_fdr
+    GREAT.set_threshold
+```
 ## Tools
 
 ```{eval-rst}
@@ -19,12 +41,6 @@
     tl.get_binom_pval 
     tl.hypergeom_pmf 
     tl.hypergeom_cdf
-    tl.REGDOM.create_regdom
-    tl.GREAT.loader
-    tl.GREAT.enrichment
-    tl.GREAT.set_bonferroni
-    tl.GREAT.set_fdr
-    tl.GREAT.set_threshold
 ```
 
 ## Plotting
