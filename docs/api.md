@@ -21,7 +21,6 @@
 ```{eval-rst}
 .. autosumary:: 
     :totoctree: generated/
-<!-- .. module:: greatpy.tl.REGDOM -->
 
     REGDOM.create_regdom
 ```
