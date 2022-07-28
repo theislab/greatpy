@@ -19,6 +19,10 @@
 ```
 ### Create regulatory domain 
 ```{eval-rst}
+.. module:: greatpy.tl.REGDOM
+```
+
+```{eval-rst}
 .. autosumary:: 
     :totoctree: generated/
 
