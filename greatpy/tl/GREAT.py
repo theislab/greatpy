@@ -279,13 +279,13 @@ class GREAT:
             asso = get_association(test,regdom)
             )
         >>> enrichment.head()
-        ...    |            | go_term                                                          |   binom_p_value |
-        ...    |:-----------|:-----------------------------------------------------------------|----------------:|
-        ...    | GO:0045887 | positive regulation of synaptic growth at neuromuscular junction |     5.17744e-13 |
-        ...    | GO:0044721 | protein import into peroxisome matrix, substrate release         |     4.83812e-10 |
-        ...    | GO:0036250 | peroxisome transport along microtubule                           |     4.83812e-10 |
-        ...    | GO:0016561 | protein import into peroxisome matrix, translocation             |     6.31131e-10 |
-        ...    | GO:0047485 | protein N-terminus binding                                       |     1.2945e-09  |
+        ...    |            | go_term                                                   |   binom_p_value |   binom_fold_enrichment |   intersection_size |   recall |
+        ...    |:-----------|:----------------------------------------------------------|----------------:|------------------------:|--------------------:|---------:|
+        ...    | GO:0072749 | cellular response to cytochalasin B                       |     2.21968e-12 |                227251   |                   5 |  5       |
+        ...    | GO:0051623 | positive regulation of norepinephrine uptake              |     2.21968e-12 |                227251   |                   5 |  5       |
+        ...    | GO:0098973 | structural constituent of postsynaptic actin cytoskeleton |     2.1174e-10  |                 91052.6 |                   5 |  1.25    |
+        ...    | GO:0097433 | dense body                                                |     6.40085e-10 |                 16061.8 |                   8 |  1.33333 |
+        ...    | GO:0032796 | uropod organization                                       |     2.6988e-09  |                 54544.9 |                   5 |  2.5     |
         """ 
         # Init Great
         res = {}
@@ -465,14 +465,13 @@ class GREAT:
             binom=True,
             hypergeom=False
             )
-        >>> enrichment.head()
-        ...    |            | go_term                                                          |   binom_p_value |
-        ...    |:-----------|:-----------------------------------------------------------------|----------------:|
-        ...    | GO:0045887 | positive regulation of synaptic growth at neuromuscular junction |     5.17744e-13 |
-        ...    | GO:0044721 | protein import into peroxisome matrix, substrate release         |     4.83812e-10 |
-        ...    | GO:0036250 | peroxisome transport along microtubule                           |     4.83812e-10 |
-        ...    | GO:0016561 | protein import into peroxisome matrix, translocation             |     6.31131e-10 |
-        ...    | GO:0047485 | protein N-terminus binding                                       |     1.2945e-09  |
+        ...    |            | go_term                                                   |   binom_p_value |   binom_fold_enrichment |   intersection_size |   recall |
+        ...    |:-----------|:----------------------------------------------------------|----------------:|------------------------:|--------------------:|---------:|
+        ...    | GO:0072749 | cellular response to cytochalasin B                       |     2.21968e-12 |                227251   |                   5 |  5       |
+        ...    | GO:0051623 | positive regulation of norepinephrine uptake              |     2.21968e-12 |                227251   |                   5 |  5       |
+        ...    | GO:0098973 | structural constituent of postsynaptic actin cytoskeleton |     2.1174e-10  |                 91052.6 |                   5 |  1.25    |
+        ...    | GO:0097433 | dense body                                                |     6.40085e-10 |                 16061.8 |                   8 |  1.33333 |
+        ...    | GO:0032796 | uropod organization                                       |     2.6988e-09  |                 54544.9 |                   5 |  2.5     |
 
         >>> enrichment = GREAT.enrichment(
             test = test,

@@ -62,35 +62,15 @@ plt.show()
 ```
 #### Graph of the number of association per peak 
 ```
-gp.pl.graph_nb_asso_per_peaks(
-    test=df_or_path_to_test_file, 
-    regdom=df_or_path_to_regdomfile_file   
-)
-plt.show()
-```
-```{image} _static/output_images/Number_of_association.jpg
-```
-
-#### Graph of the distance to the TSS 
-```
-gp.pl.graph_dist_tss(
-    test=df_or_path_to_test_file, 
-    regdom=df_or_path_to_regdomfile_file   
-)
-plt.show()
-```
-```{image} _static/output_images/dist_tss.jpg
-```
-#### Graph of the absolute distance to the TSS 
-```
-gp.pl.graph_absolute_dist_tss(
-    test=df_or_path_to_test_file, 
-    regdom=df_or_path_to_regdomfile_file   
-)
+fig,ax = plt.subplots(1,3,figsize=(30,8))
+gp.pl.graph_nb_asso_per_peaks(test,regdom,ax[0])
+gp.pl.graph_dist_tss(test,regdom,ax[1])
+gp.pl.graph_absolute_dist_tss(test,regdom,ax[2])
+plt.savefig("save1",dpi=500)
 plt.show()
 ```
 
-```{image} _static/output_images/abs_dist_tss.jpg
+```{image} _static/output_images/plot1.png
 ```
 #### Dotplot showing the enrichment of the GO terms 
 ```
