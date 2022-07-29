@@ -15,9 +15,9 @@ Please refer to the [documentation][link-docs]. In particular, the
 
 -   [API documentation][link-api].
 
-### What is great : 
+### What is GREAT : 
 Great is a bioinformatics tool to analyze cis-regulatory regions of the genome. This method can be used to assign probable biological meanings to unannotated genes based on the annotations carried by neighboring genes. This tool allows going from peaks in .bed format to enrichment ontology terms associated with these peaks using several statistical tests. 
-This package is strongly inspired by [great][great_article] allowing Helmholtz to have a stable and perennial version of the package.
+This package is strongly inspired by [GREAT][great_article] allowing Helmholtz to have a stable and perennial version of the package.
 
 ```{image} _static/README_images/great_tool.jpg
 ```
@@ -133,8 +133,18 @@ If you found a bug, please use the [issue tracker][issue-tracker].
 
 ## Citation
 
-> t.b.a
+For cite greatpy :
 
+```bibtex
+@software{greatpy,
+  author = {Ibarra, Mauger-Birocheau}},
+  doi = {},
+  month = {},
+  title = {{greatpy}},
+  url = {https://github.com/theislab/greatpy},
+  year = {2022}
+}
+```
 [scverse-discourse]: https://discourse.scverse.org/
 [issue-tracker]: https://github.com/ilibarra/greatpy/issues
 [changelog]: https://greatpy.readthedocs.io/latest/changelog.html
