@@ -1,13 +1,26 @@
+```{eval-rst}
+.. module:: greatpy
+```
+
+```{eval-rst}
+.. automodule:: greatpy
+   :noindex:
+```
 # API
+```
+import greatpy as gp
+```
 
 ## Tools : `tl`
 ```{eval-rst}
 .. module:: greatpy.tl
+```
+
+```{eval-rst}
 .. currentmodule:: greatpy
 ```
 ### Create regulatory domain 
 ```{eval-rst}
-.. currentmodule:: greatpy.tl
 .. autosummary::
     :toctree: generated/
 
@@ -16,7 +29,6 @@
 
 ### greatpy computation
 ```{eval-rst}
-.. module:: greatpy.tl
 
 .. autosummary::
     :toctree: generated
@@ -29,7 +41,6 @@
 ```
 ### utils side tools
 ```{eval-rst}
-.. module:: greatpy.tl
 .. currentmodule:: greatpy
 
 .. autosummary::
@@ -49,7 +60,6 @@
 
 ## Plotting : `tl`
 ```{eval-rst}
-.. module:: greatpy.pl
 .. currentmodule:: greatpy
 
 .. autosummary::
