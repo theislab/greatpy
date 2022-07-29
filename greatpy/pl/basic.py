@@ -32,10 +32,6 @@ def scatterplot(great_df:pd.DataFrame,colname_x:str,colname_y:str,title:str="",m
     -------
     None
 
-    Examples 
-    --------
-    Example available here: https://github.com/theislab/greatpy/blob/main/notebooks/02_binom_vs_hypergeom.ipynb
-
     """
     great_df = great_df.dropna()
     great_df = great_df.astype({colname_x:"float64",colname_y:"float64"})
@@ -65,9 +61,6 @@ def graph_nb_asso_per_peaks(test:str or pd.DataFrame,regdom:str or pd.DataFrame,
     -------
     None
 
-    Examples 
-    --------
-    Example available here: https://github.com/theislab/greatpy/blob/main/notebooks/07_plot.ipynb   
     """
     nb_asso_per_peaks = gp.tl.get_nb_asso_per_region(test,regdom)
 
@@ -110,10 +103,6 @@ def graph_dist_tss(test:str or pd.DataFrame,regdom:str or pd.DataFrame,ax=None,c
     -------
     None
 
-    Examples 
-    --------
-    Example available here: https://github.com/theislab/greatpy/blob/main/notebooks/07_plot.ipynb 
-   
     """
     res = {"<-500": [0],"-500:-50": [0],"-50:-5": [0],"-5:0": [0],"0:5": [0],"5:50": [0],"50:500": [0],">500": [0]}
     nb = 0
@@ -166,10 +155,6 @@ def graph_absolute_dist_tss(test:str or pd.DataFrame,regdom:str or pd.DataFrame,
     -------
     None
 
-    Examples 
-    --------
-    Example available here: https://github.com/theislab/greatpy/blob/main/notebooks/07_plot.ipynb    
-   
     """
     res = {"0:5": [0],"5:50": [0],"50:500": [0],">500": [0]}
     nb = 0
@@ -229,10 +214,6 @@ def plot_enrich(data, n_terms=20, color="cool", save=False):
     Returns
     -------
     None
-
-    Examples 
-    --------
-    Example available here: https://github.com/theislab/greatpy/blob/Dotplot/notebooks/04_hypergeom_vs_gprofiler.ipynb 
 
     """
     # Test data input
