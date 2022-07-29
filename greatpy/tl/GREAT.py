@@ -601,12 +601,12 @@ def get_association(test,regdom) -> list :
         
     Examples 
     --------
-    test = pd.DataFrame({
+    >>> test = pd.DataFrame({
     ...    "chr":["chr1"],
     ...    "chr_start":[1052028],
     ...    "chr_end": [1052049]})
 
-    regdom = pd.DataFrame({
+    >>> regdom = pd.DataFrame({
     ...    "chr":["chr1","chr1"],
     ...    "chr_start":[1034992,1079306],
     ...    "chr_end": [1115089,1132016],
@@ -615,7 +615,7 @@ def get_association(test,regdom) -> list :
     ...    "strand":['-','-']})
 
     >>> get_association(test,regdom)        
-        ['RNF223']
+    ...    ['RNF223']
     
     """
     res = []
