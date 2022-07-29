@@ -303,6 +303,6 @@ def plot_enrich(data, n_terms=20, color="cool", save=False):
                     facecolor='black')
 
     if save:
-        plt.savefig(save, dpi=300, format='pdf', bbox_inches='tight')
+        plt.savefig("dotplot.save", dpi=300, format='pdf', bbox_inches='tight')
 
     plt.show()
