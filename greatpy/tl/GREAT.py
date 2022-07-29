@@ -43,40 +43,40 @@ class GREAT:
         ...    )
 
         >>> test.head()
-            |    | Chr   |   Chr_Start |   Chr_End |
-            |---:|:------|------------:|----------:|
-            |  0 | chr1  |     1052028 |   1052049 |
-            |  1 | chr1  |     1065512 |   1065533 |
-            |  2 | chr1  |     1067375 |   1067397 |
-            |  3 | chr1  |     1068083 |   1068119 |
-            |  4 | chr1  |    10520283 |  10520490 |
+        ...    |    | Chr   |   Chr_Start |   Chr_End |
+        ...    |---:|:------|------------:|----------:|
+        ...    |  0 | chr1  |     1052028 |   1052049 |
+        ...    |  1 | chr1  |     1065512 |   1065533 |
+        ...    |  2 | chr1  |     1067375 |   1067397 |
+        ...    |  3 | chr1  |     1068083 |   1068119 |
+        ...    |  4 | chr1  |    10520283 |  10520490 |
 
         >>> regdom.head()
-            |    | Chr   |   Chr_Start |   Chr_End | Name      |   tss | Strand   |
-            |---:|:------|------------:|----------:|:----------|------:|:---------|
-            |  0 | chr1  |           0 |     22436 | MIR6859-1 | 17436 | -        |
-            |  1 | chr1  |       16436 |     22436 | MIR6859-2 | 17436 | -        |
-            |  2 | chr1  |       16436 |     22436 | MIR6859-3 | 17436 | -        |
-            |  3 | chr1  |       16436 |     28370 | MIR6859-4 | 17436 | -        |
-            |  4 | chr1  |       22436 |     34370 | WASH7P    | 29370 | -        |
+        ...    |    | Chr   |   Chr_Start |   Chr_End | Name      |   tss | Strand   |
+        ...    |---:|:------|------------:|----------:|:----------|------:|:---------|
+        ...    |  0 | chr1  |           0 |     22436 | MIR6859-1 | 17436 | -        |
+        ...    |  1 | chr1  |       16436 |     22436 | MIR6859-2 | 17436 | -        |
+        ...    |  2 | chr1  |       16436 |     22436 | MIR6859-3 | 17436 | -        |
+        ...    |  3 | chr1  |       16436 |     28370 | MIR6859-4 | 17436 | -        |
+        ...    |  4 | chr1  |       22436 |     34370 | WASH7P    | 29370 | -        |
 
         >>> size.head()
-            |    | Chrom   |      Size |
-            |---:|:--------|----------:|
-            |  0 | chr1    | 248956422 |
-            |  1 | chr2    | 242193529 |
-            |  2 | chr3    | 198295559 |
-            |  3 | chr4    | 190214555 |
-            |  4 | chr5    | 181538259 |
+        ...    |    | Chrom   |      Size |
+        ...    |---:|:--------|----------:|
+        ...    |  0 | chr1    | 248956422 |
+        ...    |  1 | chr2    | 242193529 |
+        ...    |  2 | chr3    | 198295559 |
+        ...    |  3 | chr4    | 190214555 |
+        ...    |  4 | chr5    | 181538259 |
             
         >>> ann.head()
-            |    | id         | name                                                   | symbol        |
-            |---:|:-----------|:-------------------------------------------------------|:--------------|
-            |  0 | GO:0003924 | GTPase activity                                        | DNAJC25-GNG10 |
-            |  1 | GO:0007186 | G protein-coupled receptor signaling pathway           | DNAJC25-GNG10 |
-            |  2 | GO:0003723 | RNA binding                                            | NUDT4B        |
-            |  3 | GO:0005829 | cytosol                                                | NUDT4B        |
-            |  4 | GO:0008486 | diphosphoinositol-polyphosphate diphosphatase activity | NUDT4B        |
+        ...    |    | id         | name                                                   | symbol        |
+        ...    |---:|:-----------|:-------------------------------------------------------|:--------------|
+        ...    |  0 | GO:0003924 | GTPase activity                                        | DNAJC25-GNG10 |
+        ...    |  1 | GO:0007186 | G protein-coupled receptor signaling pathway           | DNAJC25-GNG10 |
+        ...    |  2 | GO:0003723 | RNA binding                                            | NUDT4B        |
+        ...    |  3 | GO:0005829 | cytosol                                                | NUDT4B        |
+        ...    |  4 | GO:0008486 | diphosphoinositol-polyphosphate diphosphatase activity | NUDT4B        |
         
         """
 
@@ -174,21 +174,21 @@ class GREAT:
         --------
         >>> test,regdom,size,ann = GREAT.loader("../../data/tests/test_data/input/02_srf_hg38.bed","../../data/human/hg38/regulatory_domain.bed","../../data/human/hg38/chr_size.bed","../../data/human/ontologies.csv")
         >>> enrichment = GREAT.____enrichment_binom_and_hypergeom(
-        ...    test = test,
-        ...    regdom = regdom,
-        ...    size = size,
-        ...    ann = ann,
-        ...    asso = get_association(test,regdom)
-        ...    )
+            test = test,
+            regdom = regdom,
+            size = size,
+            ann = ann,
+            asso = get_association(test,regdom)
+            )
 
         >>> enrichment.head()
-            |            | go_term                                                          |   binom_p_value |   hypergeom_p_value |
-            |:-----------|:-----------------------------------------------------------------|----------------:|--------------------:|
-            | GO:0045887 | positive regulation of synaptic growth at neuromuscular junction |     5.17744e-13 |          0.0029275  |
-            | GO:0044721 | protein import into peroxisome matrix, substrate release         |     4.83812e-10 |          0.0029275  |
-            | GO:0036250 | peroxisome transport along microtubule                           |     4.83812e-10 |          0.0029275  |
-            | GO:0016561 | protein import into peroxisome matrix, translocation             |     6.31131e-10 |          0.00584656 |
-            | GO:0047485 | protein N-terminus binding                                       |     1.2945e-09  |          0.0050377  |
+        ...    |            | go_term                                                          |   binom_p_value |   hypergeom_p_value |
+        ...    |:-----------|:-----------------------------------------------------------------|----------------:|--------------------:|
+        ...    | GO:0045887 | positive regulation of synaptic growth at neuromuscular junction |     5.17744e-13 |          0.0029275  |
+        ...    | GO:0044721 | protein import into peroxisome matrix, substrate release         |     4.83812e-10 |          0.0029275  |
+        ...    | GO:0036250 | peroxisome transport along microtubule                           |     4.83812e-10 |          0.0029275  |
+        ...    | GO:0016561 | protein import into peroxisome matrix, translocation             |     6.31131e-10 |          0.00584656 |
+        ...    | GO:0047485 | protein N-terminus binding                                       |     1.2945e-09  |          0.0050377  |
         """
         # Init Great
         res = {}
@@ -262,12 +262,12 @@ class GREAT:
         --------
         >>> test,regdom,size,ann = GREAT.loader("../../data/tests/test_data/input/02_srf_hg38.bed","../../data/human/hg38/regulatory_domain.bed","../../data/human/hg38/chr_size.bed","../../data/human/ontologies.csv")
         >>> enrichment = GREAT.____enrichment_binom(
-        ...    test = test,
-        ...    regdom = regdom,
-        ...    size = size,
-        ...    ann = ann,
-        ...    asso = get_association(test,regdom)
-        ...    )
+            test = test,
+            regdom = regdom,
+            size = size,
+            ann = ann,
+            asso = get_association(test,regdom)
+            )
 
         >>> enrichment.head()
             |            | go_term                                                          |   binom_p_value |
@@ -343,11 +343,11 @@ class GREAT:
         --------
         >>> test,regdom,size,ann = GREAT.loader("../../data/human/test_genomic_region.bed", "../../data/human/regulatory_domain.bed", "../../data/human/chr_size.bed", "../../data/human/ontologies.csv")
         >>> enrichment = GREAT.____enrichment_hypergeom(
-        ...    test = test,
-        ...    regdom = regdom,
-        ...    ann = ann,
-        ...    asso = get_association(test,regdom)
-        ...    )
+            test = test,
+            regdom = regdom,
+            ann = ann,
+            asso = get_association(test,regdom)
+            )
 
         >>> enrichment.head()   
         """ 
@@ -416,13 +416,13 @@ class GREAT:
         --------
         >>> test,regdom,size,ann = GREAT.loader("../../data/human/test_genomic_region.bed", "../../data/human/regulatory_domain.bed", "../../data/human/chr_size.bed", "../../data/human/ontologies.csv")
         >>> enrichment = GREAT.enrichment(
-        ...    test = test,
-        ...    regdom = regdom,
-        ...    chr_size_file = size,
-        ...    ann = ann,
-        ...    binom=True,
-        ...    hypergeom=True
-        ...    )
+            test = test,
+            regdom = regdom,
+            chr_size_file = size,
+            ann = ann,
+            binom=True,
+            hypergeom=True
+            )
         >>> enrichment.head()
             |            | go_term                                                          |   binom_p_value |   hypergeom_p_value |
             |:-----------|:-----------------------------------------------------------------|----------------:|--------------------:|
@@ -433,13 +433,13 @@ class GREAT:
             | GO:0047485 | protein N-terminus binding                                       |     1.2945e-09  |          0.0050377  |
 
         >>> enrichment = GREAT.enrichment(
-        ...    test = test,
-        ...    regdom = regdom,
-        ...    ann = ann,
-        ...    asso = get_association(test,regdom),
-        ...    binom=True,
-        ...    hypergeom=False
-        ...    )
+            test = test,
+            regdom = regdom,
+            ann = ann,
+            asso = get_association(test,regdom),
+            binom=True,
+            hypergeom=False
+            )
         >>> enrichment.head()
             |            | go_term                                                          |   binom_p_value |
             |:-----------|:-----------------------------------------------------------------|----------------:|
@@ -450,13 +450,13 @@ class GREAT:
             | GO:0047485 | protein N-terminus binding                                       |     1.2945e-09  |
 
         >>> enrichment = GREAT.enrichment(
-        ...    test = test,
-        ...    regdom = regdom,
-        ...    ann = ann,
-        ...    asso = get_association(test,regdom),
-        ...    binom=False,
-        ...    hypergeom=True
-        ...    )
+            test = test,
+            regdom = regdom,
+            ann = ann,
+            asso = get_association(test,regdom),
+            binom=False,
+            hypergeom=True
+            )
         >>> enrichment.head()
 
         """
@@ -601,20 +601,9 @@ def get_association(test,regdom) -> list :
         
     Examples 
     --------
-    >>> test = pd.DataFrame({
-    ...    "chr":["chr1"],
-    ...    "chr_start":[1052028],
-    ...    "chr_end": [1052049]})
-
-    >>> regdom = pd.DataFrame({
-    ...    "chr":["chr1","chr1"],
-    ...    "chr_start":[1034992,1079306],
-    ...    "chr_end": [1115089,1132016],
-    ...    "Name":["RNF223","C1orf159"],
-    ...    "tss":[1074306,1116089],
-    ...    "strand":['-','-']})
-
-    >>> get_association(test,regdom)        
+    >>> test = pd.DataFrame({"chr":["chr1"],"chr_start":[1052028],"chr_end": [1052049]})
+    >>> regdom = pd.DataFrame({"chr":["chr1","chr1"],"chr_start":[1034992,1079306],"chr_end": [1115089,1132016],"Name":["RNF223","C1orf159"],"tss":[1074306,1116089],"strand":['-','-']})
+    >>> get_association(test,regdom)
     ...    ['RNF223']
     
     """
@@ -650,16 +639,9 @@ def len_regdom(regdom:pd.DataFrame) -> dict :
         
     Examples 
     --------
-    regdom = pd.DataFrame({
-    ...    "chr":["chr1","chr1"],
-    ...    "chr_start":[1034992,1079306],
-    ...    "chr_end": [1115089,1132016],
-    ...    "Name":["RNF223","C1orf159"],
-    ...    "tss":[1074306,1116089],
-    ...    "strand":['-','-']}))
-
+    >>> regdom = pd.DataFrame({"chr":["chr1","chr1"],"chr_start":[1034992,1079306],"chr_end": [1115089,1132016],"Name":["RNF223","C1orf159"],"tss":[1074306,1116089],"strand":['-','-']}))
     >>> len_regdom(regdom)
-        {'RNF223': 80097, 'C1orf159': 52710}
+    ...    {'RNF223': 80097, 'C1orf159': 52710}
 
     """
     test = regdom["chr_end"] - regdom["chr_start"]
@@ -685,21 +667,10 @@ def number_of_hit(test,regdom) -> int :
         
     Examples 
     --------
-    test = pd.DataFrame({
-    ...    "chr":["chr1"],
-    ...    "chr_start":[1052028],
-    ...    "chr_end": [1052049]})
-
-    regdom = pd.DataFrame({
-    ...    "chr":["chr1","chr1"],
-    ...    "chr_start":[1034992,1079306],
-    ...    "chr_end": [1115089,1132016],
-    ...    "Name":["RNF223","C1orf159"],
-    ...    "tss":[1074306,1116089],
-    ...    "strand":['-','-']})
-
+    >>> test = pd.DataFrame({"chr":["chr1"],"chr_start":[1052028],"chr_end": [1052049]})
+    >>> regdom = pd.DataFrame({"chr":["chr1","chr1"],"chr_start":[1034992,1079306],"chr_end": [1115089,1132016],"Name":["RNF223","C1orf159"],"tss":[1074306,1116089],"strand":['-','-']})
     >>> number_of_hit(test,regdom)        
-        1
+    ...    1
     
     """
     nb = 0
@@ -797,7 +768,7 @@ def get_binom_pval(n:int,k:int,p:float) -> float :
     Examples 
     --------
     >>> get_binom_pval(100,2,0.2)
-        0.9999999947037065
+    ...    0.9999999947037065
     
     """
     if k == 0 : return 1
@@ -826,7 +797,7 @@ def hypergeom_pmf(N:int, K:int, n:int, k:int) -> float :
     Examples 
     --------
     >>> hypergeom_pmf(100,10,30,1)
-        0.11270773995748315
+    ...    0.11270773995748315
     
     """
     Achoosex = comb(K,k,exact=True) 
@@ -857,7 +828,7 @@ def hypergeom_cdf(N:int, K:int, n:int, k:int) -> float :
     Examples 
     --------
     >>> hypergeom_cdf(100,10,30,1)
-        0.9770827595419788
+    ...    0.9770827595419788
     
     """
     return np.sum([hypergeom_pmf(N, K, n, x) for x in range(k , min(K,n) + 1)])
