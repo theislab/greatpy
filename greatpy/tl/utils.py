@@ -22,8 +22,21 @@ def get_nb_asso_per_region(test : str or pd.DataFrame ,regdom:str or pd.DataFram
         
     Examples 
     --------
-    >>> test = pd.DataFrame({"chr":["chr1"],"chr_start":[1052028],"chr_end": [1052049]})
-    >>> regdom = pd.DataFrame({"chr":["chr1","chr1"],"chr_start":[1034992,1079306],"chr_end": [1115089,1132016],"Name":["RNF223","C1orf159"],"tss":[1074306,1116089],"strand":['-','-']})
+    >>> test = pd.DataFrame(
+        {
+            "chr":["chr1"],
+            "chr_start":[1052028],
+            "chr_end": [1052049]}
+        )
+    >>> regdom = pd.DataFrame(
+        {
+            "chr":["chr1","chr1"],
+            "chr_start":[1034992,1079306],
+            "chr_end": [1115089,1132016],
+            "Name":["RNF223","C1orf159"],
+            "tss":[1074306,1116089],
+            "strand":['-','-']
+        })
     >>> get_association(test,regdom)        
     ...    {'RNF223':2}
     
@@ -63,8 +76,21 @@ def get_dist_to_tss(test : str or pd.DataFrame ,regdom:str or pd.DataFrame) -> d
         
     Examples 
     --------
-    >>> test = pd.DataFrame({"chr":["chr1"],"chr_start":[1052028],"chr_end": [1052049]})
-    >>> regdom = pd.DataFrame({"chr":["chr1","chr1"],"chr_start":[1034992,1079306],"chr_end": [1115089,1132016],"Name":["RNF223","C1orf159"],"tss":[1074306,1116089],"strand":['-','-']})
+    >>> test = pd.DataFrame(
+        {
+            "chr":["chr1"],
+            "chr_start":[1052028],
+            "chr_end": [1052049]}
+        )
+    >>> regdom = pd.DataFrame(
+        {
+            "chr":["chr1","chr1"],
+            "chr_start":[1034992,1079306],
+            "chr_end": [1115089,1132016],
+            "Name":["RNF223","C1orf159"],
+            "tss":[1074306,1116089],
+            "strand":['-','-']
+        })
     >>> get_association(test,regdom)        
     ...    {'RNF223':[-22278]}
     

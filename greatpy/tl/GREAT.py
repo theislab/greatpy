@@ -172,7 +172,12 @@ class GREAT:
             
         Examples 
         --------
-        >>> test,regdom,size,ann = GREAT.loader("../../data/tests/test_data/input/02_srf_hg38.bed","../../data/human/hg38/regulatory_domain.bed","../../data/human/hg38/chr_size.bed","../../data/human/ontologies.csv")
+        >>> test,regdom,size,ann = GREAT.loader(
+            "../../data/tests/test_data/input/02_srf_hg38.bed",
+            "../../data/human/hg38/regulatory_domain.bed",
+            "../../data/human/hg38/chr_size.bed",
+            "../../data/human/ontologies.csv"
+            )
         >>> enrichment = GREAT.____enrichment_binom_and_hypergeom(
             test = test,
             regdom = regdom,
@@ -260,7 +265,12 @@ class GREAT:
             
         Examples 
         --------
-        >>> test,regdom,size,ann = GREAT.loader("../../data/tests/test_data/input/02_srf_hg38.bed","../../data/human/hg38/regulatory_domain.bed","../../data/human/hg38/chr_size.bed","../../data/human/ontologies.csv")
+        >>> test,regdom,size,ann = GREAT.loader(
+            "../../data/tests/test_data/input/02_srf_hg38.bed",
+            "../../data/human/hg38/regulatory_domain.bed",
+            "../../data/human/hg38/chr_size.bed",
+            "../../data/human/ontologies.csv"
+            )
         >>> enrichment = GREAT.____enrichment_binom(
             test = test,
             regdom = regdom,
@@ -268,7 +278,6 @@ class GREAT:
             ann = ann,
             asso = get_association(test,regdom)
             )
-
         >>> enrichment.head()
         ...    |            | go_term                                                          |   binom_p_value |
         ...    |:-----------|:-----------------------------------------------------------------|----------------:|
@@ -341,14 +350,18 @@ class GREAT:
             
         Examples 
         --------
-        >>> test,regdom,size,ann = GREAT.loader("../../data/human/test_genomic_region.bed", "../../data/human/regulatory_domain.bed", "../../data/human/chr_size.bed", "../../data/human/ontologies.csv")
+        >>> test,regdom,size,ann = GREAT.loader(
+            "../../data/human/test_genomic_region.bed",
+            "../../data/human/regulatory_domain.bed", 
+            "../../data/human/chr_size.bed", 
+            "../../data/human/ontologies.csv"
+            )
         >>> enrichment = GREAT.____enrichment_hypergeom(
             test = test,
             regdom = regdom,
             ann = ann,
             asso = get_association(test,regdom)
             )
-
         >>> enrichment.head()   
         """ 
         # Init Great
@@ -414,7 +427,12 @@ class GREAT:
             
         Examples 
         --------
-        >>> test,regdom,size,ann = GREAT.loader("../../data/human/test_genomic_region.bed", "../../data/human/regulatory_domain.bed", "../../data/human/chr_size.bed", "../../data/human/ontologies.csv")
+        >>> test,regdom,size,ann = GREAT.loader(
+            "../../data/human/test_genomic_region.bed", 
+            "../../data/human/regulatory_domain.bed", 
+            "../../data/human/chr_size.bed", 
+            "../../data/human/ontologies.csv"
+            )
         >>> enrichment = GREAT.enrichment(
             test = test,
             regdom = regdom,
@@ -492,8 +510,20 @@ class GREAT:
             
         Examples 
         --------
-        >>> test,regdom,size,ann = GREAT.loader("../../data/human/test_genomic_region.bed", "../../data/human/regulatory_domain.bed", "../../data/human/chr_size.bed", "../../data/human/ontologies.csv")
-        >>> enrichment = great.tl.GREAT.enrichment("../../data/human/test_genomic_region.bed", "../../data/human/regulatory_domain.bed", "../../data/human/chr_size.bed", "../../data/human/ontologies.csv",binom=True,hypergeom=True)
+        >>> test,regdom,size,ann = GREAT.loader(
+            "../../data/human/test_genomic_region.bed", 
+            "../../data/human/regulatory_domain.bed", 
+            "../../data/human/chr_size.bed", 
+            "../../data/human/ontologies.csv"
+            )
+        >>> enrichment = great.tl.GREAT.enrichment(
+            "../../data/human/test_genomic_region.bed", 
+            "../../data/human/regulatory_domain.bed", 
+            "../../data/human/chr_size.bed", 
+            "../../data/human/ontologies.csv",
+            binom=True,
+            hypergeom=True
+            )
         >>> bonferroni = GREAT.set_bonferroni(enrichment,alpha=0.05)
         >>> bonferroni.head()
         ...    |            | go_term                                                          |   binom_p_value |   hypergeom_p_value |   binom_bonferroni |   hypergeom_bonferroni |
@@ -527,8 +557,20 @@ class GREAT:
             
         Examples 
         --------
-        >>> test,regdom,size,ann = GREAT.loader("../../data/human/test_genomic_region.bed", "../../data/human/regulatory_domain.bed", "../../data/human/chr_size.bed", "../../data/human/ontologies.csv")
-        >>> enrichment = great.tl.GREAT.enrichment("../../data/human/test_genomic_region.bed", "../../data/human/regulatory_domain.bed", "../../data/human/chr_size.bed", "../../data/human/ontologies.csv",binom=True,hypergeom=True)
+        >>> test,regdom,size,ann = GREAT.loader(
+            "../../data/human/test_genomic_region.bed", 
+            "../../data/human/regulatory_domain.bed", 
+            "../../data/human/chr_size.bed", 
+            "../../data/human/ontologies.csv"
+            )
+        >>> enrichment = great.tl.GREAT.enrichment(
+            "../../data/human/test_genomic_region.bed", 
+            "../../data/human/regulatory_domain.bed", 
+            "../../data/human/chr_size.bed", 
+            "../../data/human/ontologies.csv",
+            binom=True,
+            hypergeom=True
+            )
         >>> fdr = GREAT.set_fdr(enrichment,alpha=0.05)
         >>> fdr.head()
         ...    |            | go_term                                                          |   binom_p_value |   hypergeom_p_value |   binom_fdr |   hypergeom_fdr |
@@ -562,8 +604,20 @@ class GREAT:
             
         Examples 
         --------
-        >>> test,regdom,size,ann = GREAT.loader("../../data/human/test_genomic_region.bed", "../../data/human/regulatory_domain.bed", "../../data/human/chr_size.bed", "../../data/human/ontologies.csv")
-        >>> enrichment = great.tl.GREAT.enrichment("../../data/human/test_genomic_region.bed", "../../data/human/regulatory_domain.bed", "../../data/human/chr_size.bed", "../../data/human/ontologies.csv",binom=True,hypergeom=True)
+        >>> test,regdom,size,ann = GREAT.loader(
+            "../../data/human/test_genomic_region.bed", 
+            "../../data/human/regulatory_domain.bed", 
+            "../../data/human/chr_size.bed", 
+            "../../data/human/ontologies.csv"
+            )
+        >>> enrichment = great.tl.GREAT.enrichment(
+            "../../data/human/test_genomic_region.bed", 
+            "../../data/human/regulatory_domain.bed", 
+            "../../data/human/chr_size.bed", 
+            "../../data/human/ontologies.csv",
+            binom=True,
+            hypergeom=True
+            )
         >>> enrichment.shape[0]
         ...    594
 
@@ -601,8 +655,21 @@ def get_association(test,regdom) -> list :
         
     Examples 
     --------
-    >>> test = pd.DataFrame({"chr":["chr1"],"chr_start":[1052028],"chr_end": [1052049]})
-    >>> regdom = pd.DataFrame({"chr":["chr1","chr1"],"chr_start":[1034992,1079306],"chr_end": [1115089,1132016],"Name":["RNF223","C1orf159"],"tss":[1074306,1116089],"strand":['-','-']})
+    >>> test = pd.DataFrame(
+        {
+            "chr":["chr1"],
+            "chr_start":[1052028],
+            "chr_end": [1052049]}
+        )
+    >>> regdom = pd.DataFrame(
+        {
+            "chr":["chr1","chr1"],
+            "chr_start":[1034992,1079306],
+            "chr_end": [1115089,1132016],
+            "Name":["RNF223","C1orf159"],
+            "tss":[1074306,1116089],
+            "strand":['-','-']
+        })
     >>> get_association(test,regdom)
     ...    ['RNF223']
     
@@ -639,7 +706,15 @@ def len_regdom(regdom:pd.DataFrame) -> dict :
         
     Examples 
     --------
-    >>> regdom = pd.DataFrame({"chr":["chr1","chr1"],"chr_start":[1034992,1079306],"chr_end": [1115089,1132016],"Name":["RNF223","C1orf159"],"tss":[1074306,1116089],"strand":['-','-']}))
+    >>> regdom = pd.DataFrame(
+        {
+            "chr":["chr1","chr1"],
+            "chr_start":[1034992,1079306],
+            "chr_end": [1115089,1132016],
+            "Name":["RNF223","C1orf159"],
+            "tss":[1074306,1116089],
+            "strand":['-','-']
+            })
     >>> len_regdom(regdom)
     ...    {'RNF223': 80097, 'C1orf159': 52710}
 
@@ -667,8 +742,21 @@ def number_of_hit(test,regdom) -> int :
         
     Examples 
     --------
-    >>> test = pd.DataFrame({"chr":["chr1"],"chr_start":[1052028],"chr_end": [1052049]})
-    >>> regdom = pd.DataFrame({"chr":["chr1","chr1"],"chr_start":[1034992,1079306],"chr_end": [1115089,1132016],"Name":["RNF223","C1orf159"],"tss":[1074306,1116089],"strand":['-','-']})
+    >>> test = pd.DataFrame(
+        {
+            "chr":["chr1"],
+            "chr_start":[1052028],
+            "chr_end": [1052049]}
+        )
+    >>> regdom = pd.DataFrame(
+        {
+            "chr":["chr1","chr1"],
+            "chr_start":[1034992,1079306],
+            "chr_end": [1115089,1132016],
+            "Name":["RNF223","C1orf159"],
+            "tss":[1074306,1116089],
+            "strand":['-','-']
+        })
     >>> number_of_hit(test,regdom)        
     ...    1
     

@@ -25,10 +25,10 @@ class REGDOM :
         Examples 
         --------
         >>> validate_input("two_closet")
-            True
+        ...    True
 
         >>> validate_input("Two_Closet_Extension")
-            False
+        ...    False
         """
         if association != "one_closet" and association != "two_closet" and association != "basal_plus_extention" : 
             print("Association rule should be OneCloset or TwoCloset Basalplusextention")
@@ -97,12 +97,12 @@ class REGDOM :
         Examples 
         --------
         >>> regdom = create_basal_plus_extension_regdom(
-        ...    tss_file=pd.read_csv("../../data/human/tss.bed",sep="\t",names=["chr","tss","Strand"]),
-        ...    maximumExtension=100000,
-        ...    basalUp=5000,
-        ...    basalDown=1000,
-        ...    chr_sizes=pd.read_csv("../../data/human/chr_size.bed",sep="\t",names=["chr","Size"])
-        ... )
+            tss_file=pd.read_csv("../../data/human/tss.bed",sep="\t",names=["chr","tss","Strand"]),
+            maximumExtension=100000,
+            basalUp=5000,
+            basalDown=1000,
+            chr_sizes=pd.read_csv("../../data/human/chr_size.bed",sep="\t",names=["chr","Size"])
+        )
         >>> regdom.head()
         ...    |    | Chr   |   Chr_Start |   Chr_End | name      |   tss | Strand   |
         ...    |---:|:------|------------:|----------:|:----------|------:|:---------|
@@ -200,10 +200,10 @@ class REGDOM :
         Examples 
         --------
         >>> regdom = __create_two_closet_regdom(
-        ...    tss_file=pd.read_csv("../../data/human/tss.bed",sep="\t",names=["chr","tss","Strand"]),
-        ...    maximumExtension=100000,
-        ...    chr_sizes=pd.read_csv("../../data/human/chr_size.bed",sep="\t",names=["chr","Size"])
-        ... )
+            tss_file=pd.read_csv("../../data/human/tss.bed",sep="\t",names=["chr","tss","Strand"]),
+            maximumExtension=100000,
+            chr_sizes=pd.read_csv("../../data/human/chr_size.bed",sep="\t",names=["chr","Size"])
+        )
         >>> regdom.head()
         ...    |    | Chr   |   Chr_Start |   Chr_End | name      |   tss | Strand   |
         ...    |---:|:------|------------:|----------:|:----------|------:|:---------|
@@ -241,10 +241,10 @@ class REGDOM :
         Examples 
         --------
         >>> regdom = create_basal_plus_extension_regdom(
-        ...    tss_file=pd.read_csv("../../data/human/tss.bed",sep="\t",names=["chr","tss","Strand"]),
-        ...    maximum_extension=100000,
-        ...    chr_sizes=pd.read_csv("../../data/human/chr_size.bed",sep="\t",names=["chr","Size"])
-        ... )
+            tss_file=pd.read_csv("../../data/human/tss.bed",sep="\t",names=["chr","tss","Strand"]),
+            maximum_extension=100000,
+            chr_sizes=pd.read_csv("../../data/human/chr_size.bed",sep="\t",names=["chr","Size"])
+        )
         >>> regdom.head()
         ...    |    | Chr   |   Chr_Start |   Chr_End | name      |   tss | Strand   |
         ...    |---:|:------|------------:|----------:|:----------|------:|:---------|
@@ -318,7 +318,13 @@ class REGDOM :
 
         Examples 
         --------
-        >>> regdom = create_regdom(tss_file="../../data/human/tss.bed", chr_sizes_file="../../data/human/chr_size.bed",sep="\t",names=["chr","Size"], association_rule="one_closet")
+        >>> regdom = create_regdom(
+            tss_file="../../data/human/tss.bed", 
+            chr_sizes_file="../../data/human/chr_size.bed",
+            sep="\t",
+            names=["chr","Size"], 
+            association_rule="one_closet"
+            )
         >>> regdom.head()
         ...    |    | Chr   |   Chr_Start |   Chr_End | name      |   tss | Strand   |
         ...    |---:|:------|------------:|----------:|:----------|------:|:---------|
