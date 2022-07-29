@@ -14,11 +14,6 @@ notebooks/07_plot.ipynb
 ```
 ## Example Notebooks
 ### Create regulatory domain
-.. toctree::
-    :maxdepth: 1
-    :hidden: true
-
-    notebooks/01_create_regdom.ipynb
-notebooks/01_create_regdom.ipynb
+greatpy can allow you to create regulatory domains with a TSS.bed and chromosome_size.bed files with the function `greatpy.tl.REGDOM.create_regdom()`. You can show an example of this function with the following code:
 
 
