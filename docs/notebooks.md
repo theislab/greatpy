@@ -27,8 +27,12 @@ enrichment = gp.tl.GREAT.enrichment(
     )
 ```
 After the calculation, it is possible to apply corrections to the p_values, two methods of corrections are possible: 
+* Bonferroni correction : 
 ``` 
 gp.tl.GREAT.set_fdr(enrichment)
+```
+* FDR correction : 
+```
 gp.tl.GREAT.set_bonferroni(enrichment)
 ```
 It is also possible to apply a threshold on one of the columns to reduce the table 
