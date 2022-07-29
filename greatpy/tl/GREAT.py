@@ -36,11 +36,11 @@ class GREAT:
         Examples 
         --------
         >>> test,regdom,size,ann = GREAT.loader(
-        ...    "../../data/tests/test_data/input/02_srf_hg38.bed",
-        ...    "../../data/human/hg38/regulatory_domain.bed",
-        ...    "../../data/human/hg38/chr_size.bed",
-        ...    "../../data/human/ontologies.csv"
-        ...    )
+            "../../data/tests/test_data/input/02_srf_hg38.bed",
+            "../../data/human/hg38/regulatory_domain.bed",
+            "../../data/human/hg38/chr_size.bed",
+            "../../data/human/ontologies.csv"
+            )
 
         >>> test.head()
         ...    |    | Chr   |   Chr_Start |   Chr_End |
@@ -270,13 +270,13 @@ class GREAT:
             )
 
         >>> enrichment.head()
-            |            | go_term                                                          |   binom_p_value |
-            |:-----------|:-----------------------------------------------------------------|----------------:|
-            | GO:0045887 | positive regulation of synaptic growth at neuromuscular junction |     5.17744e-13 |
-            | GO:0044721 | protein import into peroxisome matrix, substrate release         |     4.83812e-10 |
-            | GO:0036250 | peroxisome transport along microtubule                           |     4.83812e-10 |
-            | GO:0016561 | protein import into peroxisome matrix, translocation             |     6.31131e-10 |
-            | GO:0047485 | protein N-terminus binding                                       |     1.2945e-09  |
+        ...    |            | go_term                                                          |   binom_p_value |
+        ...    |:-----------|:-----------------------------------------------------------------|----------------:|
+        ...    | GO:0045887 | positive regulation of synaptic growth at neuromuscular junction |     5.17744e-13 |
+        ...    | GO:0044721 | protein import into peroxisome matrix, substrate release         |     4.83812e-10 |
+        ...    | GO:0036250 | peroxisome transport along microtubule                           |     4.83812e-10 |
+        ...    | GO:0016561 | protein import into peroxisome matrix, translocation             |     6.31131e-10 |
+        ...    | GO:0047485 | protein N-terminus binding                                       |     1.2945e-09  |
         """ 
         # Init Great
         res = {}
@@ -424,13 +424,13 @@ class GREAT:
             hypergeom=True
             )
         >>> enrichment.head()
-            |            | go_term                                                          |   binom_p_value |   hypergeom_p_value |
-            |:-----------|:-----------------------------------------------------------------|----------------:|--------------------:|
-            | GO:0045887 | positive regulation of synaptic growth at neuromuscular junction |     5.17744e-13 |          0.0029275  |
-            | GO:0044721 | protein import into peroxisome matrix, substrate release         |     4.83812e-10 |          0.0029275  |
-            | GO:0036250 | peroxisome transport along microtubule                           |     4.83812e-10 |          0.0029275  |
-            | GO:0016561 | protein import into peroxisome matrix, translocation             |     6.31131e-10 |          0.00584656 |
-            | GO:0047485 | protein N-terminus binding                                       |     1.2945e-09  |          0.0050377  |
+        ...    |            | go_term                                                          |   binom_p_value |   hypergeom_p_value |
+        ...    |:-----------|:-----------------------------------------------------------------|----------------:|--------------------:|
+        ...    | GO:0045887 | positive regulation of synaptic growth at neuromuscular junction |     5.17744e-13 |          0.0029275  |
+        ...    | GO:0044721 | protein import into peroxisome matrix, substrate release         |     4.83812e-10 |          0.0029275  |
+        ...    | GO:0036250 | peroxisome transport along microtubule                           |     4.83812e-10 |          0.0029275  |
+        ...    | GO:0016561 | protein import into peroxisome matrix, translocation             |     6.31131e-10 |          0.00584656 |
+        ...    | GO:0047485 | protein N-terminus binding                                       |     1.2945e-09  |          0.0050377  |
 
         >>> enrichment = GREAT.enrichment(
             test = test,
@@ -441,13 +441,13 @@ class GREAT:
             hypergeom=False
             )
         >>> enrichment.head()
-            |            | go_term                                                          |   binom_p_value |
-            |:-----------|:-----------------------------------------------------------------|----------------:|
-            | GO:0045887 | positive regulation of synaptic growth at neuromuscular junction |     5.17744e-13 |
-            | GO:0044721 | protein import into peroxisome matrix, substrate release         |     4.83812e-10 |
-            | GO:0036250 | peroxisome transport along microtubule                           |     4.83812e-10 |
-            | GO:0016561 | protein import into peroxisome matrix, translocation             |     6.31131e-10 |
-            | GO:0047485 | protein N-terminus binding                                       |     1.2945e-09  |
+        ...    |            | go_term                                                          |   binom_p_value |
+        ...    |:-----------|:-----------------------------------------------------------------|----------------:|
+        ...    | GO:0045887 | positive regulation of synaptic growth at neuromuscular junction |     5.17744e-13 |
+        ...    | GO:0044721 | protein import into peroxisome matrix, substrate release         |     4.83812e-10 |
+        ...    | GO:0036250 | peroxisome transport along microtubule                           |     4.83812e-10 |
+        ...    | GO:0016561 | protein import into peroxisome matrix, translocation             |     6.31131e-10 |
+        ...    | GO:0047485 | protein N-terminus binding                                       |     1.2945e-09  |
 
         >>> enrichment = GREAT.enrichment(
             test = test,
