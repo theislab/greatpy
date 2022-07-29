@@ -1,8 +1,4 @@
 # Notebooks
-```{toctree}
-:hidden: true
-:maxdepth: 1
-```
 
 ```{eval-rst}
 .. autosummary::
