@@ -8,6 +8,5 @@
 .. autosummary::
     :toctree: generated
 
-    notebooks/01_create_regdom.ipynb
 
 ```
