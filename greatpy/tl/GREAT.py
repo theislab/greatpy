@@ -314,7 +314,7 @@ class GREAT:
                     hit[i] = number_of_hit(test,curr_regdom)# get the number of test genomic regions in the regulatory domain of a gene with annotation
                 k_binom = hit[i]
                 nb_binom = sum([len_on_chr[i] for i in curr_regdom["Name"]])# get the portion of the genome in the regulatory domain of a gene with annotation
-                tmp.append((k_binom,nb_binom,i,gene_imply.iloc[0]["name"]),K)
+                tmp.append(k_binom,nb_binom,i,gene_imply.iloc[0]["name"],K)
 
             res.update({elem[2] : [ 
                 elem[3],
@@ -363,6 +363,13 @@ class GREAT:
             asso = get_association(test,regdom)
             )
         >>> enrichment.head()   
+        ...    |            | go_term                                                                                    |   hypergeom_p_value |   hypergeometric_fold_enrichment |   intersection_size |    recall |
+        ...    |:-----------|:-------------------------------------------------------------------------------------------|--------------------:|---------------------------------:|--------------------:|----------:|
+        ...    | GO:0015629 | actin cytoskeleton                                                                         |         2.25347e-06 |                          2.73071 |                  27 | 0.116883  |
+        ...    | GO:1903979 | negative regulation of microglial cell activation                                          |         0.000302551 |                         17.522   |                   3 | 0.75      |
+        ...    | GO:1902626 | assembly of large subunit precursor of preribosome                                         |         0.000302551 |                         17.522   |                   3 | 0.75      |
+        ...    | GO:0001077 | proximal promoter DNA-binding transcription activator activity, RNA polymerase II-specific |         0.000504006 |                          1.94689 |                  29 | 0.0833333 |
+        ...    | GO:0000977 | RNA polymerase II regulatory region sequence-specific DNA binding                          |         0.000511704 |                          2.03154 |                  26 | 0.0869565 |
         """ 
         # Init Great
         res = {}
@@ -442,13 +449,13 @@ class GREAT:
             hypergeom=True
             )
         >>> enrichment.head()
-        ...    |            | go_term                                                          |   binom_p_value |   hypergeom_p_value |
-        ...    |:-----------|:-----------------------------------------------------------------|----------------:|--------------------:|
-        ...    | GO:0045887 | positive regulation of synaptic growth at neuromuscular junction |     5.17744e-13 |          0.0029275  |
-        ...    | GO:0044721 | protein import into peroxisome matrix, substrate release         |     4.83812e-10 |          0.0029275  |
-        ...    | GO:0036250 | peroxisome transport along microtubule                           |     4.83812e-10 |          0.0029275  |
-        ...    | GO:0016561 | protein import into peroxisome matrix, translocation             |     6.31131e-10 |          0.00584656 |
-        ...    | GO:0047485 | protein N-terminus binding                                       |     1.2945e-09  |          0.0050377  |
+        ...    |            | go_term                                                   |   binom_p_value |   binom_fold_enrichment |   hypergeom_p_value |   hypergeometric_fold_enrichment |   intersection_size |   recall |
+        ...    |:-----------|:----------------------------------------------------------|----------------:|------------------------:|--------------------:|---------------------------------:|--------------------:|---------:|
+        ...    | GO:0072749 | cellular response to cytochalasin B                       |     2.21968e-12 |                227251   |          0.0428032  |                         23.3627  |                   5 |  5       |
+        ...    | GO:0051623 | positive regulation of norepinephrine uptake              |     2.21968e-12 |                227251   |          0.0428032  |                         23.3627  |                   5 |  5       |
+        ...    | GO:0098973 | structural constituent of postsynaptic actin cytoskeleton |     2.1174e-10  |                 91052.6 |          0.160543   |                          5.84068 |                   5 |  1.25    |
+        ...    | GO:0097433 | dense body                                                |     6.40085e-10 |                 16061.8 |          0.00141783 |                         11.6814  |                   8 |  1.33333 |
+        ...    | GO:0032796 | uropod organization                                       |     2.6988e-09  |                 54544.9 |          0.00182991 |                         23.3627  |                   5 |  2.5     |
 
         >>> enrichment = GREAT.enrichment(
             test = test,
@@ -476,6 +483,13 @@ class GREAT:
             hypergeom=True
             )
         >>> enrichment.head()
+        ...    |            | go_term                                                                                    |   hypergeom_p_value |   hypergeometric_fold_enrichment |   intersection_size |    recall |
+        ...    |:-----------|:-------------------------------------------------------------------------------------------|--------------------:|---------------------------------:|--------------------:|----------:|
+        ...    | GO:0015629 | actin cytoskeleton                                                                         |         2.25347e-06 |                          2.73071 |                  27 | 0.116883  |
+        ...    | GO:1903979 | negative regulation of microglial cell activation                                          |         0.000302551 |                         17.522   |                   3 | 0.75      |
+        ...    | GO:1902626 | assembly of large subunit precursor of preribosome                                         |         0.000302551 |                         17.522   |                   3 | 0.75      |
+        ...    | GO:0001077 | proximal promoter DNA-binding transcription activator activity, RNA polymerase II-specific |         0.000504006 |                          1.94689 |                  29 | 0.0833333 |
+        ...    | GO:0000977 | RNA polymerase II regulatory region sequence-specific DNA binding                          |         0.000511704 |                          2.03154 |                  26 | 0.0869565 |
 
         """
         if not binom and not hypergeom : 
