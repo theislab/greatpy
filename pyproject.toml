@@ -15,7 +15,7 @@ authors = [
 ]
 maintainers = [
     {name = "Ignacio Ibarra", email = "ignacio.ibarra@helmholtz-muenchen.de"},
-    {name = ""Tom Mauger-Birocheau", email = "tom.mauger-birocheau@etu.univ-cotedazur.fr"}
+    {name = "Tom Mauger-Birocheau", email = "tom.mauger-birocheau@etu.univ-cotedazur.fr"}
 ]
 urls.Documentation = "https://greatpy.readthedocs.io/"
 urls.Source = "https://github.com/theislab/greatpy"
