@@ -82,13 +82,13 @@ class GREAT:
 
         if type(regdom_file) == str :
             regdom = pd.read_csv(regdom_file,sep = "\t",comment="#",
-                        names = ["Chr", "Chr_Start", "Chr_End","Name","tss","Strand"],
-                        dtype = {"Chr":"object", "Chr_Start":"int64", "Chr_End":"int64","Name":"object","tss":"int64","Strand":"object"})
+                        names = ["chr", "chr_start", "chr_end","Name","tss","Strand"],
+                        dtype = {"chr":"object", "chr_start":"int64", "chr_end":"int64","Name":"object","tss":"int64","Strand":"object"})
         elif type(regdom_file) == pd.DataFrame :
             regdom = regdom_file.iloc[:,:6]
             colname = list(regdom.columns)
             try : 
-                regdom = regdom.rename(columns = {colname[0]:"Chr",colname[1]:"Chr_Start",colname[2]:"Chr_End",colname[3]:"Name",colname[4]:"tss",colname[5]:"Strand"})
+                regdom = regdom.rename(columns = {colname[0]:"chr",colname[1]:"chr_start",colname[2]:"chr_end",colname[3]:"Name",colname[4]:"tss",colname[5]:"Strand"})
             except :
                 print("Error in the format of the regdom file")
                 print("The regdom file must have the following columns : Chr, Chr_Start, Chr_End, Name, tss, Strand")
@@ -98,13 +98,13 @@ class GREAT:
 
         if type(test_data) == str : 
             test_data = pd.read_csv(test_data,sep = "\t",comment = "#",usecols = [0,1,2],
-                            names = ["Chr", "Chr_Start", "Chr_End"],
-                            dtype = {"Chr":"object", "Chr_Start":"int64", "Chr_End":"int64"})
+                            names = ["chr", "chr_start", "chr_end"],
+                            dtype = {"chr":"object", "chr_start":"int64", "chr_end":"int64"})
         elif type(test_data) == pd.DataFrame : 
             test_data = test_data.iloc[:,:3]
             colname = list(test_data.columns)
             try : 
-                test_data = test_data.rename(columns={colname[0]:"Chr",colname[1]:"Chr_Start",colname[2]:"Chr_End"})
+                test_data = test_data.rename(columns={colname[0]:"chr",colname[1]:"chr_start",colname[2]:"chr_end"})
             except : 
                 print("Error in test dataframe, please check your input")
                 print("Columns should be : chr...(type object), start(type int), end(type int)")
@@ -589,10 +589,10 @@ def get_association(test,regdom) -> list :
     Parameters
     ----------
     test : pd.dataFrame
-        df of the tests pics => columns: ["Chr","Chr_Start","Chr_End"]
+        df of the tests pics => columns: ["chr","chr_start","chr_end"]
     
     regdom : pd.dataFrame
-        df of the regulatory domains => columns: ["Chr"	"Chr_Start"	"Chr_End"	"Name"	"tss"	"strand"].
+        df of the regulatory domains => columns: ["chr"	"chr_start"	"chr_end"	"Name"	"tss"	"strand"].
 
     Returns
     -------
@@ -602,14 +602,14 @@ def get_association(test,regdom) -> list :
     Examples 
     --------
     test = pd.DataFrame({
-    ...    "Chr":["chr1"],
-    ...    "Chr_Start":[1052028],
-    ...    "Chr_End": [1052049]})
+    ...    "chr":["chr1"],
+    ...    "chr_start":[1052028],
+    ...    "chr_end": [1052049]})
 
     regdom = pd.DataFrame({
-    ...    "Chr":["chr1","chr1"],
-    ...    "Chr_Start":[1034992,1079306],
-    ...    "Chr_End": [1115089,1132016],
+    ...    "chr":["chr1","chr1"],
+    ...    "chr_start":[1034992,1079306],
+    ...    "chr_end": [1115089,1132016],
     ...    "Name":["RNF223","C1orf159"],
     ...    "tss":[1074306,1116089],
     ...    "strand":['-','-']})
@@ -621,12 +621,12 @@ def get_association(test,regdom) -> list :
     res = []
     for i in range(test.shape[0]) :
         currTest = test.iloc[i]
-        regdom_curr_test = regdom.loc[(regdom["Chr"] == currTest["Chr"])].sort_values("Chr_Start")
+        regdom_curr_test = regdom.loc[(regdom["chr"] == currTest["chr"])].sort_values("chr_start")
         regdom_curr_test = regdom_curr_test.loc[
-            ((regdom_curr_test["Chr_Start"] <= currTest["Chr_Start"]) & (regdom_curr_test["Chr_End"] >= currTest["Chr_End"])) | # regdom overlap totally test 
-            ((regdom_curr_test["Chr_Start"] >= currTest["Chr_Start"]) & (regdom_curr_test["Chr_End"] <= currTest["Chr_End"])) | # test overlap totally regdom 
-            ((regdom_curr_test["Chr_Start"] <= currTest["Chr_Start"]) & (regdom_curr_test["Chr_End"] <= currTest["Chr_End"]) & (regdom_curr_test["Chr_End"] >= currTest["Chr_Start"])) | # regdom overlap not totally test on left side 
-            ((regdom_curr_test["Chr_Start"] >= currTest["Chr_Start"]) & (regdom_curr_test["Chr_End"] >= currTest["Chr_End"]) & (regdom_curr_test["Chr_Start"] <= currTest["Chr_End"])) # regdom overlap not totally test on right side 
+            ((regdom_curr_test["chr_start"] <= currTest["chr_start"]) & (regdom_curr_test["chr_end"] >= currTest["chr_end"])) | # regdom overlap totally test 
+            ((regdom_curr_test["chr_start"] >= currTest["chr_start"]) & (regdom_curr_test["chr_end"] <= currTest["chr_end"])) | # test overlap totally regdom 
+            ((regdom_curr_test["chr_start"] <= currTest["chr_start"]) & (regdom_curr_test["chr_end"] <= currTest["chr_end"]) & (regdom_curr_test["chr_end"] >= currTest["chr_start"])) | # regdom overlap not totally test on left side 
+            ((regdom_curr_test["chr_start"] >= currTest["chr_start"]) & (regdom_curr_test["chr_end"] >= currTest["chr_end"]) & (regdom_curr_test["chr_start"] <= currTest["chr_end"])) # regdom overlap not totally test on right side 
             ] 
         res = res + list(regdom_curr_test["Name"])
     return list(dict.fromkeys(res))
@@ -639,7 +639,7 @@ def len_regdom(regdom:pd.DataFrame) -> dict :
     Parameters
     ----------    
     regdom : pd.dataFrame
-        df of the regulatory domains => columns: ["Chr"	"Chr_Start"	"Chr_End"	"Name"	"tss"	"strand"].
+        df of the regulatory domains => columns: ["chr"	"chr_start"	"chr_end"	"Name"	"tss"	"strand"].
 
     Returns
     -------
@@ -651,9 +651,9 @@ def len_regdom(regdom:pd.DataFrame) -> dict :
     Examples 
     --------
     regdom = pd.DataFrame({
-    ...    "Chr":["chr1","chr1"],
-    ...    "Chr_Start":[1034992,1079306],
-    ...    "Chr_End": [1115089,1132016],
+    ...    "chr":["chr1","chr1"],
+    ...    "chr_start":[1034992,1079306],
+    ...    "chr_end": [1115089,1132016],
     ...    "Name":["RNF223","C1orf159"],
     ...    "tss":[1074306,1116089],
     ...    "strand":['-','-']}))
@@ -662,7 +662,7 @@ def len_regdom(regdom:pd.DataFrame) -> dict :
         {'RNF223': 80097, 'C1orf159': 52710}
 
     """
-    test = regdom["Chr_End"] - regdom["Chr_Start"]
+    test = regdom["chr_end"] - regdom["chr_start"]
     return pd.DataFrame({"len" : list(test)},index = regdom["Name"]).to_dict()["len"]
 
 def number_of_hit(test,regdom) -> int : 
@@ -673,10 +673,10 @@ def number_of_hit(test,regdom) -> int :
     Parameters
     ----------
     test : pd.dataFrame
-        df of the tests pics => columns: ["Chr","Chr_Start","Chr_End"]
+        df of the tests pics => columns: ["chr","chr_start","chr_end"]
     
     regdom : pd.dataFrame
-        df of the regulatory domains => columns: ["Chr"	"Chr_Start"	"Chr_End"	"Name"	"tss"	"strand"].
+        df of the regulatory domains => columns: ["chr"	"chr_start"	"chr_end"	"Name"	"tss"	"strand"].
 
     Returns
     -------
@@ -686,14 +686,14 @@ def number_of_hit(test,regdom) -> int :
     Examples 
     --------
     test = pd.DataFrame({
-    ...    "Chr":["chr1"],
-    ...    "Chr_Start":[1052028],
-    ...    "Chr_End": [1052049]})
+    ...    "chr":["chr1"],
+    ...    "chr_start":[1052028],
+    ...    "chr_end": [1052049]})
 
     regdom = pd.DataFrame({
-    ...    "Chr":["chr1","chr1"],
-    ...    "Chr_Start":[1034992,1079306],
-    ...    "Chr_End": [1115089,1132016],
+    ...    "chr":["chr1","chr1"],
+    ...    "chr_start":[1034992,1079306],
+    ...    "chr_end": [1115089,1132016],
     ...    "Name":["RNF223","C1orf159"],
     ...    "tss":[1074306,1116089],
     ...    "strand":['-','-']})
@@ -703,15 +703,15 @@ def number_of_hit(test,regdom) -> int :
     
     """
     nb = 0
-    regdom = regdom[["Chr","Chr_Start","Chr_End"]]
-    regdom = regdom[regdom["Chr"].isin(list(test["Chr"]))]
+    regdom = regdom[["chr","chr_start","chr_end"]]
+    regdom = regdom[regdom["chr"].isin(list(test["chr"]))]
     for i in range(test.shape[0]) : 
         chrom = test.iat[i,0]
         start = test.iat[i,1]
         end = test.iat[i,2]
-        regdom_np = regdom["Chr"].to_numpy()
-        reg_start = regdom["Chr_Start"].to_numpy()
-        reg_end = regdom["Chr_End"].to_numpy()
+        regdom_np = regdom["chr"].to_numpy()
+        reg_start = regdom["chr_start"].to_numpy()
+        reg_end = regdom["chr_end"].to_numpy()
         Chr_reduce = np.where(regdom_np == chrom)
         reg_start = np.take(reg_start,Chr_reduce,axis = 0)[0]
         reg_end = np.take(reg_end,Chr_reduce,axis = 0)[0]

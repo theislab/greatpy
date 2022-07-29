@@ -10,10 +10,10 @@ def get_nb_asso_per_region(test : str or pd.DataFrame ,regdom:str or pd.DataFram
     Parameters
     ----------
     test : str or pd.DataFrame
-        path of the file with the tests pics => columns: ["Chr","Chr_Start","Chr_End"]
+        path of the file with the tests pics => columns: ["chr","chr_start","chr_end"]
     
     regdom : str or pd.DataFrame
-        path of the file with the regulatory domains => columns: ["Chr"	"Chr_Start"	"Chr_End"	"Name"	"tss"	"strand"].
+        path of the file with the regulatory domains => columns: ["chr"	"chr_start"	"chr_end"	"Name"	"tss"	"strand"].
 
     Returns
     -------
@@ -23,14 +23,14 @@ def get_nb_asso_per_region(test : str or pd.DataFrame ,regdom:str or pd.DataFram
     Examples 
     --------
     test = pd.DataFrame({
-        "Chr":["chr1"],
-        "Chr_Start":[1052028],
-        "Chr_End": [1052049]})
+        "chr":["chr1"],
+        "chr_start":[1052028],
+        "chr_end": [1052049]})
 
     regdom = pd.DataFrame({
-        "Chr":["chr1","chr1"],
-        "Chr_Start":[1034992,1079306],
-        "Chr_End": [1115089,1132016],
+        "chr":["chr1","chr1"],
+        "chr_start":[1034992,1079306],
+        "chr_end": [1115089,1132016],
         "Name":["RNF223","C1orf159"],
         "tss":[1074306,1116089],
         "strand":['-','-']})
@@ -43,12 +43,12 @@ def get_nb_asso_per_region(test : str or pd.DataFrame ,regdom:str or pd.DataFram
     test,regdom,_,_ = gp.tl.GREAT.loader(test,regdom,None,None) 
     for i in range(test.shape[0]) :
         currTest = test.iloc[i]
-        regdom_curr_test = regdom.loc[(regdom["Chr"] == currTest["Chr"])].sort_values("Chr_Start")
+        regdom_curr_test = regdom.loc[(regdom["chr"] == currTest["chr"])].sort_values("chr_start")
         regdom_curr_test = regdom_curr_test.loc[
-            ((regdom_curr_test["Chr_Start"] <= currTest["Chr_Start"]) & (regdom_curr_test["Chr_End"] >= currTest["Chr_End"])) | # regdom overlap totally test 
-            ((regdom_curr_test["Chr_Start"] >= currTest["Chr_Start"]) & (regdom_curr_test["Chr_End"] <= currTest["Chr_End"])) | # test overlap totally regdom 
-            ((regdom_curr_test["Chr_Start"] <= currTest["Chr_Start"]) & (regdom_curr_test["Chr_End"] <= currTest["Chr_End"]) & (regdom_curr_test["Chr_End"] >= currTest["Chr_Start"])) | # regdom overlap not totally test on left side 
-            ((regdom_curr_test["Chr_Start"] >= currTest["Chr_Start"]) & (regdom_curr_test["Chr_End"] >= currTest["Chr_End"]) & (regdom_curr_test["Chr_Start"] <= currTest["Chr_End"])) # regdom overlap not totally test on right side 
+            ((regdom_curr_test["chr_start"] <= currTest["chr_start"]) & (regdom_curr_test["chr_end"] >= currTest["chr_end"])) | # regdom overlap totally test 
+            ((regdom_curr_test["chr_start"] >= currTest["chr_start"]) & (regdom_curr_test["chr_end"] <= currTest["chr_end"])) | # test overlap totally regdom 
+            ((regdom_curr_test["chr_start"] <= currTest["chr_start"]) & (regdom_curr_test["chr_end"] <= currTest["chr_end"]) & (regdom_curr_test["chr_end"] >= currTest["chr_start"])) | # regdom overlap not totally test on left side 
+            ((regdom_curr_test["chr_start"] >= currTest["chr_start"]) & (regdom_curr_test["chr_end"] >= currTest["chr_end"]) & (regdom_curr_test["chr_start"] <= currTest["chr_end"])) # regdom overlap not totally test on right side 
             ] 
         res[i] = regdom_curr_test.shape[0]
     return res
@@ -62,10 +62,10 @@ def get_dist_to_tss(test : str or pd.DataFrame ,regdom:str or pd.DataFrame) -> d
     Parameters
     ----------
     test : str
-        path of the file with the tests pics => columns: ["Chr","Chr_Start","Chr_End"]
+        path of the file with the tests pics => columns: ["chr","chr_start","chr_end"]
     
     regdom : str
-        path of the file with the regulatory domains => columns: ["Chr"	"Chr_Start"	"Chr_End"	"Name"	"tss"	"strand"].
+        path of the file with the regulatory domains => columns: ["chr"	"chr_start"	"chr_end"	"Name"	"tss"	"strand"].
 
     Returns
     -------
@@ -75,14 +75,14 @@ def get_dist_to_tss(test : str or pd.DataFrame ,regdom:str or pd.DataFrame) -> d
     Examples 
     --------
     test = pd.DataFrame({
-        "Chr":["chr1"],
-        "Chr_Start":[1052028],
-        "Chr_End": [1052049]})
+        "chr":["chr1"],
+        "chr_start":[1052028],
+        "chr_end": [1052049]})
 
     regdom = pd.DataFrame({
-        "Chr":["chr1","chr1"],
-        "Chr_Start":[1034992,1079306],
-        "Chr_End": [1115089,1132016],
+        "chr":["chr1","chr1"],
+        "chr_start":[1034992,1079306],
+        "chr_end": [1115089,1132016],
         "Name":["RNF223","C1orf159"],
         "tss":[1074306,1116089],
         "strand":['-','-']})
@@ -95,13 +95,13 @@ def get_dist_to_tss(test : str or pd.DataFrame ,regdom:str or pd.DataFrame) -> d
     test,regdom,_,_ = gp.tl.GREAT.loader(test,regdom,None,None) 
     for i in range(test.shape[0]) :
         currTest = test.iloc[i]
-        mean_pos_test = (currTest["Chr_End"] + currTest["Chr_Start"])/2
-        regdom_curr_test = regdom.loc[(regdom["Chr"] == currTest["Chr"])].sort_values("Chr_Start")
+        mean_pos_test = (currTest["chr_end"] + currTest["chr_start"])/2
+        regdom_curr_test = regdom.loc[(regdom["chr"] == currTest["chr"])].sort_values("chr_start")
         regdom_curr_test = regdom_curr_test.loc[
-            ((regdom_curr_test["Chr_Start"] <= currTest["Chr_Start"]) & (regdom_curr_test["Chr_End"] >= currTest["Chr_End"])) | # regdom overlap totally test 
-            ((regdom_curr_test["Chr_Start"] >= currTest["Chr_Start"]) & (regdom_curr_test["Chr_End"] <= currTest["Chr_End"])) | # test overlap totally regdom 
-            ((regdom_curr_test["Chr_Start"] <= currTest["Chr_Start"]) & (regdom_curr_test["Chr_End"] <= currTest["Chr_End"]) & (regdom_curr_test["Chr_End"] >= currTest["Chr_Start"])) | # regdom overlap not totally test on left side 
-            ((regdom_curr_test["Chr_Start"] >= currTest["Chr_Start"]) & (regdom_curr_test["Chr_End"] >= currTest["Chr_End"]) & (regdom_curr_test["Chr_Start"] <= currTest["Chr_End"])) # regdom overlap not totally test on right side 
+            ((regdom_curr_test["chr_start"] <= currTest["chr_start"]) & (regdom_curr_test["chr_end"] >= currTest["chr_end"])) | # regdom overlap totally test 
+            ((regdom_curr_test["chr_start"] >= currTest["chr_start"]) & (regdom_curr_test["chr_end"] <= currTest["chr_end"])) | # test overlap totally regdom 
+            ((regdom_curr_test["chr_start"] <= currTest["chr_start"]) & (regdom_curr_test["chr_end"] <= currTest["chr_end"]) & (regdom_curr_test["chr_end"] >= currTest["chr_start"])) | # regdom overlap not totally test on left side 
+            ((regdom_curr_test["chr_start"] >= currTest["chr_start"]) & (regdom_curr_test["chr_end"] >= currTest["chr_end"]) & (regdom_curr_test["chr_start"] <= currTest["chr_end"])) # regdom overlap not totally test on right side 
             ] 
         res[i] = []
         for j in range(regdom_curr_test.shape[0]) : 
