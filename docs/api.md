@@ -21,7 +21,7 @@ import greatpy as gp
 ```
 ### Create regulatory domain 
 ```{eval-rst}
-.. currentmodule:: greatpy.tl.REGDOM
+.. currentmodule:: greatpy.tl
 .. autosummary::
     :toctree: generated/
 
