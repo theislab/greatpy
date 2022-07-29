@@ -39,7 +39,7 @@ class GREAT:
             "../../data/tests/test_data/input/02_srf_hg38.bed",
             "../../data/human/hg38/regulatory_domain.bed",
             "../../data/human/hg38/chr_size.bed",
-            "../../data/human/ontologies.csv"
+            "../data/human/ontologies.csv"
             )
 
         >>> test.head()
@@ -176,7 +176,7 @@ class GREAT:
             "../../data/tests/test_data/input/02_srf_hg38.bed",
             "../../data/human/hg38/regulatory_domain.bed",
             "../../data/human/hg38/chr_size.bed",
-            "../../data/human/ontologies.csv"
+            "../data/human/ontologies.csv"
             )
         >>> enrichment = GREAT.____enrichment_binom_and_hypergeom(
             test = test,
@@ -269,7 +269,7 @@ class GREAT:
             "../../data/tests/test_data/input/02_srf_hg38.bed",
             "../../data/human/hg38/regulatory_domain.bed",
             "../../data/human/hg38/chr_size.bed",
-            "../../data/human/ontologies.csv"
+            "../data/human/ontologies.csv"
             )
         >>> enrichment = GREAT.____enrichment_binom(
             test = test,
@@ -351,10 +351,10 @@ class GREAT:
         Examples 
         --------
         >>> test,regdom,size,ann = GREAT.loader(
-            "../../data/human/test_genomic_region.bed",
-            "../../data/human/regulatory_domain.bed", 
-            "../../data/human/chr_size.bed", 
-            "../../data/human/ontologies.csv"
+            "../data/tests/test_data/input/03_srf_hg19.bed",
+            "../data/human/hg19/regulatory_domain.bed", 
+            "../data/human/hg19/chr_size.bed", 
+            "../data/human/ontologies.csv"
             )
         >>> enrichment = GREAT.____enrichment_hypergeom(
             test = test,
@@ -428,10 +428,10 @@ class GREAT:
         Examples 
         --------
         >>> test,regdom,size,ann = GREAT.loader(
-            "../../data/human/test_genomic_region.bed", 
-            "../../data/human/regulatory_domain.bed", 
-            "../../data/human/chr_size.bed", 
-            "../../data/human/ontologies.csv"
+            "../data/tests/test_data/input/03_srf_hg19.bed", 
+            "../data/human/hg19/regulatory_domain.bed", 
+            "../data/human/hg19/chr_size.bed", 
+            "../data/human/ontologies.csv"
             )
         >>> enrichment = GREAT.enrichment(
             test = test,
@@ -511,16 +511,16 @@ class GREAT:
         Examples 
         --------
         >>> test,regdom,size,ann = GREAT.loader(
-            "../../data/human/test_genomic_region.bed", 
-            "../../data/human/regulatory_domain.bed", 
-            "../../data/human/chr_size.bed", 
-            "../../data/human/ontologies.csv"
+            "../data/tests/test_data/input/03_srf_hg19.bed", 
+            "../data/human/hg19/regulatory_domain.bed", 
+            "../data/human/hg19/chr_size.bed", 
+            "../data/human/ontologies.csv"
             )
         >>> enrichment = great.tl.GREAT.enrichment(
-            "../../data/human/test_genomic_region.bed", 
-            "../../data/human/regulatory_domain.bed", 
-            "../../data/human/chr_size.bed", 
-            "../../data/human/ontologies.csv",
+            "../data/tests/test_data/input/03_srf_hg19.bed", 
+            "../data/human/hg19/regulatory_domain.bed", 
+            "../data/human/hg19/chr_size.bed", 
+            "../data/human/ontologies.csv",
             binom=True,
             hypergeom=True
             )
@@ -558,16 +558,16 @@ class GREAT:
         Examples 
         --------
         >>> test,regdom,size,ann = GREAT.loader(
-            "../../data/human/test_genomic_region.bed", 
-            "../../data/human/regulatory_domain.bed", 
-            "../../data/human/chr_size.bed", 
-            "../../data/human/ontologies.csv"
+            "../data/tests/test_data/input/03_srf_hg19.bed", 
+            "../data/human/hg19/regulatory_domain.bed", 
+            "../data/human/hg19/chr_size.bed", 
+            "../data/human/ontologies.csv"
             )
         >>> enrichment = great.tl.GREAT.enrichment(
-            "../../data/human/test_genomic_region.bed", 
-            "../../data/human/regulatory_domain.bed", 
-            "../../data/human/chr_size.bed", 
-            "../../data/human/ontologies.csv",
+            "../data/tests/test_data/input/03_srf_hg19.bed", 
+            "../data/human/hg19/regulatory_domain.bed", 
+            "../data/human/hg19/chr_size.bed", 
+            "../data/human/ontologies.csv",
             binom=True,
             hypergeom=True
             )
@@ -605,16 +605,16 @@ class GREAT:
         Examples 
         --------
         >>> test,regdom,size,ann = GREAT.loader(
-            "../../data/human/test_genomic_region.bed", 
-            "../../data/human/regulatory_domain.bed", 
-            "../../data/human/chr_size.bed", 
-            "../../data/human/ontologies.csv"
+            "../data/tests/test_data/input/03_srf_hg19.bed", 
+            "../data/human/hg19/regulatory_domain.bed", 
+            "../data/human/hg19/chr_size.bed", 
+            "../data/human/ontologies.csv"
             )
         >>> enrichment = great.tl.GREAT.enrichment(
-            "../../data/human/test_genomic_region.bed", 
-            "../../data/human/regulatory_domain.bed", 
-            "../../data/human/chr_size.bed", 
-            "../../data/human/ontologies.csv",
+            "../data/tests/test_data/input/03_srf_hg19.bed", 
+            "../data/human/hg19/regulatory_domain.bed", 
+            "../data/human/hg19/chr_size.bed", 
+            "../data/human/ontologies.csv",
             binom=True,
             hypergeom=True
             )
