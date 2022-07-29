@@ -7,26 +7,25 @@
 ```
 ### Create regulatory domain 
 ```{eval-rst}
-.. module:: greatpy.tl.REGDOM
-
+.. currentmodule:: greatpy.tl
 .. autosummary::
     :toctree: generated/
 
-    REGDOM.create_regdom
+    tl.REGDOM.create_regdom
 ```
 
 ### greatpy computation
 ```{eval-rst}
-.. module:: greatpy.tl.GREAT
+.. module:: greatpy.tl
 
 .. autosummary::
     :toctree: generated
 
-    GREAT.loader
-    GREAT.enrichment
-    GREAT.set_bonferroni
-    GREAT.set_fdr
-    GREAT.set_threshold
+    tl.GREAT.loader
+    tl.GREAT.enrichment
+    tl.GREAT.set_bonferroni
+    tl.GREAT.set_fdr
+    tl.GREAT.set_threshold
 ```
 ### utils side tools
 ```{eval-rst}
