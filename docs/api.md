@@ -29,20 +29,23 @@ import greatpy as gp
 .. autosummary::
     :toctree: generated/
 
-    tl.REGDOM.create_regdom
+    create_regdom
 ```
 
 ### greatpy computation
 ```{eval-rst}
+.. module:: greatpy.tl.GREAT
+```
 
+```{eval-rst}
 .. autosummary::
     :toctree: generated
 
-    tl.GREAT.loader
-    tl.GREAT.enrichment
-    tl.GREAT.set_bonferroni
-    tl.GREAT.set_fdr
-    tl.GREAT.set_threshold
+    loader
+    enrichment
+    set_bonferroni
+    set_fdr
+    set_threshold
 ```
 ### utils side tools
 ```{eval-rst}
