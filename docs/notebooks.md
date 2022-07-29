@@ -94,10 +94,10 @@ plot = enrichment.rename(columns={"binom_p_value" : "p_value", "go_term":"name"}
 gp.pl.plot_enrich(plot)
 ```
 
-## Notebook example
 ```{image} _static/output_images/dotplot.jpg
 ```
 
+## Notebook example
 ```{toctree}
 :hidden: true
 :maxdepth: 1
