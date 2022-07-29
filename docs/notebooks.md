@@ -1,6 +1,6 @@
 # Example
 
-## Code example 
+## Code snippet 
 ### Create regulatory domain
 greatpy can allow you to create regulatory domains with a TSS.bed and chromosome_size.bed files with the function `greatpy.tl.REGDOM.create_regdom()`. You can show an example of this function with the following code:
 ```
@@ -94,6 +94,7 @@ plot = enrichment.rename(columns={"binom_p_value" : "p_value", "go_term":"name"}
 gp.pl.plot_enrich(plot)
 ```
 
+## Notebook example
 ```{image} _static/output_images/dotplot.jpg
 ```
 
