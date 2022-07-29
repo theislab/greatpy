@@ -9,7 +9,7 @@ pd.options.display.float_format = '{:12.5e}'.format
 class GREAT: 
     def loader(test_data:None or str or pd.DataFrame,regdom_file:None or str or pd.DataFrame,chr_size_file:None or str or pd.DataFrame,annotation_file:None or str or pd.DataFrame) : 
         """
-        This function is used to load all datasets needed for the enrichment calculation
+        Used to load all datasets needed for the enrichment calculation
 
         Parameters
         ----------
@@ -150,7 +150,7 @@ class GREAT:
 
     def __enrichment_binom_and_hypergeom(test:pd.DataFrame, regdom:pd.DataFrame, size: pd.DataFrame, ann:pd.DataFrame, asso:list) -> pd.DataFrame : 
         """
-        This private function is used to compute the enrichment of the test data using the binomial test and the hypergeometric test.
+        Used to compute the enrichment of the test data using the binomial test and the hypergeometric test.
 
         Parameters
         ----------
@@ -243,7 +243,7 @@ class GREAT:
     
     def __enrichment_binom(test:pd.DataFrame, regdom:pd.DataFrame, size: pd.DataFrame, ann:pd.DataFrame, asso:list) -> pd.DataFrame :
         """
-        This private function is used to compute the enrichment of the test data using the binomial test.
+        Used to compute the enrichment of the test data using the binomial test.
 
         Parameters
         ----------
@@ -328,7 +328,7 @@ class GREAT:
 
     def __enrichment_hypergeom(test:pd.DataFrame,regdom:pd.DataFrame,ann:pd.DataFrame,asso:list) -> pd.DataFrame : 
         """
-        This private function is used to compute the enrichment of the test data using the hypergeometric test.
+        Used to compute the enrichment of the test data using the hypergeometric test.
 
         Parameters
         ----------
@@ -407,7 +407,7 @@ class GREAT:
 
     def enrichment(test_file: str or pd.DataFrame,regdom_file: str or pd.DataFrame,chr_size_file: str or pd.DataFrame, annotation_file: str or pd.DataFrame, binom=True,hypergeom=True) -> pd.DataFrame :
         """
-        This function is a wrapper of the 3 private methods: 
+        Wrapper of the 3 private methods: 
         * GREAT.__enrichment_binom_and_hypergeom 
         * GREAT.__enrichment_binom 
         * GREAT.__enrichment_hypergeom
@@ -509,7 +509,7 @@ class GREAT:
 
     def set_bonferroni(self,alpha:float=0.05) -> pd.DataFrame : 
         """
-        This function create new columns in the dataframe with the Bonferroni correction
+        Create new columns in the dataframe with the Bonferroni correction
 
         Parameters
         ----------
@@ -556,7 +556,7 @@ class GREAT:
 
     def set_fdr(self,alpha:float=0.05) -> pd.DataFrame : 
         """
-        This function create new columns in the dataframe with the fdr correction
+        Create new columns in the dataframe with the fdr correction
 
         Parameters
         ----------
@@ -603,7 +603,7 @@ class GREAT:
 
     def set_threshold(self,colname:str, alpha:int=0.05) -> pd.DataFrame : 
         """
-        This function allows to delete rows according to the p-value of the column taken as argument. By default the alpha value is 0.05
+        Delete rows according to the p-value of the column taken as argument. By default the alpha value is 0.05
 
         Parameters
         ----------
@@ -649,8 +649,8 @@ class GREAT:
 ######################################################################
 def get_association(test,regdom) -> list : 
     """
-    Function allowing from a file of genomic regions from CHIPseq 
-    and a file of genomic regulatory domains to determine the names 
+    From a file of genomic regions from CHIPseq 
+    and a file of genomic regulatory domains determine the names 
     of genes associated with at least one genomic region 
 
     Parameters
@@ -702,8 +702,8 @@ def get_association(test,regdom) -> list :
 
 def len_regdom(regdom:pd.DataFrame) -> dict :  
     """
-    Function to calculate for each gene name from regdom the
-     size of the regulatory region for this gene in the genome 
+    Calculate for each gene name from regdom the
+    size of the regulatory region for this gene in the genome 
 
     Parameters
     ----------    
@@ -737,7 +737,7 @@ def len_regdom(regdom:pd.DataFrame) -> dict :
 
 def number_of_hit(test,regdom) -> int : 
     """ 
-    Function to calculate the number of hits from several 
+    Calculate the number of hits from several 
     genomic regions and the file describing the regulatory regions
 
     Parameters
@@ -849,7 +849,7 @@ def betai(a,b,x) :
 
 def get_binom_pval(n:int,k:int,p:float) -> float :
     """
-    This function allows to calculate the binomial probability 
+    Calculate the binomial probability 
     of obtaining k in a set of size n and whose probability is p 
 
     Parameters
@@ -877,7 +877,7 @@ def get_binom_pval(n:int,k:int,p:float) -> float :
 
 def hypergeom_pmf(N:int, K:int, n:int, k:int) -> float :  
     """
-    Function to calculate the probability mass function for hypergeometric distribution
+    Calculate the probability mass function for hypergeometric distribution
 
     Parameters
     ----------
@@ -908,7 +908,7 @@ def hypergeom_pmf(N:int, K:int, n:int, k:int) -> float :
 
 def hypergeom_cdf(N:int, K:int, n:int, k:int) -> float :
     """
-    Function to calculate the cumulative density funtion for hypergeometric distribution
+    Calculate the cumulative density funtion for hypergeometric distribution
 
     Parameters
     ----------

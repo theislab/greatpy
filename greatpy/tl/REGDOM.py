@@ -4,7 +4,7 @@ pd.options.display.float_format = '{:12.5e}'.format
 class REGDOM : 
     def __validate_input(association:str,max_extension:int,basal_upstream:int,basal_downstream:int) -> bool : 
         """
-        This function checks that the inputs (association_rule, max_extension, basal_upstream, basal_downstream) are valid 
+        Checks that the inputs (association_rule, max_extension, basal_upstream, basal_downstream) are valid 
 
         Parameters
         ----------
@@ -46,7 +46,7 @@ class REGDOM :
 
     def __write_regdom(regdom:pd.DataFrame,file_name:str) -> None :
         """
-        This method allows you to write the regulatory regions calculated in a file given in argument
+        Write the regulatory regions calculated in a file given in argument
 
         Parameters
         ----------
@@ -74,7 +74,7 @@ class REGDOM :
 
     def __create_basal_plus_extension_regdom(tss:pd.DataFrame,maximumExtension:int,basalUp:int,basalDown:int,chr_size:pd.DataFrame) -> pd.DataFrame :
         """
-        This function allows to create the regulatory domains using the Basalplusextention association rule
+        Create the regulatory domains using the Basalplusextention association rule
 
         Parameters
         ----------
@@ -180,7 +180,7 @@ class REGDOM :
 
     def __create_two_closet_regdom(tss:pd.DataFrame,max_extension:int,chr_size:pd.DataFrame) -> pd.DataFrame :
         """
-        This function allows to create the regulatory domains using the TwoCloset association rule. 
+        Create the regulatory domains using the TwoCloset association rule. 
         It is based on the basal plus extension rule but with basalUp and basalDown equals to 0.
 
         Parameters
@@ -218,7 +218,7 @@ class REGDOM :
 
     def create_one_closet_regdom(tss:pd.DataFrame,maximum_extension:int,chr_size:pd.DataFrame) -> pd.DataFrame :
         """
-        This function allows to create the regulatory domains using the OneCloset association rule
+        Create the regulatory domains using the OneCloset association rule
 
         Parameters
         ----------
@@ -291,7 +291,7 @@ class REGDOM :
 
     def create_regdom(tss_file:str,chr_sizes_file:str,association_rule:str,max_extension:int=1000000,basal_upstream:int=5000,basal_downstream:int=1000, out_path:str or None=None) -> pd.DataFrame : 
         """\
-        This function allows to create regdoms according to the three association rules, to write the result in a file or not and to return the result as a pd.DataFrame
+        Create regdoms according to the three association rules, to write the result in a file or not and to return the result as a pd.DataFrame
 
         Parameters
         ----------

@@ -3,8 +3,8 @@ import pandas as pd
 
 def get_nb_asso_per_region(test : str or pd.DataFrame ,regdom:str or pd.DataFrame) -> dict : 
     """
-    Function allowing from a file of genomic regions from CHIPseq 
-    and a file of genomic regulatory domains to determine number of peaks 
+    From a file of genomic regions from CHIPseq 
+    and a file of genomic regulatory domains, determine number of peaks 
     associated with each gene in the regulatory domain. 
 
     Parameters
@@ -57,8 +57,8 @@ def get_nb_asso_per_region(test : str or pd.DataFrame ,regdom:str or pd.DataFram
 
 def get_dist_to_tss(test : str or pd.DataFrame ,regdom:str or pd.DataFrame) -> dict : 
     """
-    Function allowing from a file of genomic regions from CHIPseq 
-    and a file of genomic regulatory domains to determine the distance from peaks 
+    From a file of genomic regions from CHIPseq 
+    and a file of genomic regulatory domains, determine the distance from peaks 
     to the transcription start site of the associated gene
 
     Parameters

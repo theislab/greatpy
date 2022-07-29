@@ -9,7 +9,7 @@ from matplotlib import rcParams
 
 def scatterplot(great_df:pd.DataFrame,colname_x:str,colname_y:str,title:str="",minus_log10=True,ax=None) -> None :
     """
-    This function is used to create a scatterplot from a 
+    Create a scatterplot from a 
     pandas dataframe between two columns. 
     A logarithmic scale can be used. 
 
@@ -45,7 +45,7 @@ def scatterplot(great_df:pd.DataFrame,colname_x:str,colname_y:str,title:str="",m
 
 def graph_nb_asso_per_peaks(test:str or pd.DataFrame,regdom:str or pd.DataFrame,ax=None,color=None) -> None :
     """
-    This function creates a barplot representing the 
+    Creates a barplot representing the 
     percentage of peaks for all possible association numbers  
 
     Parameters
@@ -87,7 +87,7 @@ def graph_nb_asso_per_peaks(test:str or pd.DataFrame,regdom:str or pd.DataFrame,
 
 def graph_dist_tss(test:str or pd.DataFrame,regdom:str or pd.DataFrame,ax=None,color="#325fa8") -> None : 
     """
-    This function allows the creation of a barplot of the distance 
+    Creation of a barplot of the distance 
     between the peaks and the TSS of the associated gene(s). 
 
     Parameters
@@ -139,7 +139,7 @@ def graph_dist_tss(test:str or pd.DataFrame,regdom:str or pd.DataFrame,ax=None,c
 
 def graph_absolute_dist_tss(test:str or pd.DataFrame,regdom:str or pd.DataFrame,ax=None,color="#325fa8") -> None : 
     """
-    This function allows the creation of a barplot of the absolute
+    Creation of a barplot of the absolute
     distance between the peaks and the TSS of the associated gene(s). 
 
     Parameters
@@ -197,7 +197,7 @@ def scale_data_5_75(data):
 
 def plot_enrich(data, n_terms=20, color="cool", save=False):
     """
-    This function allows the creation of a dotplot of the enrichment
+    Creation of a dotplot of the enrichment
     GO term in the inputs datas  
 
     Parameters
