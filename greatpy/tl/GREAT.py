@@ -224,7 +224,7 @@ class GREAT:
                 k_hypergeom = curr_regdom.loc[curr_regdom["Name"].isin(asso)].shape[0] # get the number of genes in the test gene set with annotation
 
                 if i not in list(hit.keys()) : 
-                    hit[i] = number_of_hit(test,curr_regdom)# get the number of test genomic regions in the regulatory domain of a gene with annotation
+                    hit[i] = number_of_hits(test,curr_regdom)# get the number of test genomic regions in the regulatory domain of a gene with annotation
                 k_binom = hit[i]
                 nb_binom = sum([len_on_chr[i] for i in curr_regdom["Name"]])# get the portion of the genome in the regulatory domain of a gene with annotation
                 tmp.append((k_binom,nb_binom,i,gene_imply.iloc[0]["name"],K_hypergeom,k_hypergeom))
@@ -311,7 +311,7 @@ class GREAT:
                 curr_regdom = regdom.loc[regdom["Name"].isin(list(gene_imply["symbol"]))]
 
                 if i not in list(hit.keys()) : 
-                    hit[i] = number_of_hit(test,curr_regdom)# get the number of test genomic regions in the regulatory domain of a gene with annotation
+                    hit[i] = number_of_hits(test,curr_regdom)# get the number of test genomic regions in the regulatory domain of a gene with annotation
                 k_binom = hit[i]
                 nb_binom = sum([len_on_chr[i] for i in curr_regdom["Name"]])# get the portion of the genome in the regulatory domain of a gene with annotation
                 tmp.append(k_binom,nb_binom,i,gene_imply.iloc[0]["name"],K)
@@ -735,7 +735,7 @@ def len_regdom(regdom:pd.DataFrame) -> dict :
     test = regdom["chr_end"] - regdom["chr_start"]
     return pd.DataFrame({"len" : list(test)},index = regdom["Name"]).to_dict()["len"]
 
-def number_of_hit(test,regdom) -> int : 
+def number_of_hits(test,regdom) -> int : 
     """ 
     Calculate the number of hits from several 
     genomic regions and the file describing the regulatory regions
@@ -770,7 +770,7 @@ def number_of_hit(test,regdom) -> int :
             "tss":[1074306,1116089],
             "strand":['-','-']
         })
-    >>> number_of_hit(test,regdom)        
+    >>> number_of_hits(test,regdom)        
     ...    1
     
     """

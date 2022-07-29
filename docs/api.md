@@ -53,7 +53,7 @@ import greatpy as gp
     tl.utils.get_dist_to_tss
     tl.get_association
     tl.len_regdom 
-    tl.number_of_hit
+    tl.number_of_hits
     tl.betacf
     tl.betai
     tl.get_binom_pval 
