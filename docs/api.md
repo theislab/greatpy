@@ -21,7 +21,7 @@ import greatpy as gp
 ```
 ### Create regulatory domain 
 ```{eval-rst}
-.. currentmodule:: greatpy.tl
+.. currentmodule:: greatpy.tl.REGDOM
 .. autosummary::
     :toctree: generated/
 
@@ -61,13 +61,13 @@ import greatpy as gp
     tl.hypergeom_cdf
 ```
 
-## Plotting : `tl`
+## Plotting : `pl`
 ```{eval-rst}
 .. module:: greatpy.pl
 .. currentmodule:: greatpy
 
 .. autosummary::
-    :toctree: generated
+    :toctree: generated/
 
     pl.scatterplot
     pl.graph_nb_asso_per_peaks
