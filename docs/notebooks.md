@@ -1,5 +1,4 @@
 # Notebooks
-## Example Notebooks
 
 ```{toctree}
 :hidden: true
@@ -12,4 +11,11 @@ notebooks/05_rgreat_online_vs_local_vs_greatpy.ipynb
 notebooks/06_peaks_using_binodome.ipynb
 notebooks/07_plot.ipynb
 ```
+## Example Notebooks
+### Create regulatory domain
+============================
+```{include} 
+notebooks/01_create_regdom.ipynb
+```
+```{}
 
