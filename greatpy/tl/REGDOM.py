@@ -318,11 +318,7 @@ class REGDOM :
 
         Examples 
         --------
-        >>> regdom = create_regdom(
-            tss_file="../../data/human/tss.bed",
-            chr_sizes_file="../../data/human/chr_size.bed",sep="\t",names=["chr","Size"],
-            association_rule="one_closet",
-            )
+        >>> regdom = create_regdom(tss_file="../../data/human/tss.bed", chr_sizes_file="../../data/human/chr_size.bed",sep="\t",names=["chr","Size"], association_rule="one_closet")
         >>> regdom.head()
         ...    |    | Chr   |   Chr_Start |   Chr_End | name      |   tss | Strand   |
         ...    |---:|:------|------------:|----------:|:----------|------:|:---------|
