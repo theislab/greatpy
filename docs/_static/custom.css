@@ -3,9 +3,8 @@
   }
   
   /* ReadTheDocs theme colors */
-  
   .wy-nav-top {
-    background-color: #f07e44;
+    background-color: #44f052;
   }
   .wy-nav-content {
     max-width: 1200px;
@@ -17,6 +16,10 @@
     border-width: 0;
   }
   
+  .wy-nav-side{
+    background-color: #283643;
+  }
+
   /* Custom classes */
   
   .small {
