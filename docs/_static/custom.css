@@ -40,3 +40,7 @@
   background: #edf0f2;
   color: #404040;
 } 
+
+.wy-side-scroll {
+  overflow: auto;
+}
