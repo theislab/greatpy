@@ -14,7 +14,7 @@ gp.tl.REGDOM.create_regdom(
 ```
 
 ### Get enrichment 
-greatpy can allow you to compute the GO term enrichment on a set of chroosomic region on a bed format with `greatpy.tl.GREAT.enrichment()`. You can show an example of this function with the following code:
+greatpy can allow you to compute the GO term enrichment on a set of the chromosomic region on a bed format with `greatpy.tl.GREAT.enrichment()`. You can show an example of this function with the following code:
 ```
 import greatpy as gp 
 enrichment = gp.tl.GREAT.enrichment(

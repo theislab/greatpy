@@ -1,6 +1,7 @@
 from .utils import (
     get_nb_asso_per_region, 
     get_dist_to_tss, 
+    get_all_comparison, 
     )
 
 from .GREAT import (
