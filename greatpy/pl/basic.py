@@ -76,9 +76,9 @@ def graph_nb_asso_per_peaks(test:str or pd.DataFrame,regdom:str or pd.DataFrame,
     nb = pd.DataFrame(nb,columns=["number","number_genes","percentage"],index=nb["number"])
 
     g = sb.barplot(data = nb,x="number",y="percentage",ax=ax,color=color)
-    g.set_title("Number of associated genes per region")
-    g.set_xlabel("Number of associated genes per region")
-    g.set_ylabel("Genomic region (%)")
+    g.set_title("Number of associated genes per region",fontsize=20)
+    g.set_xlabel("Number of associated genes per region",fontsize=13)
+    g.set_ylabel("Genomic region (%)",fontsize=13)
 
     for i in range(nb.shape[0]):  
         x = nb.iloc[i]["number"]
@@ -133,9 +133,9 @@ def graph_dist_tss(test:str or pd.DataFrame,regdom:str or pd.DataFrame,ax=None,c
     g = sb.barplot(data=df,x="distance",y="percentage",color=color,ax=ax)
     for idx,p in enumerate (g.patches) : 
         g.annotate(str(df.iloc[idx]["count"]),(p.get_x() + p.get_width() / 2 , p.get_height()))
-    g.set_xlabel("Distance to TSS (kb)")
-    g.set_ylabel("Genomic region (%)")
-    g.set_title("Binned by absolute distance to TSS")
+    g.set_xlabel("Distance to TSS (kb)",fontsize=13)
+    g.set_ylabel("Genomic region (%)",fontsize=13)
+    g.set_title("Binned by absolute distance to TSS",fontsize=20)
 
 def graph_absolute_dist_tss(test:str or pd.DataFrame,regdom:str or pd.DataFrame,ax=None,color="#325fa8") -> None : 
     """
@@ -178,9 +178,9 @@ def graph_absolute_dist_tss(test:str or pd.DataFrame,regdom:str or pd.DataFrame,
     g = sb.barplot(data=df,x="distance",y="percentage",color=color,ax=ax)
     for idx,p in enumerate (g.patches) : 
         g.annotate(str(df.iloc[idx]["count"]),(p.get_x() + p.get_width() / 2 , p.get_height()))
-    g.set_xlabel("Absolute distance to TSS (kb)")
-    g.set_ylabel("Genomic region (%)")
-    g.set_title("Binned by absolute distance to TSS")
+    g.set_xlabel("Absolute distance to TSS (kb)",fontsize=13)
+    g.set_ylabel("Genomic region (%)",fontsize=13)
+    g.set_title("Binned by absolute distance to TSS",fontsize=20)
 
 
 def scale_data_5_75(data):
