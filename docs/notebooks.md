@@ -41,7 +41,7 @@ gp.tl.GREAT.set_threshold(enrichment,colname="column_to_apply_the_threshold",alp
 ```
 
 ### plot the results 
-Several types of studs can be made: 
+Several types of plots can be made: 
 ```
 import greatpy as gp
 import matplotlib.pyplot as plt
@@ -61,7 +61,7 @@ plt.show()
 ```{image} _static/output_images/scatterplot.png
 :width: 200px
 ```
-#### Graph of the number of association per peak 
+#### Graph of the number of associations per peak 
 ```
 fig,ax = plt.subplots(1,3,figsize=(30,8))
 gp.pl.graph_nb_asso_per_peaks(test,regdom,ax[0])
