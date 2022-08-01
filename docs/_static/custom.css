@@ -32,10 +32,6 @@
   border-width: 0;
 }
 
-.wy-side-scroll{
-  background : #093020;
-}
-
 .rst-content dl:not(.docutils) a > code.xref {
   font-weight: bold;
 }
@@ -43,5 +39,4 @@
 .rst-content dl:not(.docutils) dt {
   background: #edf0f2;
   color: #404040;
-  border-top: solid 3px #343131;
 } 
