@@ -85,6 +85,7 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", "**.ipynb_checkpoints"]
 #
 html_theme = "scanpydoc"
 html_static_path = ["_static"]
+html_css_files = ["custom.css"]
 
 pygments_style = "sphinx"
 
