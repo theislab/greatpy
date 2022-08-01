@@ -59,6 +59,7 @@ gp.pl.scatterplot(
 plt.show()
 ```
 ```{image} _static/output_images/scatterplot.png
+:width: 500px
 ```
 #### Graph of the number of association per peak 
 ```
@@ -78,6 +79,7 @@ gp.pl.plot_enrich(plot)
 ```
 
 ```{image} _static/output_images/dotplot.png
+:width: 500px
 ```
 
 ## Notebook example
