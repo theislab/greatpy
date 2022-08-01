@@ -1,3 +1,8 @@
  :root {
-    --accent-color: #382116; 
+    --accent-color: #77ff00; 
   }
+
+  .wy-side-nav-search a.icon-home {
+    font-size: 2em;
+    color: var(--accent-color);
+}
