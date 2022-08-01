@@ -66,7 +66,6 @@ fig,ax = plt.subplots(1,3,figsize=(30,8))
 gp.pl.graph_nb_asso_per_peaks(test,regdom,ax[0])
 gp.pl.graph_dist_tss(test,regdom,ax[1])
 gp.pl.graph_absolute_dist_tss(test,regdom,ax[2])
-plt.savefig("save1",dpi=500)
 plt.show()
 ```
 
