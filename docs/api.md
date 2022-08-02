@@ -51,9 +51,6 @@ import greatpy as gp
 ### utils side tools
 
 ```{eval-rst}
-.. module:: greatpy.tl
-.. currentmodule:: greatpy
-
 .. autosummary::
     :toctree: generated
 
