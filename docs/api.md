@@ -26,32 +26,28 @@ import greatpy as gp
 ### Create regulatory domain
 
 ```{eval-rst}
-.. currentmodule:: greatpy.tl.REGDOM
 .. autosummary::
     :toctree: generated/
 
-    REGDOM.create_regdom
+    tl.REGDOM.REGDOM.create_regdom
 ```
 
 ### greatpy computation
 
 ```{eval-rst}
-.. module:: greatpy.tl.GREAT
-
 .. autosummary::
     :toctree: generated
 
-    GREAT.loader
-    GREAT.enrichment
-    GREAT.set_bonferroni
-    GREAT.set_fdr
-    GREAT.set_threshold
+    tl.GREAT.GREAT.loader
+    tl.GREAT.GREAT.enrichment
+    tl.GREAT.GREAT.set_bonferroni
+    tl.GREAT.GREAT.set_fdr
+    tl.GREAT.GREAT.set_threshold
 ```
 
 ### utils side tools
 
 ```{eval-rst}
-.. module:: greatpy
 .. autosummary::
     :toctree: generated
 
