@@ -89,9 +89,11 @@ nitpick_ignore = [
     # you can add an exception to this list.
         ("py:class", "pd.DataFrame"),
         ("py:class", "pd.dataFrame"),
-        ("py:class", "int"),
+        ("py:class", "int : default 1000000"),
+        ("py:class", "int : default 5000"),
+        ("py:class", "int : default 1000"),
         ("py:class", "default True"),
-        ("py:class", "NoneType"),
+        ("py:class", "NoneType : default None"),
 ]
 
 
