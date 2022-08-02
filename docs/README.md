@@ -54,24 +54,26 @@ res = greatpy.tl.GREAT.enrichment(
     regdom_file=path_of_regdom_file,
     chr_size_file=path_each_chromosome_size,
     annotation=path_of_the_csv_file_of_ontologies,
+)
 ```
-Several arguments can be added to this function such as : 
-* `binom` (default True): should the binomial p-value be calculated ? 
-* `hypergeom` (default True): should the hypergeometric p-value be computed ? 
+Several arguments can be added to this function such as :
+* `binom` (default True): should the binomial p-value be calculated?
+* `hypergeom` (default True): should the hypergeometric p-value be computed? 
 
-It is then possible to apply a bonferroni and/or fdr correction to the found p-values: 
+It is then possible to apply a Bonferroni and/or FDR correction to the found p-values: 
 ```python
 res = greatpy.tl.GREAT.enrichment(
     test_file=path_or_dataframe_of_genomic_region_to_test,
     regdom_file=path_or_dataframe_of_regdom_file,
     chr_size_file=path_or_dataframe_each_chromosome_size,
     annotation_file=path_or_dataframe_of_the_csv_file_of_ontologies,
+)
 great.tl.GREAT.set_fdr(res,alpha=0.05)
 great.tl.GREAT.set_bonferroni(res,alpha=0.05)
 ```
 
 #### <ins>3. Plot</ins> 
-It is also possible to create several types of plot: 
+It is also possible to create several types of plots: 
 * Number of genetic associations per genomic region 
 * Distance to the associated gene tss for each genomic region studied 
 * Absolute distance to the associated gene tss for each genomic region studied
@@ -133,7 +135,7 @@ If you found a bug, please use the [issue tracker][issue-tracker].
 
 ## Citation
 
-For cite greatpy :
+For cite greatpy:
 
 ```bibtex
 @software{greatpy,
