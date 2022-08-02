@@ -1,8 +1,11 @@
 # Example
 
-## Code snippet 
+## Code snippet
+
 ### Create regulatory domain
+
 greatpy can allow you to create regulatory domains with a TSS.bed and chromosome_size.bed files with the function `greatpy.tl.REGDOM.create_regdom()`. You can show an example of this function with the following code:
+
 ```
 import greatpy as gp
 gp.tl.REGDOM.create_regdom(
@@ -13,40 +16,53 @@ gp.tl.REGDOM.create_regdom(
 )
 ```
 
-### Get enrichment 
+### Get enrichment
+
 greatpy can allow you to compute the GO term enrichment on a set of the chromosomic region on a bed format with `greatpy.tl.GREAT.enrichment()`. You can show an example of this function with the following code:
+
 ```
-import greatpy as gp 
+import greatpy as gp
 enrichment = gp.tl.GREAT.enrichment(
-    test_file=df_or_path_to_test_file, 
-    regdom_file=df_or_path_to_regdomfile_file, # could be create with gp.tl.REGDOM.create_regdom() 
+    test_file=df_or_path_to_test_file,
+    regdom_file=df_or_path_to_regdomfile_file, # could be create with gp.tl.REGDOM.create_regdom()
     chr_size_file=df_or_path_to_size_file,
     annotation_file=df_or_path_to_ontology_annotation_file,
     binom=True,
     hypergeom=True,
     )
 ```
-After the calculation, it is possible to apply corrections to the p_values, two methods of corrections are possible: 
-* Bonferroni correction : 
-``` 
+
+After the calculation, it is possible to apply corrections to the p_values, two methods of corrections are possible:
+
+-   Bonferroni correction :
+
+```
 gp.tl.GREAT.set_fdr(enrichment)
 ```
-* FDR correction : 
+
+-   FDR correction :
+
 ```
 gp.tl.GREAT.set_bonferroni(enrichment)
 ```
-It is also possible to apply a threshold on one of the columns to reduce the table 
+
+It is also possible to apply a threshold on one of the columns to reduce the table
+
 ```
 gp.tl.GREAT.set_threshold(enrichment,colname="column_to_apply_the_threshold",alpha=0.05)
 ```
 
-### plot the results 
-Several types of plots can be made: 
+### plot the results
+
+Several types of plots can be made:
+
 ```
 import greatpy as gp
 import matplotlib.pyplot as plt
 ```
-#### Scatter plot 
+
+#### Scatter plot
+
 ```
 gp.pl.scatterplot(
     enrichment,
@@ -58,10 +74,13 @@ gp.pl.scatterplot(
 )
 plt.show()
 ```
+
 ```{image} _static/output_images/scatterplot.png
 :width: 200px
 ```
-#### Graph of the number of associations per peak 
+
+#### Graph of the number of associations per peak
+
 ```
 fig,ax = plt.subplots(1,3,figsize=(30,8))
 gp.pl.graph_nb_asso_per_peaks(test,regdom,ax[0])
@@ -71,8 +90,11 @@ plt.show()
 ```
 
 ```{image} _static/output_images/plot1.png
+
 ```
-#### Dotplot showing the enrichment of the GO terms 
+
+#### Dotplot showing the enrichment of the GO terms
+
 ```
 plot = enrichment.rename(columns={"binom_p_value" : "p_value", "go_term":"name"})
 gp.pl.plot_enrich(plot)
@@ -83,6 +105,7 @@ gp.pl.plot_enrich(plot)
 ```
 
 ## Notebook example
+
 ```{toctree}
 :hidden: true
 :maxdepth: 1

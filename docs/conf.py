@@ -109,6 +109,8 @@ def setup(app):
         },
         True,
     )
+
+
 nitpick_ignore = [
-    ('py:class', 'pd.dataFrame'),
+    ("py:class", "pd.dataFrame"),
 ]

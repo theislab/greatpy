@@ -6,12 +6,15 @@
 .. automodule:: greatpy
    :noindex:
 ```
+
 # API
+
 ```
 import greatpy as gp
 ```
 
 ## Tools : `tl`
+
 ```{eval-rst}
 .. module:: greatpy.tl
 ```
@@ -19,7 +22,9 @@ import greatpy as gp
 ```{eval-rst}
 .. currentmodule:: greatpy
 ```
-### Create regulatory domain 
+
+### Create regulatory domain
+
 ```{eval-rst}
 .. currentmodule:: greatpy.tl.REGDOM
 .. autosummary::
@@ -29,6 +34,7 @@ import greatpy as gp
 ```
 
 ### greatpy computation
+
 ```{eval-rst}
 .. module:: greatpy.tl.GREAT
 
@@ -41,7 +47,9 @@ import greatpy as gp
     GREAT.set_fdr
     GREAT.set_threshold
 ```
+
 ### utils side tools
+
 ```{eval-rst}
 .. module:: greatpy.tl
 .. currentmodule:: greatpy
@@ -49,19 +57,20 @@ import greatpy as gp
 .. autosummary::
     :toctree: generated
 
-    tl.utils.get_nb_asso_per_region 
+    tl.utils.get_nb_asso_per_region
     tl.utils.get_dist_to_tss
     tl.get_association
-    tl.len_regdom 
+    tl.len_regdom
     tl.number_of_hits
     tl.betacf
     tl.betai
-    tl.get_binom_pval 
-    tl.hypergeom_pmf 
+    tl.get_binom_pval
+    tl.hypergeom_pmf
     tl.hypergeom_cdf
 ```
 
 ## Plotting : `pl`
+
 ```{eval-rst}
 .. module:: greatpy.pl
 .. currentmodule:: greatpy

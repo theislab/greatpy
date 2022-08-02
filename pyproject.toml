@@ -27,8 +27,8 @@ readme = "README.md"
 dependencies = [
     "statsmodels",
     "seaborn",
-    "dask", 
-    "scipy", 
+    "dask",
+    "scipy",
     "gprofiler",
     ]
 
