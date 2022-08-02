@@ -41,11 +41,11 @@ import greatpy as gp
 .. autosummary::
     :toctree: generated
 
-    GREAT.loader
-    GREAT.enrichment
-    GREAT.set_bonferroni
-    GREAT.set_fdr
-    GREAT.set_threshold
+    loader
+    enrichment
+    set_bonferroni
+    set_fdr
+    set_threshold
 ```
 
 ### utils side tools
