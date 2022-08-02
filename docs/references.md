@@ -1,6 +1,7 @@
 # References
 
 ## GREAT article
+
 ```{bibliography}
     :cited:
 
