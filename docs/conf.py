@@ -88,6 +88,10 @@ nitpick_ignore = [
     # If building the documentation fails because of a missing link that is outside your control,
     # you can add an exception to this list.
         ("py:class", "pd.DataFrame"),
+        ("py:class", "pd.dataFrame"),
+        ("py:class", "int"),
+        ("py:class", "default True"),
+        ("py:class", "NoneType"),
 ]
 
 
