@@ -146,7 +146,7 @@ For cite greatpy :
 
 ```bibtex
 @software{greatpy,
-  author = {Ibarra, Mauger-Birocheau}},
+  author = {Ibarra, Mauger-Birocheau},
   doi = {},
   month = {},
   title = {{greatpy}},
