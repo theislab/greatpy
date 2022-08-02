@@ -115,6 +115,6 @@ notebooks/02_binom_vs_hypergeom.ipynb
 notebooks/03_great_vs_greatpy.ipynb
 notebooks/04_hypergeom_vs_gprofiler.ipynb
 notebooks/05_rgreat_online_vs_local_vs_greatpy.ipynb
-notebooks/06_peaks_using_binodome.ipynb
+notebooks/06_peaks_using_bindome.ipynb
 notebooks/07_plot.ipynb
 ```
