@@ -105,6 +105,12 @@ plt.show()
   <img src="./sketch/plot1.png?raw=true" style="width:75%">
 </p>
 
+-  Dotplot of the enrichment GO term in the genomic test region 
+
+<p align="center">
+  <img src="./sketch/dotplot.png?raw=true" style="width:75%">
+</p>
+
 Several examples of uses can be found in the notebook part of the package:
 
 -   For the create_regdom option: [notebook][notebook1]

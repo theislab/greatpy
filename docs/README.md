@@ -105,6 +105,12 @@ plt.show()
 
 ```
 
+-  Dotplot of the enrichment GO term in the genomic test region 
+
+```{image} _static/output_images/dotplot.png
+
+```
+
 
 Several examples of uses can be found in the notebook part of the package:
 
