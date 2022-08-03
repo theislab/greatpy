@@ -352,6 +352,47 @@ def make_bubble_heatmap(order_frame, sizeDict, na_color='gray', title='title',
                         colorbar_grid=[2, 5, 0, 3, 2, 1],
                         palette_id='RdBu_r', cbar_label='cbar_label', ncols=8,
                         marker=None, **kwargs):
+    """
+    Generate a dotplot with multiple categories
+
+    Parameters
+    ----------
+    order_frame
+        DataFrame with gene ontologies 
+    sizeDict
+        Dictionary with gene ontologies as keys and sizes as values
+    na_color
+        Color for NA values
+    title
+        Title for the plot
+    tickscolorbar
+        Tick marks for the colorbar
+    vmin
+        Minimum value for the colorbar
+    vmax
+        Maximum value for the colorbar
+    heatmap_grid
+        Grid for the heatmap
+    circle_legend_grid
+        Grid for the circle legend
+    colorbar_grid
+        Grid for the colorbar
+    palette_id
+        Palette id for the colorbar
+    cbar_label
+        Label for the colorbar
+    ncols
+        Number of columns for the colorbar
+    marker
+        Marker for the dots
+    kwargs
+        Additional keyword arguments for the plot
+
+    Returns
+    -------
+    None 
+        Bubble heatmap plot for gene ontology
+    """
     from matplotlib import gridspec
     sns.set_style('white')
 
@@ -390,7 +431,6 @@ def make_bubble_heatmap(order_frame, sizeDict, na_color='gray', title='title',
     nrows, ncols, rowi, coli, rowspan, colspan = heatmap_grid
     gs = gridspec.GridSpec(nrows, ncols)
     ax = plt.subplot(gs[rowi: rowi + rowspan, coli: coli + colspan])
-
 
     ylabelList = []
     i = 0
