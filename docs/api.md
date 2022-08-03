@@ -45,7 +45,7 @@ import greatpy as gp
     tl.GREAT.GREAT.set_threshold
 ```
 
-### utils side tools
+### utils additional tools
 
 ```{eval-rst}
 .. autosummary::
