@@ -418,7 +418,7 @@ def make_bubble_heatmap(order_frame, sizeDict, na_color='gray', title='title',
     else:
         palette = palette_id
     scalarmap,colorList = get_specific_color_gradient(pallete,
-        np.array(order_frame),
+        np.array(order_frame["binom_p_value"]),
         vmin=vmin,
         vmax=vmax)
 
