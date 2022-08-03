@@ -17,16 +17,16 @@ Please refer to the [documentation][link-docs]. In particular, the
 
 ### What is GREAT :
 
-Great is a bioinformatics tool to analyze cis-regulatory regions of the genome. This method can be used to assign probable biological meanings to unannotated genes based on the annotations carried by neighboring genes. This tool allows going from peaks in .bed format to enrichment ontology terms associated with these peaks using several statistical tests.
-This package is strongly inspired by [GREAT][great_article] allowing Helmholtz to have a stable and perennial version of the package.
-
-[GREAT figure][great_figure] in [GREAT article][great_article]
+GREAT (Genomic Regions Enrichment of Annotations Tool) is a bioinformatics tool, this method enables to associate genetic regions to the most probable GO terms. 
 
 ### What can you do with greatpy :
+This package is strongly inspired by [GREAT][GREAT_article] allowing Helmholtz to have a stable, perennial and updated version of the package.
+
+[GREAT figure][GREAT_figure] issue from [GREAT article][GREAT_article]
 
 #### <ins>1. Create regulatory domain from tss</ins>
 
--   Translate a genetic file in .bed format and containing the following information: chromosome number, start position on the chromosome, end position, gene name and tss.
+-   Translate a genetic file in .bed format and containing the following information: chromosome number, start position on the chromosome, end position, gene name and TSS.
     Into a regulatory region file that can then be used in the great :
 
 ```python
@@ -38,7 +38,7 @@ regdom = greatpy.tl.REGDOM.create_regdom(
 )
 ```
 
-The [association rules][association_rules] could be :
+The [association rules][association_rules] parameters could be :
 
 -   `Basalplusextention`
 -   `OneCloset`
@@ -84,8 +84,8 @@ great.tl.GREAT.set_bonferroni(res, alpha=0.05)
 It is also possible to create several types of plots:
 
 -   Number of genetic associations per genomic region
--   Distance to the associated gene tss for each genomic region studied
--   Absolute distance to the associated gene tss for each genomic region studied
+-   Distance to the associated gene TSS for each genomic region studied
+-   Absolute distance to the associated gene TSS for each genomic region studied
 
 ```python
 fig, ax = plt.subplots(1, 3, figsize=(30, 8))
@@ -100,6 +100,7 @@ greatpy.pl.graph_absolute_dist_tss(
 )
 plt.show()
 ```
+
 
 ```{image} _static/README_images/plot1.png
 
@@ -163,6 +164,26 @@ For cite greatpy:
 }
 ```
 
+## References
+```bibtex
+@article{GREAT,
+  author   = {McLean, C.
+              and Bristor, D.
+              and Hiller, M. et al.},
+  title    = {GREAT improves functional interpretation of cis-regulatory regions},
+  journal  = {Nat Biotechnol},
+  year     = {2010},
+  month    = {May},
+  day      = {02},
+  volume   = {28},
+  number   = {495},
+  pages    = {501},
+  doi      = {10.1038/nbt.1630},
+  url      = {https://doi.org/10.1038/nbt.1630}
+}
+```
+
+
 [scverse-discourse]: https://discourse.scverse.org/
 [issue-tracker]: https://github.com/theislab/greatpy/issues
 [changelog]: https://greatpy.readthedocs.io/en/latest/changelog.html
@@ -173,8 +194,8 @@ For cite greatpy:
 [notebook2]: https://greatpy.readthedocs.io/en/latest/notebooks/02_binom_vs_hypergeom.html
 [notebook3]: https://greatpy.readthedocs.io/en/latest/notebooks/07_plot.html
 
-[great_article]: https://www.nature.com/articles/nbt.1630
-[great_figure]: https://www.nature.com/articles/nbt.1630/figures/1
+[GREAT_article]: https://www.nature.com/articles/nbt.1630
+[GREAT_figure]: https://www.nature.com/articles/nbt.1630/figures/1
 
 [association_rules]: https://great-help.atlassian.net/wiki/spaces/GREAT/pages/655443/Association+Rules
 
