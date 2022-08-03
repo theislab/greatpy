@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import seaborn as sb
+import seaborn as sns
 from matplotlib import colors, rcParams
 from numpy import log
 
@@ -41,9 +41,9 @@ def scatterplot(
     if minus_log10:
         great_df[f"-log({colname_x})"] = -log(great_df[colname_x])
         great_df[f"-log({colname_y})"] = -log(great_df[colname_y])
-        sb.scatterplot(data=great_df, x=f"-log({colname_x})", y=f"-log({colname_y})", ax=ax).set_title(title)
+        sns.scatterplot(data=great_df, x=f"-log({colname_x})", y=f"-log({colname_y})", ax=ax).set_title(title)
     else:
-        sb.scatterplot(data=great_df, x=colname_x, y=colname_y, ax=ax).set_title(title)
+        sns.scatterplot(data=great_df, x=colname_x, y=colname_y, ax=ax).set_title(title)
 
 
 def graph_nb_asso_per_peaks(test: str or pd.DataFrame, regdom: str or pd.DataFrame, ax=None, color=None) -> None:
@@ -80,7 +80,7 @@ def graph_nb_asso_per_peaks(test: str or pd.DataFrame, regdom: str or pd.DataFra
         )
     nb = pd.DataFrame(nb, columns=["number", "number_genes", "percentage"], index=nb["number"])
 
-    g = sb.barplot(data=nb, x="number", y="percentage", ax=ax, color=color)
+    g = sns.barplot(data=nb, x="number", y="percentage", ax=ax, color=color)
     g.set_title("Number of associated genes per region", fontsize=20)
     g.set_xlabel("Number of associated genes per region", fontsize=13)
     g.set_ylabel("Genomic region (%)", fontsize=13)
@@ -145,7 +145,7 @@ def graph_dist_tss(test: str or pd.DataFrame, regdom: str or pd.DataFrame, ax=No
     df = pd.DataFrame(res).transpose().rename(columns={0: "count"})
     df["percentage"] = (df["count"] / nb) * 100
     df = df.reset_index(drop=False).rename(columns={"index": "distance"})
-    g = sb.barplot(data=df, x="distance", y="percentage", color=color, ax=ax)
+    g = sns.barplot(data=df, x="distance", y="percentage", color=color, ax=ax)
     for idx, p in enumerate(g.patches):
         g.annotate(str(df.iloc[idx]["count"]), (p.get_x() + p.get_width() / 2, p.get_height()))
     g.set_xlabel("Distance to TSS (kb)", fontsize=13)
@@ -191,7 +191,7 @@ def graph_absolute_dist_tss(test: str or pd.DataFrame, regdom: str or pd.DataFra
     df = pd.DataFrame(res).transpose().rename(columns={0: "count"})
     df["percentage"] = (df["count"] / nb) * 100
     df = df.reset_index(drop=False).rename(columns={"index": "distance"})
-    g = sb.barplot(data=df, x="distance", y="percentage", color=color, ax=ax)
+    g = sns.barplot(data=df, x="distance", y="percentage", color=color, ax=ax)
     for idx, p in enumerate(g.patches):
         g.annotate(str(df.iloc[idx]["count"]), (p.get_x() + p.get_width() / 2, p.get_height()))
     g.set_xlabel("Absolute distance to TSS (kb)", fontsize=13)
@@ -255,7 +255,7 @@ def plot_enrich(data, n_terms=20, color="cool", save=False):
 
     rcParams.update({"font.size": 14, "font.weight": "bold"})
 
-    sb.set(style="whitegrid")
+    sns.set(style="whitegrid")
 
     path = plt.scatter(
         x="recall",
@@ -342,3 +342,230 @@ def plot_enrich(data, n_terms=20, color="cool", save=False):
         plt.savefig("dotplot_save", dpi=500)
 
     plt.show()
+
+import matplotlib
+
+def make_bubble_heatmap(order_frame, sizeDict, na_color='gray', title='title',
+                        tickscolorbar=[-2, -1, 0, 1, 2], vmin=-2.5, vmax=2.5,
+                        heatmap_grid=[2, 4, 0, 2, 2, 1],
+                        circle_legend_grid=[2, 4, 0, 2, 2, 1],
+                        colorbar_grid=[2, 5, 0, 3, 2, 1],
+                        palette_id='RdBu_r', cbar_label='cbar_label', ncols=8,
+                        marker=None, **kwargs):
+    from matplotlib import gridspec
+    sns.set_style('white')
+
+    quantAmplifier = kwargs.get('quantAmplifier', 1) #factor for size of bubbles
+
+    #function you received on the color gradient
+    pallete = None
+    if palette_id == 'RdBu_r':
+        pallete = plt.cm.RdBu_r
+    elif palette_id == 'Blues':
+        pallete = plt.cm.Blues
+    elif palette_id == 'Reds':
+        pallete = plt.cm.Reds
+    elif palette_id == 'Greens':
+        pallete = plt.cm.Greens
+    elif palette_id == 'Purples':
+        pallete = plt.cm.Purples
+    elif palette_id == 'YlGnBu':
+        print (palette_id)
+        pallete = plt.cm.YlGnBu
+    elif palette_id == 'PuOr':
+        pallete = plt.cm.PuOr
+    else:
+        palette = palette_id
+    scalarmap,colorList = get_specific_color_gradient(pallete,
+        np.array(order_frame),
+        vmin=vmin,
+        vmax=vmax)
+
+    fig = kwargs.get('fig', None)
+    if fig is None:
+        plt.clf()
+        fig = plt.figure(figsize=(kwargs.get('w', 11), kwargs.get('h', 5)))
+
+
+    nrows, ncols, rowi, coli, rowspan, colspan = heatmap_grid
+    gs = gridspec.GridSpec(nrows, ncols)
+    ax = plt.subplot(gs[rowi: rowi + rowspan, coli: coli + colspan])
+
+
+    ylabelList = []
+    i = 0
+
+    # to keep the order of dataframes in the same order as sizes, revert the dataframes
+    order_frame = order_frame.reindex(index=order_frame.index[::-1])
+    sizeDict = sizeDict.reindex(index=sizeDict.index[::-1])
+
+    min_circle_size = kwargs.get('min_circle_size')
+    max_circle_size = kwargs.get('max_circle_size')
+
+    print ('before plotting dimensions...')
+    print (order_frame.shape)
+    for ri, r in order_frame.iterrows():
+        patList = list(r.values)
+
+        sizeList = []
+        if min_circle_size is not None and max_circle_size is not None:
+            for si in list(sizeDict.loc[ri]):
+                if si < min_circle_size:
+                    si = min_circle_size
+                scaled = (si - min_circle_size) / (max_circle_size - min_circle_size)
+                sizeList.append(scaled * quantAmplifier)
+        else:
+            sizeList = [(si ** kwargs.get('power', 1.0)) * (quantAmplifier) for si in list(sizeDict.loc[ri])]
+
+        colorList = scalarmap.to_rgba(patList)
+        colorList = [ci if not np.isnan(vi) else na_color
+                        for ci, vi in zip(colorList, patList)]
+        edgecolorList = list()
+        x = list(range(len(patList)))
+        y = [i] * len(patList)
+
+        # define hataches, linewidths and alphas
+        hatches = [None if np.isnan(pi) else None for pi in patList]
+        linewidths = [0.1 if np.isnan(pi) else kwargs.get('sig_line_width', 2.0) for pi in patList]\
+            if kwargs.get('line_widths', None) is None else list(kwargs.get('line_widths').loc[ri])
+        alphas = [.5 if np.isnan(alpha) else 1.0 for alpha in patList]
+
+        for xi, yi, si, ci, hatch_i,lw, alpha in zip(x, y, sizeList, colorList,hatches, linewidths, alphas):
+            ax.scatter(xi, yi, s=abs(si) * quantAmplifier,
+                        marker=marker if marker is not None else ('v' if si < 0 else '^'),
+                        hatch=hatch_i, alpha=alpha,
+                        edgecolor=kwargs.get('edgecolor', 'black'), color=ci, linewidth=lw)
+            print (xi, yi, ri) # list(order_frame.ix[ri])[si]
+        ylabelList.append(ri)
+        i += 1
+
+    if kwargs.get('grid', True):
+        plt.grid(True, linewidth=kwargs.get('grid_linewidth', 1.0))
+    plt.title(kwargs.get('heatmap_title', 'title'))
+    plt.xlabel(kwargs.get('xlab', 'xlab'), fontsize=14)
+    plt.ylabel(kwargs.get('ylab', 'ylab'), fontsize=14)
+
+
+    plt.yticks(list(range(len(ylabelList))))
+    ax.set_yticklabels(ylabelList, fontsize=kwargs.get('yticks_fontsize', 11), color="black",
+                        ha=kwargs.get('ha_ylabs', 'right'))
+    remove_top_n_right_ticks(ax)
+
+    print ('current columns')
+    print (list(range(len(order_frame.columns))))
+    print (order_frame.columns)
+    plt.xticks(list(range(len(order_frame.columns))), order_frame.columns,
+                fontsize=kwargs.get('xticks_fontsize', 11), rotation=kwargs.get('rotation_xlabs', 90), color="black",
+                ha=kwargs.get('ha_xlabs', 'center'))
+
+    lh, lt = get_legendHandle_for_second_sanity_check_plot(quantAmplifier=quantAmplifier * quantAmplifier,
+                                                            marker='^' if marker is None else marker,
+                                                            fmt=kwargs.get('fmt_legend', '%.1f'),
+                                                            lw=0.5,
+                                                            min_circle_size=min_circle_size,
+                                                            max_circle_size=max_circle_size,
+                                                            values=[tick ** kwargs.get('power', 1.0) for tick in kwargs.get('circle_legend_ticks')],
+                                                            labels=kwargs.get('circle_legend_ticks'))
+    if kwargs.get('show_circle_legend', True):
+        l = plt.legend(lh, lt, bbox_to_anchor=kwargs.get('circle_legend_bbox', (1.8, 1)), scatterpoints=1,
+                        title=kwargs.get('circles_legend_title', 'circles_legend_title'), ncol=1,
+                        frameon=False)
+        # Add the legend manually to the current Axes.
+        ax = plt.gca().add_artist(l)
+
+    # this is to add the circle (significant or not
+    if kwargs.get('show_sig_legend', False):
+        print (kwargs.get('circle_legend_ticks'))
+        print (max(kwargs.get('circle_legend_ticks')))
+        lh, lt = get_legendHandle_for_second_sanity_check_plot(quantAmplifier=quantAmplifier * quantAmplifier,
+                                                                marker='^' if marker is None else marker,
+                                                                fmt=kwargs.get('sig_fmt_legend', '%s'),
+                                                                lw=[kwargs.get('sig_line_width', 2.0), 0.0],
+                                                                labels=kwargs.get('sig_legend_ticks',
+                                                                                    ['Yes', 'No']),
+                                                                values=kwargs.get('sig_legend_ticks',
+                                                                                    ['Yes', 'No']),
+                                                                edgecolor=kwargs.get('edgecolor', 'black'),
+                                                                min_size_default=max(kwargs.get('circle_legend_ticks')) ** kwargs.get('power', 1.0))
+
+        plt.legend(lh, lt, bbox_to_anchor=kwargs.get('sig_legend_bbox', (2.4, 1)),
+                    title=kwargs.get('sig_legend_title', 'significant'), ncol=1, scatterpoints=1,
+                    frameon=False)
+
+    nrows, ncols, rowi, coli, rowspan, colspan = colorbar_grid
+    ax1 = plt.subplot2grid([nrows, ncols], [rowi, coli], rowspan=rowspan, colspan=colspan)
+    plt.axis('off')
+
+    ax1.set_xticklabels([])
+    ax1.set_yticklabels([])
+
+    if kwargs.get('show_colorbar', True):
+        print ('ticks for colorbar:', tickscolorbar)
+        cbar = fig.colorbar(scalarmap, orientation="horizontal", format=kwargs.get('cbar_fmt_ticks', "%.1f"),
+                            ticks = tickscolorbar)
+        cbar.ax.tick_params(labelsize=kwargs.get('colorbar_ticks_labelsize', 12))
+        cbar.set_label(cbar_label, fontsize=12)
+    despine_all()
+
+def get_specific_color_gradient(colormap,inputList,**kwargs):
+    vmin = kwargs.get('vmin','blaq')
+    vmax = kwargs.get('vmax','blaq')
+    cm = plt.get_cmap(colormap)
+    if vmin=='blaq' or vmax=='blaq':
+        if type(inputList)==list:
+            cNorm = matplotlib.colors.Normalize(vmin=min(inputList), vmax=max(inputList))
+        else:
+            cNorm = matplotlib.colors.Normalize(vmin=inputList.min(), vmax=inputList.max())
+    else:
+        cNorm = matplotlib.colors.Normalize(vmin=vmin, vmax = vmax)
+    scalarMap = matplotlib.cm.ScalarMappable(norm=cNorm, cmap=cm)
+    scalarMap.set_array(inputList)
+    colorList=scalarMap.to_rgba(inputList)
+    return scalarMap,colorList
+
+def despine_all():
+    sns.despine(offset=10, trim=True, top=True, right=True, left=True,
+                bottom=True)
+
+def remove_top_n_right_ticks(ax):
+    # Hide the right and top spines
+    ax.spines['right'].set_visible(False)
+    ax.spines['top'].set_visible(False)
+    # Only show ticks on the left and bottom spines
+    ax.yaxis.set_ticks_position('left')
+    ax.xaxis.set_ticks_position('bottom')
+
+def get_legendHandle_for_second_sanity_check_plot(quantAmplifier=None,
+                                                  labels=None,
+                                                  values=None,
+                                                  marker='^',
+                                                  fmt='%.1f',
+                                                  lw=2.0, min_circle_size=None, max_circle_size=None,
+                                                  min_size_default=1.0,
+                                                  edgecolor='black',
+                                                  color='grey'):
+    labels = [0.1, 0.5, 1.0, 1.5] if labels is None else labels
+
+    print(('legends', labels))
+
+    legendHandleList = list()
+    labelSize = list()
+    for i, quantMem in enumerate(values):
+        v = values[i]
+
+        if min_circle_size is not None and max_circle_size is not None:
+            scaled = (quantMem - min_circle_size) / (max_circle_size - min_circle_size)
+            print((quantMem, min_circle_size, max_circle_size, scaled))
+            quantMem = scaled
+
+        print (min_size_default)
+        next_size = (quantMem * quantAmplifier) if not isinstance(quantMem, str) else min_size_default * quantAmplifier
+        print(('next size', next_size))
+
+        legendHandleList.append(plt.scatter([], [], s=next_size,
+                                            color=color, edgecolor=edgecolor,
+                                            linewidths=lw if not isinstance(lw, list) else lw[i],
+                                            alpha=0.9, marker=marker))
+        labelSize.append(fmt % labels[i])
+    return legendHandleList, labelSize
+
