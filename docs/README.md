@@ -153,15 +153,17 @@ For cite greatpy:
 ```
 
 [scverse-discourse]: https://discourse.scverse.org/
-[issue-tracker]: https://github.com/ilibarra/greatpy/issues
-[changelog]: https://greatpy.readthedocs.io/latest/changelog.html
-[link-docs]: https://greatpy.readthedocs.io
-[link-api]: https://greatpy.readthedocs.io/latest/api.html
+[issue-tracker]: https://github.com/theislab/greatpy/issues
+[changelog]: https://greatpy.readthedocs.io/en/latest/changelog.html
+[link-docs]: https://greatpy.readthedocs.io/en/latest/
+[link-api]: https://greatpy.readthedocs.io/en/latest/api.html
+
+[notebook1]: https://greatpy.readthedocs.io/en/latest/notebooks/01_create_regdom.html
+[notebook2]: https://greatpy.readthedocs.io/en/latest/notebooks/02_binom_vs_hypergeom.html
+[notebook3]: https://greatpy.readthedocs.io/en/latest/notebooks/07_plot.html
 
 [great_article]: https://www.nature.com/articles/nbt.1630
 [great_figure]: https://www.nature.com/articles/nbt.1630/figures/1
 
 [association_rules]: https://great-help.atlassian.net/wiki/spaces/GREAT/pages/655443/Association+Rules
-[notebook1]: https://github.com/theislab/greatpy/blob/main/notebooks/01_create_regdom.ipynb
-[notebook2]: https://github.com/theislab/greatpy/blob/main/notebooks/02_binom_vs_hypergeom.ipynb
-[notebook3]: https://github.com/theislab/greatpy/blob/main/notebooks/07_plot.ipynb
+
