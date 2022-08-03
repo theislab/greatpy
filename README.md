@@ -102,7 +102,7 @@ plt.show()
 ```
 
 <p align="center">
-  <img src="./sketch/plot1.png?raw=true" style="width:75%">
+  <img src="./sketch/plot1.png?raw=true">
 </p>
 
 -  Dotplot of the enrichment GO term in the genomic test region 
