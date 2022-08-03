@@ -101,6 +101,11 @@ greatpy.pl.graph_absolute_dist_tss(
 plt.show()
 ```
 
+```{image} _static/README_images/plot1.png
+
+```
+
+
 Several examples of uses can be found in the notebook part of the package:
 
 -   For the create_regdom option: [notebook][notebook1]

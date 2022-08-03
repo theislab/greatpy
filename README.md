@@ -27,7 +27,7 @@ This package is strongly inspired by [GREAT][great_article] allowing Helmholtz t
 #### <ins>1. Create regulatory domain from tss</ins>
 
 -   Translate a genetic file in .bed format and containing the following information: chromosome number, start position on the chromosome, end position, gene name and tss.
-    Into a regulatory region file that can then be used in the great :
+    Into a regulatory region file that can then be used in greatpy:
 
 ```python
 regdom = greatpy.tl.REGDOM.create_regdom(
@@ -43,6 +43,7 @@ The [association rules][association_rules] could be :
 -   `Basalplusextention`
 -   `OneCloset`
 -   `TwoCloset`
+
 <p align="center">
   <img src="./sketch/association_rule.jpg?raw=true" style="width:75%">
 </p>
@@ -99,6 +100,10 @@ greatpy.pl.graph_absolute_dist_tss(
 )
 plt.show()
 ```
+
+<p align="center">
+  <img src="./sketch/plot1.png?raw=true" style="width:75%">
+</p>
 
 Several examples of uses can be found in the notebook part of the package:
 
