@@ -20,11 +20,7 @@ Please refer to the [documentation][link-docs]. In particular, the
 Great is a bioinformatics tool to analyze cis-regulatory regions of the genome. This method can be used to assign probable biological meanings to unannotated genes based on the annotations carried by neighboring genes. This tool allows going from peaks in .bed format to enrichment ontology terms associated with these peaks using several statistical tests.
 This package is strongly inspired by [GREAT][great_article] allowing Helmholtz to have a stable and perennial version of the package.
 
-<p align="center">
-  <img src="./sketch/great_tool.jpg?raw=true" style="width:75%">
-</p>
-
-Credits: [GREAT article][great_figure]
+[GREAT figure][great_figure] in [GREAT article][great_article]
 
 ### What can you do with greatpy :
 
@@ -160,9 +156,11 @@ For cite greatpy :
 [changelog]: https://greatpy.readthedocs.io/latest/changelog.html
 [link-docs]: https://greatpy.readthedocs.io
 [link-api]: https://greatpy.readthedocs.io/latest/api.html
+
 [great_article]: https://www.nature.com/articles/nbt.1630
+[great_figure]: https://www.nature.com/articles/nbt.1630/figures/1
+
 [association_rules]: https://great-help.atlassian.net/wiki/spaces/GREAT/pages/655443/Association+Rules
 [notebook1]: https://github.com/theislab/greatpy/blob/main/notebooks/01_create_regdom.ipynb
-[great_figure]: https://www.nature.com/articles/nbt.1630/figures/1
 [notebook2]: https://github.com/theislab/greatpy/blob/main/notebooks/02_binom_vs_hypergeom.ipynb
 [notebook3]: https://github.com/theislab/greatpy/blob/main/notebooks/07_plot.ipynb
