@@ -124,7 +124,7 @@ pip install greatpy
 1. Install the latest development version:
 
 ```bash
-pip install git+https://github.com/ilibarra/greatpy.git@main
+pip install git+https://github.com/theislab/greatpy.git@main
 ```
 
 ## Release notes
