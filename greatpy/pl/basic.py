@@ -7,6 +7,7 @@ from numpy import log
 
 import greatpy as gp
 
+plt.rcParams.update({"font.size": 14, "font.weight": "normal"})
 
 def scatterplot(
     great_df: pd.DataFrame, colname_x: str, colname_y: str,
