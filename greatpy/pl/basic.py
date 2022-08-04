@@ -346,8 +346,9 @@ def plot_enrich(data, n_terms=20, color="cool", save=False):
         plt.savefig("dotplot_save", dpi=500)
 
     plt.show()
-
+    
 import matplotlib
+from matplotlib import rc 
 
 def make_bubble_heatmap(order_frame, sizeDict, na_color='gray', title='title',
                         tickscolorbar=[-2, -1, 0, 1, 2], vmin=-2.5, vmax=2.5,
@@ -399,6 +400,9 @@ def make_bubble_heatmap(order_frame, sizeDict, na_color='gray', title='title',
     """
     from matplotlib import gridspec
     sns.set_style('white')
+
+    rc("font",weight="normal")
+    # rc("alpha",alpha=0.8)
 
     quantAmplifier = kwargs.get('quantAmplifier', 1) #factor for size of bubbles
 
@@ -480,19 +484,29 @@ def make_bubble_heatmap(order_frame, sizeDict, na_color='gray', title='title',
         i += 1
     if kwargs.get('grid', True):
         plt.grid(True, linewidth=kwargs.get('grid_linewidth', 1.0))
-    plt.title(kwargs.get('heatmap_title', 'title'))
-    plt.xlabel(kwargs.get('xlab', 'xlab'), fontsize=14)
-    plt.ylabel(kwargs.get('ylab', 'ylab'), fontsize=14)
+    plt.title(kwargs.get('heatmap_title', 'title'), fontname='Arial',fontweight='normal')
+    plt.xlabel(kwargs.get('xlab', 'xlab'), fontsize=14,fontname='Arial',fontweight='normal')
+    plt.ylabel(kwargs.get('ylab', 'ylab'), fontsize=14,fontname='Arial',fontweight='normal')
 
 
     plt.yticks(list(range(len(ylabelList))))
     ax.set_yticklabels(ylabelList, fontsize=kwargs.get('yticks_fontsize', 11), color="black",
-                        ha=kwargs.get('ha_ylabs', 'right'))
+                        ha=kwargs.get('ha_ylabs', 'right'),fontname='Arial',fontweight='normal',alpha = 1)
+
+    # set different color for x_tick labels 
+    nb = int(len(ylabelList)/len(order_frame.columns))
+    color = (["r"]*5+["black"]*5)*(len(order_frame.columns) // 2)
+    if len(color) != len(order_frame.columns): 
+        color += ["r"]*(len(order_frame.columns)-len(color))
+    
+    for ticklabel,tickcolor in zip(plt.gca().get_yticklabels(),color):
+        ticklabel.set_color(tickcolor)
+
     remove_top_n_right_ticks(ax)
 
     plt.xticks(list(range(len(order_frame.columns))), order_frame.columns,
                 fontsize=kwargs.get('xticks_fontsize', 11), rotation=kwargs.get('rotation_xlabs', 90), color="black",
-                ha=kwargs.get('ha_xlabs', 'center'))
+                ha=kwargs.get('ha_xlabs', 'center'),fontname='Arial',fontweight='normal')
 
     lh, lt = get_legendHandle_for_second_sanity_check_plot(quantAmplifier=quantAmplifier * quantAmplifier,
                                                             marker='^' if marker is None else marker,
@@ -538,7 +552,7 @@ def make_bubble_heatmap(order_frame, sizeDict, na_color='gray', title='title',
         cbar = fig.colorbar(scalarmap, orientation="horizontal", format=kwargs.get('cbar_fmt_ticks', "%.1f"),
                             ticks = tickscolorbar,pad=0.05)
         cbar.ax.tick_params(labelsize=kwargs.get('colorbar_ticks_labelsize', 12))
-        cbar.set_label(cbar_label, fontsize=12)
+        cbar.set_label(cbar_label, fontsize=12,fontweight='normal')
     despine_all()
 
 def get_specific_color_gradient(colormap,inputList,**kwargs):
