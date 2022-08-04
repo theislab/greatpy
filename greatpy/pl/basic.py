@@ -9,7 +9,8 @@ import greatpy as gp
 
 
 def scatterplot(
-    great_df: pd.DataFrame, colname_x: str, colname_y: str, title: str = "", minus_log10=True, ax=None
+    great_df: pd.DataFrame, colname_x: str, colname_y: str,
+    title: str = "", minus_log10=True, ax=None
 ) -> None:
     """
     Create a scatterplot from a
@@ -45,8 +46,9 @@ def scatterplot(
     else:
         sns.scatterplot(data=great_df, x=colname_x, y=colname_y, ax=ax).set_title(title)
 
-
-def graph_nb_asso_per_peaks(test: str or pd.DataFrame, regdom: str or pd.DataFrame, ax=None, color=None) -> None:
+def graph_nb_asso_per_peaks(
+    test: str or pd.DataFrame, regdom: str or pd.DataFrame,
+    ax=None, color=None) -> None:
     """
     Creates a barplot representing the
     percentage of peaks for all possible association numbers
@@ -90,8 +92,9 @@ def graph_nb_asso_per_peaks(test: str or pd.DataFrame, regdom: str or pd.DataFra
         y = nb.iloc[i]["percentage"]
         g.text(x=x - 0.06, y=y + 1, s=nb.number_genes[0])
 
-
-def graph_dist_tss(test: str or pd.DataFrame, regdom: str or pd.DataFrame, ax=None, color="#325fa8") -> None:
+def graph_dist_tss(
+    test: str or pd.DataFrame, regdom: str or pd.DataFrame, 
+    ax=None, color="#325fa8") -> None:
     """
     Creation of a barplot of the distance
     between the peaks and the TSS of the associated gene(s).
@@ -152,8 +155,9 @@ def graph_dist_tss(test: str or pd.DataFrame, regdom: str or pd.DataFrame, ax=No
     g.set_ylabel("Genomic region (%)", fontsize=13)
     g.set_title("Binned by absolute distance to TSS", fontsize=20)
 
-
-def graph_absolute_dist_tss(test: str or pd.DataFrame, regdom: str or pd.DataFrame, ax=None, color="#325fa8") -> None:
+def graph_absolute_dist_tss(
+    test: str or pd.DataFrame, regdom: str or pd.DataFrame, 
+    ax=None, color="#325fa8") -> None:
     """
     Creation of a barplot of the absolute
     distance between the peaks and the TSS of the associated gene(s).
@@ -411,14 +415,13 @@ def make_bubble_heatmap(order_frame, sizeDict, na_color='gray', title='title',
     elif palette_id == 'Purples':
         pallete = plt.cm.Purples
     elif palette_id == 'YlGnBu':
-        print (palette_id)
         pallete = plt.cm.YlGnBu
     elif palette_id == 'PuOr':
         pallete = plt.cm.PuOr
     else:
         palette = palette_id
     scalarmap,colorList = get_specific_color_gradient(pallete,
-        np.array(order_frame["binom_p_value"]),
+        np.array(order_frame),
         vmin=vmin,
         vmax=vmax)
 
@@ -442,8 +445,6 @@ def make_bubble_heatmap(order_frame, sizeDict, na_color='gray', title='title',
     min_circle_size = kwargs.get('min_circle_size')
     max_circle_size = kwargs.get('max_circle_size')
 
-    print ('before plotting dimensions...')
-    print (order_frame.shape)
     for ri, r in order_frame.iterrows():
         patList = list(r.values)
 
@@ -475,10 +476,8 @@ def make_bubble_heatmap(order_frame, sizeDict, na_color='gray', title='title',
                         marker=marker if marker is not None else ('v' if si < 0 else '^'),
                         hatch=hatch_i, alpha=alpha,
                         edgecolor=kwargs.get('edgecolor', 'black'), color=ci, linewidth=lw)
-            print (xi, yi, ri) # list(order_frame.ix[ri])[si]
         ylabelList.append(ri)
         i += 1
-
     if kwargs.get('grid', True):
         plt.grid(True, linewidth=kwargs.get('grid_linewidth', 1.0))
     plt.title(kwargs.get('heatmap_title', 'title'))
@@ -491,9 +490,6 @@ def make_bubble_heatmap(order_frame, sizeDict, na_color='gray', title='title',
                         ha=kwargs.get('ha_ylabs', 'right'))
     remove_top_n_right_ticks(ax)
 
-    print ('current columns')
-    print (list(range(len(order_frame.columns))))
-    print (order_frame.columns)
     plt.xticks(list(range(len(order_frame.columns))), order_frame.columns,
                 fontsize=kwargs.get('xticks_fontsize', 11), rotation=kwargs.get('rotation_xlabs', 90), color="black",
                 ha=kwargs.get('ha_xlabs', 'center'))
@@ -515,8 +511,6 @@ def make_bubble_heatmap(order_frame, sizeDict, na_color='gray', title='title',
 
     # this is to add the circle (significant or not
     if kwargs.get('show_sig_legend', False):
-        print (kwargs.get('circle_legend_ticks'))
-        print (max(kwargs.get('circle_legend_ticks')))
         lh, lt = get_legendHandle_for_second_sanity_check_plot(quantAmplifier=quantAmplifier * quantAmplifier,
                                                                 marker='^' if marker is None else marker,
                                                                 fmt=kwargs.get('sig_fmt_legend', '%s'),
@@ -531,18 +525,18 @@ def make_bubble_heatmap(order_frame, sizeDict, na_color='gray', title='title',
         plt.legend(lh, lt, bbox_to_anchor=kwargs.get('sig_legend_bbox', (2.4, 1)),
                     title=kwargs.get('sig_legend_title', 'significant'), ncol=1, scatterpoints=1,
                     frameon=False)
-
-    nrows, ncols, rowi, coli, rowspan, colspan = colorbar_grid
-    ax1 = plt.subplot2grid([nrows, ncols], [rowi, coli], rowspan=rowspan, colspan=colspan)
-    plt.axis('off')
-
-    ax1.set_xticklabels([])
-    ax1.set_yticklabels([])
+    
+    # nrows, ncols, rowi, coli, rowspan, colspan = colorbar_grid
+    # plt.show()
+    # ax1 = plt.subplot2grid([nrows, ncols], [rowi, coli], rowspan=rowspan, colspan=colspan)
+    
+    # plt.axis('off')
+    # ax1.set_xticklabels([])
+    # ax1.set_yticklabels([])
 
     if kwargs.get('show_colorbar', True):
-        print ('ticks for colorbar:', tickscolorbar)
         cbar = fig.colorbar(scalarmap, orientation="horizontal", format=kwargs.get('cbar_fmt_ticks', "%.1f"),
-                            ticks = tickscolorbar)
+                            ticks = tickscolorbar,pad=0.05)
         cbar.ax.tick_params(labelsize=kwargs.get('colorbar_ticks_labelsize', 12))
         cbar.set_label(cbar_label, fontsize=12)
     despine_all()
@@ -586,8 +580,6 @@ def get_legendHandle_for_second_sanity_check_plot(quantAmplifier=None,
                                                   color='grey'):
     labels = [0.1, 0.5, 1.0, 1.5] if labels is None else labels
 
-    print(('legends', labels))
-
     legendHandleList = list()
     labelSize = list()
     for i, quantMem in enumerate(values):
@@ -595,12 +587,9 @@ def get_legendHandle_for_second_sanity_check_plot(quantAmplifier=None,
 
         if min_circle_size is not None and max_circle_size is not None:
             scaled = (quantMem - min_circle_size) / (max_circle_size - min_circle_size)
-            print((quantMem, min_circle_size, max_circle_size, scaled))
             quantMem = scaled
 
-        print (min_size_default)
         next_size = (quantMem * quantAmplifier) if not isinstance(quantMem, str) else min_size_default * quantAmplifier
-        print(('next size', next_size))
 
         legendHandleList.append(plt.scatter([], [], s=next_size,
                                             color=color, edgecolor=edgecolor,
@@ -608,4 +597,3 @@ def get_legendHandle_for_second_sanity_check_plot(quantAmplifier=None,
                                             alpha=0.9, marker=marker))
         labelSize.append(fmt % labels[i])
     return legendHandleList, labelSize
-
