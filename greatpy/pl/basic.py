@@ -495,8 +495,8 @@ def make_bubble_heatmap(order_frame, sizeDict, na_color='gray', title='title',
                         ha=kwargs.get('ha_ylabs', 'right'),fontname='Arial',fontweight='normal',alpha = 1)
 
     # set different color for x_tick labels 
-    nb = int(len(ylabelList)/len(order_frame.columns))
-    color = (["r"]*5+["black"]*5)*(len(order_frame.columns) // 2)
+    nb = int((len(ylabelList)+1)/(len(order_frame.columns)+1))
+    color = (["r"]*5+["black"]*5)*((len(order_frame.columns)+1) // 2)
     if len(color) != len(order_frame.columns): 
         color += ["r"]*(len(order_frame.columns)-len(color))
     
