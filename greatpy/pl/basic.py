@@ -4,6 +4,8 @@ import pandas as pd
 import seaborn as sns
 from matplotlib import colors, rcParams
 from numpy import log
+import matplotlib
+from matplotlib import rc 
 
 import greatpy as gp
 
@@ -203,7 +205,6 @@ def graph_absolute_dist_tss(
     g.set_ylabel("Genomic region (%)", fontsize=13)
     g.set_title("Binned by absolute distance to TSS", fontsize=20)
 
-
 def scale_data_5_75(data):
     mind = np.min(data)
     maxd = np.max(data)
@@ -214,7 +215,6 @@ def scale_data_5_75(data):
 
     drange = maxd - mind
     return (((data - mind) / drange * 0.70) + 0.05) * 100
-
 
 def plot_enrich(data, n_terms=20, color="cool", save=False):
     """
@@ -347,9 +347,6 @@ def plot_enrich(data, n_terms=20, color="cool", save=False):
         plt.savefig("dotplot_save", dpi=500)
 
     plt.show()
-    
-import matplotlib
-from matplotlib import rc 
 
 def make_bubble_heatmap(order_frame, sizeDict, na_color='gray', title='title',
                         tickscolorbar=[-2, -1, 0, 1, 2], vmin=-2.5, vmax=2.5,
