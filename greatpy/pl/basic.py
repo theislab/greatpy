@@ -90,7 +90,7 @@ def graph_nb_asso_per_peaks(
     for i in range(nb.shape[0]):
         x = nb.iloc[i]["number"]
         y = nb.iloc[i]["percentage"]
-        g.text(x=x - 0.06, y=y + 1, s=nb.number_genes[0])
+        g.text(x=x - 0.06, y=y + 1, s=nb.number_genes[i])
 
 def graph_dist_tss(
     test: str or pd.DataFrame, regdom: str or pd.DataFrame, 
