@@ -124,7 +124,7 @@ tmp_df = great.tl.GREAT.enrichment_multiple(tests = test,regdom_file="../data/hu
 ```
 
 <p align="center">
-  <img src="./sketch/multidot.png?raw=true" style="width:75%">
+  <img src="./sketch/multidot.png?raw=true" style="width:50%">
 </p>
 
 
