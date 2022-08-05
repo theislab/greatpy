@@ -684,6 +684,18 @@ class GREAT:
         Examples
         --------
         >>> tests = ["MAX:K-562,WA01,HeLa-S3", "BACH1:A-549,GM12878"]
+        >>> enrichment = GREAT.enrichment_multiple(
+                tests = tests,
+                regdom_file="../data/human/hg38/regulatory_domain.bed",
+                chr_size_file="../data/human/hg38/chr_size.bed",
+                annotation_file="../data/human/ontologies.csv",
+                binom=True,
+                hypergeom=True,
+            )
+        >>> enrichment
+        ...    {'MAX': pd.DataFrame, 
+        ...    'BACH1': pd.DataFrame}
+ 
         """
         if not binom and not hypergeom:
             return False
