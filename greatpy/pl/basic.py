@@ -491,14 +491,14 @@ def make_bubble_heatmap(order_frame, sizeDict, na_color='gray', title='title',
     ax.set_yticklabels(ylabelList, fontsize=kwargs.get('yticks_fontsize', 11), color="black",
                         ha=kwargs.get('ha_ylabs', 'right'),fontname='Arial',fontweight='normal',alpha = 1)
 
-    # set different color for x_tick labels 
-    nb = int((len(ylabelList)+1)/(len(order_frame.columns)+1))
-    color = (["r"]*5+["black"]*5)*((len(order_frame.columns)+1) // 2)
-    if len(color) != len(order_frame.columns): 
-        color += ["r"]*(len(order_frame.columns)-len(color))
+    # # set different color for x_tick labels 
+    # nb = int((len(ylabelList)+1)/(len(order_frame.columns)+1))
+    # color = (["r"]*5+["black"]*5)*((len(order_frame.columns)+1) // 2)
+    # if len(color) != len(order_frame.columns): 
+    #     color += ["r"]*(len(order_frame.columns)-len(color))
     
-    for ticklabel,tickcolor in zip(plt.gca().get_yticklabels(),color):
-        ticklabel.set_color(tickcolor)
+    # for ticklabel,tickcolor in zip(plt.gca().get_yticklabels(),color):
+    #     ticklabel.set_color(tickcolor)
 
     remove_top_n_right_ticks(ax)
 
