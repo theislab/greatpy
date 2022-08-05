@@ -5,4 +5,5 @@ from .basic import (
     plot_enrich,
     scatterplot,
     make_bubble_heatmap,
+    dotplot_multi_sample,
 )
