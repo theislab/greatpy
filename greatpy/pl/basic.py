@@ -17,7 +17,7 @@ def scatterplot(
     colname_y: str,
     title: str = "",
     minus_log10=True,
-    ax: matplotlib.axes._subplots.AxesSubplot or None = None,
+    ax: matplotlib.axes or None = None,
 ) -> None:
     """
     Create a scatterplot from a
@@ -36,7 +36,7 @@ def scatterplot(
         Title of the plot
     minus_log10 : bool
         If True, the logarithmic scale is used
-    ax : matplotlib.axes._subplots.AxesSubplot or None
+    ax : matplotlib.axes or None
         Define the position of the plot in a figure
 
     Returns
@@ -58,7 +58,7 @@ def scatterplot(
 def graph_nb_asso_per_peaks(
     test: str or pd.DataFrame,
     regdom: str or pd.DataFrame,
-    ax: matplotlib.axes._subplots.AxesSubplot or None = None,
+    ax: matplotlib.axes or None = None,
     color: str = None,
 ) -> None:
     """
@@ -71,7 +71,7 @@ def graph_nb_asso_per_peaks(
         Genomic set of peaks to be tested
     regdom : str or pd.DataFrame
         Regulatory domain of all genes in the genome
-    ax : matplotlib.axes._subplots.AxesSubplot or None
+    ax : matplotlib.axes or None
         Define the position of the plot in a figure
     color : str
         Color of the bar
@@ -111,7 +111,7 @@ def graph_nb_asso_per_peaks(
 def graph_dist_tss(
     test: str or pd.DataFrame,
     regdom: str or pd.DataFrame,
-    ax: matplotlib.axes._subplots.AxesSubplot or None = None,
+    ax: matplotlib.axes or None = None,
     color: str = "#325fa8",
 ) -> None:
     """
@@ -124,7 +124,7 @@ def graph_dist_tss(
         Genomic set of peaks to be tested
     regdom : str or pd.DataFrame
         Regulatory domain of all genes in the genome
-    ax : matplotlib.axes._subplots.AxesSubplot or None
+    ax : matplotlib.axes or None
         Define the position of the plot in a figure
     color : str
         Color of the bar
@@ -181,7 +181,7 @@ def graph_dist_tss(
 def graph_absolute_dist_tss(
     test: str or pd.DataFrame,
     regdom: str or pd.DataFrame,
-    ax: matplotlib.axes._subplots.AxesSubplot or None = None,
+    ax: matplotlib.axes or None = None,
     color: str = "#325fa8",
 ) -> None:
     """
@@ -194,7 +194,7 @@ def graph_absolute_dist_tss(
         Genomic set of peaks to be tested
     regdom : str or pd.DataFrame
         Regulatory domain of all genes in the genome
-    ax : matplotlib.axes._subplots.AxesSubplot or None
+    ax : matplotlib.axes or None
         Define the position of the plot in a figure
     color : str
         Color of the bar
