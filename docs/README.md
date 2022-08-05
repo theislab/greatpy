@@ -102,7 +102,7 @@ greatpy.pl.graph_absolute_dist_tss(
 plt.show()
 ```
 
-```{image} _static/README_images/plot1.png
+```{image} ./_static/README_images/plot1.png
 
 ```
 
