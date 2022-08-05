@@ -763,6 +763,7 @@ def dotplot_multi_sample(
     df = pd.DataFrame()
 
     for i, name in enumerate(test_data.keys()):
+        gene_tot[i] = name
         res = test_data[name].sort_values(by="hypergeom_p_value")
         if len(list_id) > 0:
             res = res[res.index.isin(list_id)]
