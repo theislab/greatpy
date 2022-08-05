@@ -108,9 +108,27 @@ plt.show()
 
 -  Dotplot of the enrichment GO term in the genomic test region 
 
+```python
+plot = enrichment_df.rename(columns={"binom_p_value" : "p_value", "go_term":"name"})
+plt.figure(figsize=(10,10))
+great.pl.plot_enrich(plot)
+```
+
 ```{image} _static/output_images/dotplot.png
 
 ```
+
+-  Dotplot of the enrichment GO terms in multiple genomic test regions
+
+```python
+test = ["name_bindome_biosample_1", "name_bindome_biosample_2","..."]
+tmp_df = great.tl.GREAT.enrichment_multiple(tests = test,regdom_file="../data/human/hg38/regulatory_domain.bed",chr_size_file="../data/human/hg38/chr_size.bed",annotation_file="../data/human/ontologies.csv",binom=True,hypergeom=True)
+```
+
+```{image} _static/output_images/multidotdot.png
+
+```
+
 
 
 Several examples of uses can be found in the notebook part of the package:

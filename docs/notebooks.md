@@ -104,6 +104,19 @@ gp.pl.plot_enrich(plot)
 :width: 600px
 ```
 
+```
+test = ["SRF:Ishikawa,A-673-clone-Asp114,K-562,MCF-7,Hep-G2","MAX:K-562,WA01,HeLa-S3", "BACH1:A-549,GM12878","CDK9:A-375,MM1-S,MV4-11,P493-6,BT-474,HEK293T","GATA1:erythroblast,HUDEP-2,K-562", "IKZF1:K-562,GM12878,HSPC", "SP1:liver,A-375,Hep-G2,HEK293,GM12878,A-549,K-562,HEK293T,WA01","TCF7:Hep-G2,GM12878,K-562", "ZBTB40:MCF-7,Hep-G2,GM12878","AFF1:MV4-11,K-562"]
+tmp_df = great.tl.GREAT.enrichment_multiple(tests = test, regdom_file="../data/human/hg38/regulatory_domain.bed",
+    chr_size_file="../data/human/hg38/chr_size.bed",annotation_file="../data/human/ontologies.csv",
+    binom=True,hypergeom=True,)
+fig = plt.figure(figsize=(15, 12))
+p_val,odd_ratio,df = great.pl.dotplot_multi_sample(tmp_df,fig=fig)
+```
+
+```{image} _static/output_images/multidot.png
+:width: 600px
+```
+
 ## Notebook example
 
 ```{toctree}
