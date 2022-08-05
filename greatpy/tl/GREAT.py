@@ -679,7 +679,7 @@ class GREAT:
 
         Returns
         -------
-        list of pd.DataFrame
+        dict
             List of dataframe with the enrichment of each test
 
         Examples
