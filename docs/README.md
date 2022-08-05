@@ -114,7 +114,7 @@ plt.figure(figsize=(10, 10))
 great.pl.plot_enrich(plot)
 ```
 
-```{image} _static/output_images/dotplot.png
+```{image} ../docs/_static/output_images/dotplot.png
 
 ```
 
@@ -132,7 +132,7 @@ tmp_df = great.tl.GREAT.enrichment_multiple(
 )
 ```
 
-```{image} _static/output_images/multidotdot.png
+```{image} ../docs/_static/output_images/multidotdot.png
 :width: 300px
 :height: 400px
 ```
