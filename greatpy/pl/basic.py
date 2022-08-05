@@ -797,11 +797,9 @@ def dotplot_multi_sample(
 
     if show_term_name:
         go_n = []
-        # go_n = df.drop(columns = ["binom_p_value","binom_fold_enrichment","hypergeom_p_value","hypergeometric_fold_enrichment","intersection_size","recall","index"]).to_dict()
         for i in range(df.shape[0]):
             curr = df.iloc[i]
             go_n.append(curr["id"] + " " + curr["go_term"][:term_name_nchars])
-        # return go_n
         p_val["test"] = go_n
         odd_ratio["test"] = go_n
 
