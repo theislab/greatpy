@@ -78,6 +78,6 @@ import greatpy as gp
     pl.graph_dist_tss
     pl.graph_absolute_dist_tss
     pl.plot_enrich
-    make_bubble_heatmap
-    dotplot_multi_sample
+    pl.make_bubble_heatmap
+    pl.dotplot_multi_sample
 ```
