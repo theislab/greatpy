@@ -548,7 +548,7 @@ def make_bubble_heatmap(order_frame, sizeDict, na_color='gray', title='title',
 
     if kwargs.get('show_colorbar', True):
         cbar = fig.colorbar(scalarmap, orientation="horizontal", format=kwargs.get('cbar_fmt_ticks', "%.1f"),
-                            ticks = tickscolorbar,pad=0.05)
+                            ticks = tickscolorbar,pad=0.1)
         cbar.ax.tick_params(labelsize=kwargs.get('colorbar_ticks_labelsize', 12))
         cbar.set_label(cbar_label, fontsize=12,fontweight='normal')
     despine_all()
