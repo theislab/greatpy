@@ -17,12 +17,13 @@ Please refer to the [documentation][link-docs]. In particular, the
 
 ### What is GREAT :
 
-GREAT (Genomic Regions Enrichment of Annotations Tool) is a bioinformatics tool, this method enables to associate genetic regions to the most probable GO terms. 
+GREAT (Genomic Regions Enrichment of Annotations Tool) is a bioinformatics tool, this method enables to associate genetic regions to the most probable GO terms.
 
 ### How to use greatpy :
-This package is strongly inspired by [GREAT][GREAT_article] allowing Helmholtz to have a stable, perennial and updated version of the package.
 
-[GREAT figure][GREAT_figure] issue from [GREAT article][GREAT_article]
+This package is strongly inspired by [GREAT][great_article] allowing Helmholtz to have a stable, perennial and updated version of the package.
+
+[GREAT figure][great_figure] issue from [GREAT article][great_article]
 
 #### <ins>1. Create regulatory domain from tss</ins>
 
@@ -105,11 +106,11 @@ plt.show()
   <img src="./sketch/plot1.png?raw=true">
 </p>
 
--  Dotplot of the enrichment GO term in the genomic test region 
+-   Dotplot of the enrichment GO term in the genomic test region
 
 ```python
-plot = enrichment_df.rename(columns={"binom_p_value" : "p_value", "go_term":"name"})
-plt.figure(figsize=(10,10))
+plot = enrichment_df.rename(columns={"binom_p_value": "p_value", "go_term": "name"})
+plt.figure(figsize=(10, 10))
 great.pl.plot_enrich(plot)
 ```
 
@@ -117,16 +118,23 @@ great.pl.plot_enrich(plot)
   <img src="./sketch/dotplot.png?raw=true" style="width:75%">
 </p>
 
--  Dotplot of the enrichment GO terms in multiple genomic test regions
+-   Dotplot of the enrichment GO terms in multiple genomic test regions
+
 ```python
-test = ["name_bindome_biosample_1", "name_bindome_biosample_2","..."]
-tmp_df = great.tl.GREAT.enrichment_multiple(tests = test,regdom_file="../data/human/hg38/regulatory_domain.bed",chr_size_file="../data/human/hg38/chr_size.bed",annotation_file="../data/human/ontologies.csv",binom=True,hypergeom=True)
+test = ["name_bindome_biosample_1", "name_bindome_biosample_2", "..."]
+tmp_df = great.tl.GREAT.enrichment_multiple(
+    tests=test,
+    regdom_file="../data/human/hg38/regulatory_domain.bed",
+    chr_size_file="../data/human/hg38/chr_size.bed",
+    annotation_file="../data/human/ontologies.csv",
+    binom=True,
+    hypergeom=True,
+)
 ```
 
 <p align="center">
   <img src="./sketch/multidot.png?raw=true" alt="dotplot of multi sample" width="300" height="400">
 </p>
-
 
 Several examples of uses can be found in the notebook part of the package:
 
@@ -180,6 +188,7 @@ For cite greatpy :
 ```
 
 ## References
+
 ```bibtex
 @article{GREAT,
   author   = {McLean, C.
@@ -203,10 +212,8 @@ For cite greatpy :
 [changelog]: https://greatpy.readthedocs.io/latest/changelog.html
 [link-docs]: https://greatpy.readthedocs.io
 [link-api]: https://greatpy.readthedocs.io/latest/api.html
-
-[GREAT_article]: https://www.nature.com/articles/nbt.1630
-[GREAT_figure]: https://www.nature.com/articles/nbt.1630/figures/1
-
+[great_article]: https://www.nature.com/articles/nbt.1630
+[great_figure]: https://www.nature.com/articles/nbt.1630/figures/1
 [association_rules]: https://great-help.atlassian.net/wiki/spaces/GREAT/pages/655443/Association+Rules
 [notebook1]: https://github.com/theislab/greatpy/blob/main/notebooks/01_create_regdom.ipynb
 [notebook2]: https://github.com/theislab/greatpy/blob/main/notebooks/02_binom_vs_hypergeom.ipynb

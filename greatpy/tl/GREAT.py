@@ -1,11 +1,12 @@
 from math import exp, fabs, lgamma, log
 
+import bindome as bd
 import dask.dataframe as dd
 import numpy as np
 import pandas as pd
 from scipy.special import comb
 from statsmodels.stats.multitest import multipletests
-import bindome as bd 
+
 pd.options.display.float_format = "{:12.5e}".format
 
 
@@ -648,9 +649,9 @@ class GREAT:
 
         else:
             return GREAT.__enrichment_hypergeom(test, regdom, ann, asso)
-    
+
     def enrichment_multiple(
-        tests: list ,
+        tests: list,
         regdom_file: str or pd.DataFrame,
         chr_size_file: str or pd.DataFrame,
         annotation_file: str or pd.DataFrame,
@@ -659,7 +660,7 @@ class GREAT:
         hypergeom=True,
     ) -> dict:
         """
-        Compute the enrichment of each GO term on multiple tests sets using bindome. 
+        Compute the enrichment of each GO term on multiple tests sets using bindome.
 
         Parameters
         ----------
@@ -693,26 +694,28 @@ class GREAT:
                 hypergeom=True,
             )
         >>> enrichment
-        ...    {'MAX': pd.DataFrame, 
+        ...    {'MAX': pd.DataFrame,
         ...    'BACH1': pd.DataFrame}
- 
+
         """
         if not binom and not hypergeom:
             return False
-        
+
         _, regdom, size, ann = GREAT.loader(None, regdom_file, chr_size_file, annotation_file)
-        
+
         bd.bindome.constants.ANNOTATIONS_DIRECTORY = annpath
 
         res = {}
-        
-        for name in tests : 
+
+        for name in tests:
             name_TF = name.split(":")[0]
             tmp_df = bd.bindome.datasets.REMAP2020.get_remap_peaks(name_TF)
-            tmp = tmp_df[tmp_df[3]==name].iloc[:,0:3]
-            tmp = tmp.rename(columns={"chr":'chr','start':"chr_start",'end':"chr_end"})
+            tmp = tmp_df[tmp_df[3] == name].iloc[:, 0:3]
+            tmp = tmp.rename(columns={"chr": "chr", "start": "chr_start", "end": "chr_end"})
 
-            asso = get_association(tmp, regdom )  # get the name of the regulatory domain associated to each genomic region in the test set
+            asso = get_association(
+                tmp, regdom
+            )  # get the name of the regulatory domain associated to each genomic region in the test set
 
             if binom and hypergeom:
                 enrichment = GREAT.__enrichment_binom_and_hypergeom(tmp, regdom, size, ann, asso)
@@ -722,7 +725,7 @@ class GREAT:
 
             else:
                 enrichment = GREAT.__enrichment_hypergeom(tmp, regdom, ann, asso)
-            
+
             res[name_TF] = enrichment
 
         return res

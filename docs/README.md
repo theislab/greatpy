@@ -17,12 +17,13 @@ Please refer to the [documentation][link-docs]. In particular, the
 
 ### What is GREAT :
 
-GREAT (Genomic Regions Enrichment of Annotations Tool) is a bioinformatics tool, this method enables to associate genetic regions to the most probable GO terms. 
+GREAT (Genomic Regions Enrichment of Annotations Tool) is a bioinformatics tool, this method enables to associate genetic regions to the most probable GO terms.
 
 ### What can you do with greatpy :
-This package is strongly inspired by [GREAT][GREAT_article] allowing Helmholtz to have a stable, perennial and updated version of the package.
 
-[GREAT figure][GREAT_figure] issue from [GREAT article][GREAT_article]
+This package is strongly inspired by [GREAT][great_article] allowing Helmholtz to have a stable, perennial and updated version of the package.
+
+[GREAT figure][great_figure] issue from [GREAT article][great_article]
 
 #### <ins>1. Create regulatory domain from tss</ins>
 
@@ -101,16 +102,15 @@ greatpy.pl.graph_absolute_dist_tss(
 plt.show()
 ```
 
-
 ```{image} _static/README_images/plot1.png
 
 ```
 
--  Dotplot of the enrichment GO term in the genomic test region 
+-   Dotplot of the enrichment GO term in the genomic test region
 
 ```python
-plot = enrichment_df.rename(columns={"binom_p_value" : "p_value", "go_term":"name"})
-plt.figure(figsize=(10,10))
+plot = enrichment_df.rename(columns={"binom_p_value": "p_value", "go_term": "name"})
+plt.figure(figsize=(10, 10))
 great.pl.plot_enrich(plot)
 ```
 
@@ -118,19 +118,24 @@ great.pl.plot_enrich(plot)
 
 ```
 
--  Dotplot of the enrichment GO terms in multiple genomic test regions
+-   Dotplot of the enrichment GO terms in multiple genomic test regions
 
 ```python
-test = ["name_bindome_biosample_1", "name_bindome_biosample_2","..."]
-tmp_df = great.tl.GREAT.enrichment_multiple(tests = test,regdom_file="../data/human/hg38/regulatory_domain.bed",chr_size_file="../data/human/hg38/chr_size.bed",annotation_file="../data/human/ontologies.csv",binom=True,hypergeom=True)
+test = ["name_bindome_biosample_1", "name_bindome_biosample_2", "..."]
+tmp_df = great.tl.GREAT.enrichment_multiple(
+    tests=test,
+    regdom_file="../data/human/hg38/regulatory_domain.bed",
+    chr_size_file="../data/human/hg38/chr_size.bed",
+    annotation_file="../data/human/ontologies.csv",
+    binom=True,
+    hypergeom=True,
+)
 ```
 
 ```{image} _static/output_images/multidotdot.png
 :width: 300px
 :height: 400px
 ```
-
-
 
 Several examples of uses can be found in the notebook part of the package:
 
@@ -184,6 +189,7 @@ For cite greatpy:
 ```
 
 ## References
+
 ```bibtex
 @article{GREAT,
   author   = {McLean, C.
@@ -202,19 +208,14 @@ For cite greatpy:
 }
 ```
 
-
 [scverse-discourse]: https://discourse.scverse.org/
 [issue-tracker]: https://github.com/theislab/greatpy/issues
 [changelog]: https://greatpy.readthedocs.io/en/latest/changelog.html
 [link-docs]: https://greatpy.readthedocs.io/en/latest/
 [link-api]: https://greatpy.readthedocs.io/en/latest/api.html
-
 [notebook1]: https://greatpy.readthedocs.io/en/latest/notebooks/01_create_regdom.html
 [notebook2]: https://greatpy.readthedocs.io/en/latest/notebooks/02_binom_vs_hypergeom.html
 [notebook3]: https://greatpy.readthedocs.io/en/latest/notebooks/07_plot.html
-
-[GREAT_article]: https://www.nature.com/articles/nbt.1630
-[GREAT_figure]: https://www.nature.com/articles/nbt.1630/figures/1
-
+[great_article]: https://www.nature.com/articles/nbt.1630
+[great_figure]: https://www.nature.com/articles/nbt.1630/figures/1
 [association_rules]: https://great-help.atlassian.net/wiki/spaces/GREAT/pages/655443/Association+Rules
-
