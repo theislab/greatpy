@@ -12,7 +12,12 @@ plt.rcParams.update({"font.size": 14, "font.weight": "normal"})
 
 
 def scatterplot(
-    great_df: pd.DataFrame, colname_x: str, colname_y: str, title: str = "", minus_log10=True, ax=None
+    great_df: pd.DataFrame,
+    colname_x: str,
+    colname_y: str,
+    title: str = "",
+    minus_log10=True,
+    ax: matplotlib.axes._subplots.AxesSubplot or None = None,
 ) -> None:
     """
     Create a scatterplot from a
@@ -31,12 +36,13 @@ def scatterplot(
         Title of the plot
     minus_log10 : bool
         If True, the logarithmic scale is used
-    ax :
+    ax : matplotlib.axes._subplots.AxesSubplot or None
         Define the position of the plot in a figure
 
     Returns
     -------
     None
+        Scatterplot between the two columns passed in args
 
     """
     great_df = great_df.dropna()
@@ -49,7 +55,12 @@ def scatterplot(
         sns.scatterplot(data=great_df, x=colname_x, y=colname_y, ax=ax).set_title(title)
 
 
-def graph_nb_asso_per_peaks(test: str or pd.DataFrame, regdom: str or pd.DataFrame, ax=None, color=None) -> None:
+def graph_nb_asso_per_peaks(
+    test: str or pd.DataFrame,
+    regdom: str or pd.DataFrame,
+    ax: matplotlib.axes._subplots.AxesSubplot or None = None,
+    color: str = None,
+) -> None:
     """
     Creates a barplot representing the
     percentage of peaks for all possible association numbers
@@ -60,12 +71,15 @@ def graph_nb_asso_per_peaks(test: str or pd.DataFrame, regdom: str or pd.DataFra
         Genomic set of peaks to be tested
     regdom : str or pd.DataFrame
         Regulatory domain of all genes in the genome
-    ax :
+    ax : matplotlib.axes._subplots.AxesSubplot or None
         Define the position of the plot in a figure
+    color : str
+        Color of the bar
 
     Returns
     -------
     None
+        Barplot of the number of associated genes per peak
 
     """
     nb_asso_per_peaks = gp.tl.get_nb_asso_per_region(test, regdom)
@@ -94,7 +108,12 @@ def graph_nb_asso_per_peaks(test: str or pd.DataFrame, regdom: str or pd.DataFra
         g.text(x=x - 0.06, y=y + 1, s=nb.number_genes[i])
 
 
-def graph_dist_tss(test: str or pd.DataFrame, regdom: str or pd.DataFrame, ax=None, color="#325fa8") -> None:
+def graph_dist_tss(
+    test: str or pd.DataFrame,
+    regdom: str or pd.DataFrame,
+    ax: matplotlib.axes._subplots.AxesSubplot or None = None,
+    color: str = "#325fa8",
+) -> None:
     """
     Creation of a barplot of the distance
     between the peaks and the TSS of the associated gene(s).
@@ -105,12 +124,15 @@ def graph_dist_tss(test: str or pd.DataFrame, regdom: str or pd.DataFrame, ax=No
         Genomic set of peaks to be tested
     regdom : str or pd.DataFrame
         Regulatory domain of all genes in the genome
-    ax :
+    ax : matplotlib.axes._subplots.AxesSubplot or None
         Define the position of the plot in a figure
+    color : str
+        Color of the bar
 
     Returns
     -------
     None
+        Barplot of the distance between the peaks and the TSS of the associated gene(s)
 
     """
     res = {
@@ -156,7 +178,12 @@ def graph_dist_tss(test: str or pd.DataFrame, regdom: str or pd.DataFrame, ax=No
     g.set_title("Binned by absolute distance to TSS", fontsize=20)
 
 
-def graph_absolute_dist_tss(test: str or pd.DataFrame, regdom: str or pd.DataFrame, ax=None, color="#325fa8") -> None:
+def graph_absolute_dist_tss(
+    test: str or pd.DataFrame,
+    regdom: str or pd.DataFrame,
+    ax: matplotlib.axes._subplots.AxesSubplot or None = None,
+    color: str = "#325fa8",
+) -> None:
     """
     Creation of a barplot of the absolute
     distance between the peaks and the TSS of the associated gene(s).
@@ -167,12 +194,15 @@ def graph_absolute_dist_tss(test: str or pd.DataFrame, regdom: str or pd.DataFra
         Genomic set of peaks to be tested
     regdom : str or pd.DataFrame
         Regulatory domain of all genes in the genome
-    ax :
+    ax : matplotlib.axes._subplots.AxesSubplot or None
         Define the position of the plot in a figure
+    color : str
+        Color of the bar
 
     Returns
     -------
     None
+        Barplot of the absolute distance between the peaks and the TSS of the associated gene(s)
 
     """
     res = {"0:5": [0], "5:50": [0], "50:500": [0], ">500": [0]}
@@ -214,7 +244,7 @@ def scale_data_5_75(data):
     return (((data - mind) / drange * 0.70) + 0.05) * 100
 
 
-def plot_enrich(data, n_terms=20, color="cool", save=False):
+def plot_enrich(data: pd.DataFrame, n_terms: int = 20, color: str = "cool", save: bool = False):
     """
     Creation of a dotplot of the enrichment
     GO term in the inputs datas
@@ -233,6 +263,7 @@ def plot_enrich(data, n_terms=20, color="cool", save=False):
     Returns
     -------
     None
+        Dotplot of the enrichment n first GO term in the input data
 
     """
     # Test data input
@@ -348,20 +379,20 @@ def plot_enrich(data, n_terms=20, color="cool", save=False):
 
 
 def make_bubble_heatmap(
-    order_frame,
-    sizeDict,
-    na_color="gray",
-    title="title",
-    tickscolorbar=[-2, -1, 0, 1, 2],
-    vmin=-2.5,
-    vmax=2.5,
-    heatmap_grid=[2, 4, 0, 2, 2, 1],
-    circle_legend_grid=[2, 4, 0, 2, 2, 1],
-    colorbar_grid=[2, 5, 0, 3, 2, 1],
-    palette_id="RdBu_r",
-    cbar_label="cbar_label",
-    ncols=8,
-    marker=None,
+    p_val_df: pd.DataFrame,
+    odd_ratio_df: pd.DataFrame,
+    na_color: str = "gray",
+    title: str = "title",
+    tickscolorbar: list = [-2, -1, 0, 1, 2],
+    vmin: int or float = -2.5,
+    vmax: int or float = 2.5,
+    heatmap_grid: list = [2, 4, 0, 2, 2, 1],
+    circle_legend_grid: list = [2, 4, 0, 2, 2, 1],
+    colorbar_grid: list = [2, 5, 0, 3, 2, 1],
+    palette_id: str = "RdBu_r",
+    cbar_label: str = "cbar_label",
+    ncols: int or None = 8,
+    marker: str or None = None,
     **kwargs,
 ):
     """
@@ -369,33 +400,33 @@ def make_bubble_heatmap(
 
     Parameters
     ----------
-    order_frame
-        DataFrame with gene ontologies
-    sizeDict
-        Dictionary with gene ontologies as keys and sizes as values
-    na_color
+    p_val_df : pd.DataFrame
+        DataFrame of the p-values computed by enrichment function
+    odd_ratio_df : pd.DataFrame
+        DataFrame of the odds ratios computed by enrichment function
+    na_color : str
         Color for NA values
-    title
-        Title for the plot
-    tickscolorbar
-        Tick marks for the colorbar
-    vmin
+    title : str
+        Title of the plot
+    tickscolorbar : list
+        List of ticks should be add on the colorbar
+    vmin : int or float
         Minimum value for the colorbar
-    vmax
+    vmax : int or float
         Maximum value for the colorbar
-    heatmap_grid
+    heatmap_grid : list
         Grid for the heatmap
-    circle_legend_grid
+    circle_legend_grid : list
         Grid for the circle legend
-    colorbar_grid
+    colorbar_grid : list
         Grid for the colorbar
-    palette_id
+    palette_id : str
         Palette id for the colorbar
-    cbar_label
+    cbar_label : str
         Label for the colorbar
-    ncols
+    ncols : int or None
         Number of columns for the colorbar
-    marker
+    marker : str or None
         Marker for the dots
     kwargs
         Additional keyword arguments for the plot
@@ -432,7 +463,7 @@ def make_bubble_heatmap(
         pallete = plt.cm.PuOr
     else:
         pass
-    scalarmap, colorList = get_specific_color_gradient(pallete, np.array(order_frame), vmin=vmin, vmax=vmax)
+    scalarmap, colorList = get_specific_color_gradient(pallete, np.array(p_val_df), vmin=vmin, vmax=vmax)
 
     fig = kwargs.get("fig", None)
     if fig is None:
@@ -447,24 +478,24 @@ def make_bubble_heatmap(
     i = 0
 
     # to keep the order of dataframes in the same order as sizes, revert the dataframes
-    order_frame = order_frame.reindex(index=order_frame.index[::-1])
-    sizeDict = sizeDict.reindex(index=sizeDict.index[::-1])
+    p_val_df = p_val_df.reindex(index=p_val_df.index[::-1])
+    odd_ratio_df = odd_ratio_df.reindex(index=odd_ratio_df.index[::-1])
 
     min_circle_size = kwargs.get("min_circle_size")
     max_circle_size = kwargs.get("max_circle_size")
 
-    for ri, r in order_frame.iterrows():
+    for ri, r in p_val_df.iterrows():
         patList = list(r.values)
 
         sizeList = []
         if min_circle_size is not None and max_circle_size is not None:
-            for si in list(sizeDict.loc[ri]):
+            for si in list(odd_ratio_df.loc[ri]):
                 if si < min_circle_size:
                     si = min_circle_size
                 scaled = (si - min_circle_size) / (max_circle_size - min_circle_size)
                 sizeList.append(scaled * quantAmplifier)
         else:
-            sizeList = [(si ** kwargs.get("power", 1.0)) * (quantAmplifier) for si in list(sizeDict.loc[ri])]
+            sizeList = [(si ** kwargs.get("power", 1.0)) * (quantAmplifier) for si in list(odd_ratio_df.loc[ri])]
 
         colorList = scalarmap.to_rgba(patList)
         colorList = [ci if not np.isnan(vi) else na_color for ci, vi in zip(colorList, patList)]
@@ -523,8 +554,8 @@ def make_bubble_heatmap(
     remove_top_n_right_ticks(ax)
 
     plt.xticks(
-        list(range(len(order_frame.columns))),
-        order_frame.columns,
+        list(range(len(p_val_df.columns))),
+        p_val_df.columns,
         fontsize=kwargs.get("xticks_fontsize", 11),
         rotation=kwargs.get("rotation_xlabs", 90),
         color="black",
@@ -673,12 +704,21 @@ def get_legendHandle_for_second_sanity_check_plot(
 
 
 def dotplot_multi_sample(
-    test_data,
+    test_data: dict,
     n_row: int = 5,
     list_id: list = [],
     fig: matplotlib.figure.Figure or None = None,
     show_term_name: bool = False,
     term_name_nchars: int = 30,
+    dot_size_amplifier: int or float = 7,
+    palette_id: str or matplotlib.cm = "Reds",
+    ylab: str = "GO",
+    xlab: str = "",
+    label_colorbar: str = "-log(p_hypergeometric)",
+    marker: str = "o",
+    plot_title: str = "Dotplot of enrichment GO terms",
+    line_width: int = 0.1,
+    circle_legend: str = "log2(odd ratio)",
     **kwargs,
 ):
     """
@@ -698,12 +738,32 @@ def dotplot_multi_sample(
         Whether to show the GO term name.
     term_name_nchars : int
         Number of characters to show for the GO term name.
+    dot_size_amplifier : int or float
+        Amplifier for the dot size.
+    palette_id : str or matplotlib.cm
+        Color palette for the dotplot.
+    ylab : str
+        Y-axis label.
+    xlab : str
+        X-axis label.
+    label_colorbar : str
+        Label for the colorbar.
+    marker : str
+        Marker for the dotplot.
+    plot_title : str
+        Plot title.
+    line_width : int
+        Dot line width.
+    circle_legend : str
+        Legend for the circle.
     kwargs
         Other parameters to be passed to the make make_bubble_heatmap function.
 
 
     Returns
     -------
+    None
+        Dotplot of enrichment GO terms for the given df
     p_val : pandas.DataFrame
         Dataframe of plotted p-values
     odds_ratio : pandas.DataFrame
@@ -757,6 +817,7 @@ def dotplot_multi_sample(
     ...    | GO:0006120 | 0       | 0       | 3.65752 |
     ...    | GO:0045277 | 0       | 0       | 5.44179 |
     ...    | GO:0030964 | 0       | 0       | 7.02675 |
+
     """
     min_p, min_od, max_p, max_od = 100, 100, 0, 0
     gene_tot = {}
@@ -832,20 +893,19 @@ def dotplot_multi_sample(
     make_bubble_heatmap(
         p_val,
         odd_ratio,
-        quantAmplifier=7,
+        quantAmplifier=dot_size_amplifier,
         circle_legend_ticks=[i for i in range(round(min_od), round(max_od) + 1, 2)],
-        palette_id="Reds",
-        ylab="GO",
-        xlab="",
+        palette_id=palette_id,
+        ylab=ylab,
+        xlab=xlab,
         tickscolorbar=[int(i) for i in range(round(min_p), round(max_p) + 1, 2)],
         vmin=min_p,
         vmax=max_p,
-        cbar_label="-log(p_hypergeometric)",
-        marker="o",
-        legend_title="odds.ratio",
-        heatmap_title="Dotplot of enrichment GO terms",
-        sig_line_width=0.1,
-        circles_legend_title="log2(odd ratio)",
+        cbar_label=label_colorbar,
+        marker=marker,
+        heatmap_title=plot_title,
+        sig_line_width=line_width,
+        circles_legend_title=circle_legend,
         cbar_fmt_ticks="%.0f",
         fig=fig,
     )

@@ -18,7 +18,7 @@ class GREAT:
         annotation_file: None or str or pd.DataFrame,
     ):
         """
-        Used to load all datasets needed for the enrichment calculation
+        Load all datasets needed for the enrichment calculation
 
         Parameters
         ----------
@@ -549,10 +549,7 @@ class GREAT:
         hypergeom=True,
     ) -> pd.DataFrame:
         """
-        Wrapper of the 3 private methods:
-        * GREAT.__enrichment_binom_and_hypergeom
-        * GREAT.__enrichment_binom
-        * GREAT.__enrichment_hypergeom
+        Compute the enrichment GO terms for the test genomic region
 
         Parameters
         ----------
@@ -660,7 +657,7 @@ class GREAT:
         hypergeom=True,
     ) -> dict:
         """
-        Compute the enrichment of each GO term on multiple tests sets using bindome.
+        Compute the enrichment of GO term for multiple tests sets using bindome.
 
         Parameters
         ----------
@@ -872,9 +869,7 @@ class GREAT:
 ######################################################################
 def get_association(test, regdom) -> list:
     """
-    From a file of genomic regions from CHIPseq
-    and a file of genomic regulatory domains determine the names
-    of genes associated with at least one genomic region
+    Determine the names of genes associated with at least one genomic region
 
     Parameters
     ----------
@@ -940,8 +935,7 @@ def get_association(test, regdom) -> list:
 
 def len_regdom(regdom: pd.DataFrame) -> dict:
     """
-    Calculate for each gene name from regdom the
-    size of the regulatory region for this gene in the genome
+    Calculate for each gene name the size of the regulatory region in the genome
 
     Parameters
     ----------
@@ -976,8 +970,7 @@ def len_regdom(regdom: pd.DataFrame) -> dict:
 
 def number_of_hits(test, regdom) -> int:
     """
-    Calculate the number of hits from several
-    genomic regions and the file describing the regulatory regions
+    Calculate the number of hits from several genomic regions and the file describing the regulatory regions
 
     Parameters
     ----------

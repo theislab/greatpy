@@ -11,9 +11,7 @@ import greatpy as great
 
 def get_nb_asso_per_region(test: str or pd.DataFrame, regdom: str or pd.DataFrame) -> dict:
     """
-    From a file of genomic regions from CHIPseq
-    and a file of genomic regulatory domains, determine number of peaks
-    associated with each gene in the regulatory domain.
+    Determine number of peaks associated with each gene in the regulatory domain.
 
     Parameters
     ----------
@@ -80,9 +78,7 @@ def get_nb_asso_per_region(test: str or pd.DataFrame, regdom: str or pd.DataFram
 
 def get_dist_to_tss(test: str or pd.DataFrame, regdom: str or pd.DataFrame) -> dict:
     """
-    From a file of genomic regions from CHIPseq
-    and a file of genomic regulatory domains, determine the distance from peaks
-    to the transcription start site of the associated gene
+    Determine the distance from peaks to the transcription start site of the associated gene
 
     Parameters
     ----------

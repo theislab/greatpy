@@ -57,8 +57,6 @@ import greatpy as gp
     tl.get_association
     tl.len_regdom
     tl.number_of_hits
-    tl.betacf
-    tl.betai
     tl.get_binom_pval
     tl.hypergeom_pmf
     tl.hypergeom_cdf
