@@ -698,7 +698,7 @@ class GREAT:
             name_TF = name.split(":")[0]
             tmp_df = bd.bindome.datasets.REMAP2020.get_remap_peaks(name_TF)
             tmp = tmp_df[tmp_df[3]==name].iloc[:,0:3]
-            tmp = tmp.rename(columns={"chr":'Chr','start':"Chr_start",'end':"Chr_end"})
+            tmp = tmp.rename(columns={"chr":'chr','start':"chr_start",'end':"chr_end"})
 
             enrichment = GREAT.enrichment(
                 test = tmp,
