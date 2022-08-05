@@ -40,6 +40,7 @@ import greatpy as gp
 
     tl.GREAT.GREAT.loader
     tl.GREAT.GREAT.enrichment
+    tl.GREAT.GREAT.enrichment_multiple
     tl.GREAT.GREAT.set_bonferroni
     tl.GREAT.GREAT.set_fdr
     tl.GREAT.GREAT.set_threshold

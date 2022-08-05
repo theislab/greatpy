@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 from scipy.special import comb
 from statsmodels.stats.multitest import multipletests
-
+import bindome as bd 
 pd.options.display.float_format = "{:12.5e}".format
 
 
@@ -648,6 +648,71 @@ class GREAT:
 
         else:
             return GREAT.__enrichment_hypergeom(test, regdom, ann, asso)
+    
+    def enrichment_multiple(
+        tests: list ,
+        regdom_file: str or pd.DataFrame,
+        chr_size_file: str or pd.DataFrame,
+        annotation_file: str or pd.DataFrame,
+        annpath: str = "../../annotation/",
+        binom=True,
+        hypergeom=True,
+    ) -> dict:
+        """
+        Compute the enrichment of each GO term on multiple tests sets using bindome. 
+
+        Parameters
+        ----------
+        tests : list
+            List of complete name of data to compute with bindome
+        regdom_file : str or pd.DataFrame
+            Regulatory domain of all genes in the genome
+        chr_size_file : str or pd.DataFrame
+            Table with the size of each chromosome
+        annotation_file : str or pd.DataFrame
+            Table with the annotation of each gene in the genome
+        binom : bool (default True)
+            If True, the binomial test is used.
+        hypergeom : bool (default True)
+            If True, the hypergeometric test is used.
+
+        Returns
+        -------
+        list of pd.DataFrame
+            List of dataframe with the enrichment of each test
+
+        Examples
+        --------
+        >>> tests = ["MAX:K-562,WA01,HeLa-S3", "BACH1:A-549,GM12878"]
+        """
+        if not binom and not hypergeom:
+            return False
+        
+        _, regdom, size, ann = GREAT.loader(None, regdom_file, chr_size_file, annotation_file)
+        
+        bd.bindome.constants.ANNOTATIONS_DIRECTORY = annpath
+
+        res = {}
+        
+        for name in tests : 
+            name_TF = name.split(":")[0]
+            bin = bd.bindome.datasets.REMAP2020.get_remap_peaks(name_TF)
+            tmp = bin[bin[3]==name].iloc[:,0:3]
+            tmp = tmp.rename(columns={"chr":'Chr','start':"Chr_start",'end':"Chr_end"})
+
+            enrichment = GREAT.enrichment(
+                test = tmp,
+                regdom = regdom,
+                ann = ann,
+                chr_size_file=size,
+                asso = get_association(tmp,regdom),
+                binom=binom,
+                hypergeom=hypergeom
+            )
+            
+            res[name_TF] = enrichment
+
+        return res
 
     def set_bonferroni(self, alpha: float = 0.05) -> pd.DataFrame:
         """
