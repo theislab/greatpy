@@ -700,15 +700,16 @@ class GREAT:
             tmp = tmp_df[tmp_df[3]==name].iloc[:,0:3]
             tmp = tmp.rename(columns={"chr":'chr','start':"chr_start",'end':"chr_end"})
 
-            enrichment = GREAT.enrichment(
-                test = tmp,
-                regdom = regdom,
-                ann = ann,
-                chr_size_file=size,
-                asso = get_association(tmp,regdom),
-                binom=binom,
-                hypergeom=hypergeom
-            )
+            asso = get_association(tmp, regdom )  # get the name of the regulatory domain associated to each genomic region in the test set
+
+            if binom and hypergeom:
+                enrichment = GREAT.__enrichment_binom_and_hypergeom(tmp, regdom, size, ann, asso)
+
+            elif binom:
+                enrichment = GREAT.__enrichment_binom(tmp, regdom, size, ann, asso)
+
+            else:
+                enrichment = GREAT.__enrichment_hypergeom(tmp, regdom, ann, asso)
             
             res[name_TF] = enrichment
 
