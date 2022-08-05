@@ -609,3 +609,168 @@ def get_legendHandle_for_second_sanity_check_plot(quantAmplifier=None,
                                             alpha=0.9, marker=marker))
         labelSize.append(fmt % labels[i])
     return legendHandleList, labelSize
+
+import matplotlib
+
+def dotplot_multi_sample(test_data, n_row:int = 5,list_id : list = [],
+    fig : matplotlib.figure.Figure or None = None,
+    show_term_name : bool = False, term_name_nchars : int = 30, 
+    **kwargs
+    ): 
+    """
+    Dotplot of enrichment GO terms for a given list of example genomic regions.
+
+    Parameters
+    ----------
+    test_data : dict
+        dict of multiple tests output 
+    n_row : int
+        Number of rows pick in each dataframe.
+    list_id : list
+        List of IDs to be plotted.
+    fig : matplotlib.figure.Figure or None 
+        Figure to plot the dotplot.
+    show_term_name : bool
+        Whether to show the GO term name.
+    term_name_nchars : int
+        Number of characters to show for the GO term name.
+    kwargs
+        Other parameters to be passed to the make make_bubble_heatmap function.
+ 
+    
+    Returns
+    -------
+    p_val : pandas.DataFrame
+        Dataframe of plotted p-values
+    odds_ratio : pandas.DataFrame
+        Dataframe of plotted odds ratios
+    df : pandas.DataFrame
+        Dataframe of all results concatenated
+
+    Examples
+    --------
+    >>> test = ["SRF:Ishikawa,A-673-clone-Asp114,K-562,MCF-7,Hep-G2","MAX:K-562,WA01,HeLa-S3", "BACH1:A-549,GM12878"]
+    >>> tmp_df = great.tl.GREAT.enrichment_multiple(
+        tests = test, regdom_file="../data/human/hg38/regulatory_domain.bed",
+        chr_size_file="../data/human/hg38/chr_size.bed",
+        annotation_file="../data/human/ontologies.csv", binom=True, hypergeom=True,)
+    >>> p_val,odd_ratio = great.pl.dotplot_multi_sample(tmp_df)
+
+    >>> p_val
+    ...    | id         |       0 |       1 |        2 |
+    ...    |:-----------|--------:|--------:|---------:|
+    ...    | GO:0051292 | 6.28405 | 1       |  1       |
+    ...    | GO:0030261 | 5.51863 | 1       |  1       |
+    ...    | GO:0001650 | 5.3019  | 1       |  1       |
+    ...    | GO:0090096 | 5.29709 | 1       |  1       |
+    ...    | GO:0099637 | 5.29709 | 1       |  1       |
+    ...    | GO:0004896 | 1       | 7.98072 |  1       |
+    ...    | GO:0038165 | 1       | 7.93887 |  1       |
+    ...    | GO:0030883 | 1       | 7.03282 |  1       |
+    ...    | GO:0048006 | 1       | 7.03282 |  1       |
+    ...    | GO:0004924 | 1       | 7.03282 |  1       |
+    ...    | GO:0008137 | 1       | 1       | 14.0412  |
+    ...    | GO:0015990 | 1       | 1       | 13.2519  |
+    ...    | GO:0006120 | 1       | 1       | 11.7472  |
+    ...    | GO:0045277 | 1       | 1       | 10.2356  |
+    ...    | GO:0030964 | 1       | 1       |  9.74806 |
+
+    >>> odds_ratio
+    ...    | id         |       0 |       1 |       2 |
+    ...    |:-----------|--------:|--------:|--------:|
+    ...    | GO:0051292 | 4.94165 | 0       | 0       |
+    ...    | GO:0030261 | 4.39416 | 0       | 0       |
+    ...    | GO:0001650 | 2.54406 | 0       | 0       |
+    ...    | GO:0090096 | 7.64209 | 0       | 0       |
+    ...    | GO:0099637 | 7.64209 | 0       | 0       |
+    ...    | GO:0004896 | 0       | 3.58059 | 0       |
+    ...    | GO:0038165 | 0       | 6.00685 | 0       |
+    ...    | GO:0030883 | 0       | 5.42189 | 0       |
+    ...    | GO:0048006 | 0       | 5.42189 | 0       |
+    ...    | GO:0004924 | 0       | 5.42189 | 0       |
+    ...    | GO:0008137 | 0       | 0       | 3.76802 |
+    ...    | GO:0015990 | 0       | 0       | 6.61172 |
+    ...    | GO:0006120 | 0       | 0       | 3.65752 |
+    ...    | GO:0045277 | 0       | 0       | 5.44179 |
+    ...    | GO:0030964 | 0       | 0       | 7.02675 |
+    """
+    min_p,min_od,max_p,max_od = 100,100,0,0
+    gene_tot={}
+    df = pd.DataFrame()
+
+    for i,name in enumerate(test_data.keys()) : 
+        res = test_data[name].sort_values(by="hypergeom_p_value")
+        if len(list_id) > 0 : 
+            res = res[res.index.isin(list_id)]
+        res = res.iloc[:n_row]
+
+        res = res.reset_index().rename(columns={"index":"id"})
+        res["index"] = [i]*res.shape[0]
+        frames = [df, res]
+        df = pd.concat(frames)
+    df["hypergeom_p_value"] = -np.log(df["hypergeom_p_value"])
+    df["hypergeometric_fold_enrichment"] = np.log2(df["hypergeometric_fold_enrichment"])
+    dup = df[df.duplicated("id")==True]        
+    duplicate = dup.drop(columns=["go_term","binom_p_value","binom_fold_enrichment","intersection_size","recall"]).to_dict()
+    df = df.drop_duplicates("id")
+    p_val = df.pivot("id","index","hypergeom_p_value").fillna(1).reindex(df["id"])
+    odd_ratio = df.pivot("id","index","hypergeometric_fold_enrichment").fillna(0).reindex(df["id"])
+
+    if dup.shape[0]>0 : 
+            for i,name in enumerate(duplicate["id"].values()): 
+                if duplicate["index"][i] in p_val.columns :
+                    p_val[duplicate["index"][i]][name] = duplicate["hypergeom_p_value"][i]
+                    odd_ratio[duplicate["index"][i]][name] = duplicate["hypergeometric_fold_enrichment"][i]
+                else : 
+                    p_val[duplicate["index"][i]] = duplicate["hypergeom_p_value"][i]
+                    odd_ratio[duplicate["index"][i]] = duplicate["hypergeometric_fold_enrichment"][i]
+
+    p_val.rename(columns=gene_tot,inplace=True)
+    odd_ratio.rename(columns=gene_tot,inplace=True)
+
+    if show_term_name : 
+        go_n = []
+        # go_n = df.drop(columns = ["binom_p_value","binom_fold_enrichment","hypergeom_p_value","hypergeometric_fold_enrichment","intersection_size","recall","index"]).to_dict()
+        for i in range(df.shape[0]) : 
+            curr = df.iloc[i]
+            go_n.append(curr["id"] + " " + curr["go_term"][:term_name_nchars])
+        # return go_n
+        p_val["test"] = go_n
+        odd_ratio["test"] = go_n
+
+        p_val = p_val.set_index("test")
+        odd_ratio = odd_ratio.set_index("test")
+
+    for i in p_val.columns : 
+        if min_p > p_val[i].min() : 
+            min_p = p_val[i].min()
+        if max_p < p_val[i].max() : 
+            max_p = p_val[i].max()
+
+    for i in odd_ratio.columns : 
+        if min_od > odd_ratio[i].min() : 
+            min_od = odd_ratio[i].min()
+        if max_od < odd_ratio[i].max() : 
+            max_od = odd_ratio[i].max()
+    
+    max_p = int(round(max_p))
+    max_od = int(round(max_od))
+    min_p = int(round(min_p))
+    min_od = int(round(min_od))
+    
+    if min_od == 0 : 
+        min_od = 1
+        
+    plt.rcParams.update({"font.size": 14, "font.weight": "normal"})
+    plt.tight_layout(pad=0.1,h_pad=0.1,w_pad=0.1)
+
+    
+    make_bubble_heatmap(
+        p_val,odd_ratio,quantAmplifier = 7,circle_legend_ticks=[i for i in range(round(min_od),round(max_od)+1,2)],palette_id="Reds",
+        ylab='GO',xlab='', tickscolorbar=[int(i) for i in range(round(min_p),round(max_p)+1,2)],vmin=min_p,vmax=max_p, cbar_label='-log(p_hypergeometric)',
+        marker='o', legend_title='odds.ratio',heatmap_title = "Dotplot of enrichment GO terms",sig_line_width=0.1,
+        circles_legend_title="log2(odd ratio)" ,cbar_fmt_ticks = "%.0f",
+        fig=fig
+        )
+    
+    return p_val,odd_ratio,df
