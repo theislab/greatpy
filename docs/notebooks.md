@@ -90,7 +90,7 @@ plt.show()
 ```
 
 ```{image} _static/output_images/plot1.png
-:height: 300px
+:height: 200px
 :width: 500px
 ```
 
