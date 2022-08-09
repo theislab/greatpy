@@ -32,10 +32,10 @@ This package is strongly inspired by [GREAT][great_article] allowing Helmholtz t
 
 ```python
 regdom = greatpy.tl.REGDOM.create_regdom(
-    tss_file=path_of_the_file,
-    chr_sizes_file="path_of_the_file",
-    association_rule="Basalplusextention",
-    out_path=path_save_output,
+    tss_file = path_of_the_file,
+    chr_sizes_file = "path_of_the_file",
+    association_rule = "Basalplusextention",
+    out_path = path_save_output,
 )
 ```
 
@@ -55,10 +55,10 @@ The [association rules][association_rules] parameters could be :
 
 ```python
 res = greatpy.tl.GREAT.enrichment(
-    test=path_of_genomic_region_to_test,
-    regdom_file=path_of_regdom_file,
-    chr_size_file=path_each_chromosome_size,
-    annotation=path_of_the_csv_file_of_ontologies,
+    test = path_of_genomic_region_to_test,
+    regdom_file = path_of_regdom_file,
+    chr_size_file = path_each_chromosome_size,
+    annotation = path_of_the_csv_file_of_ontologies,
 )
 ```
 
@@ -71,13 +71,13 @@ It is then possible to apply a Bonferroni and/or FDR correction to the found p-v
 
 ```python
 res = greatpy.tl.GREAT.enrichment(
-    test_file=path_or_dataframe_of_genomic_region_to_test,
-    regdom_file=path_or_dataframe_of_regdom_file,
-    chr_size_file=path_or_dataframe_each_chromosome_size,
-    annotation_file=path_or_dataframe_of_the_csv_file_of_ontologies,
+    test_file = path_or_dataframe_of_genomic_region_to_test,
+    regdom_file = path_or_dataframe_of_regdom_file,
+    chr_size_file = path_or_dataframe_each_chromosome_size,
+    annotation_file = path_or_dataframe_of_the_csv_file_of_ontologies,
 )
-great.tl.GREAT.set_fdr(res, alpha=0.05)
-great.tl.GREAT.set_bonferroni(res, alpha=0.05)
+great.tl.GREAT.set_fdr(res, alpha = 0.05)
+great.tl.GREAT.set_bonferroni(res, alpha = 0.05)
 ```
 
 #### <ins>3. Plot</ins>
@@ -89,7 +89,7 @@ It is also possible to create several types of plots:
 -   Absolute distance to the associated gene TSS for each genomic region studied
 
 ```python
-fig, ax = plt.subplots(1, 3, figsize=(30, 8))
+fig, ax = plt.subplots(1, 3, figsize = (30, 8))
 greatpy.pl.graph_nb_asso_per_peaks(
     path_or_dataframe_of_genomic_region_to_test, path_or_dataframe_of_regdom_file, ax[0]
 )
@@ -109,8 +109,8 @@ plt.show()
 -   Dotplot of the enrichment GO term in the genomic test region
 
 ```python
-plot = enrichment_df.rename(columns={"binom_p_value": "p_value", "go_term": "name"})
-plt.figure(figsize=(10, 10))
+plot = enrichment_df.rename(columns = {"binom_p_value": "p_value", "go_term": "name"})
+plt.figure(figsize = (10, 10))
 great.pl.plot_enrich(plot)
 ```
 
@@ -123,12 +123,12 @@ great.pl.plot_enrich(plot)
 ```python
 test = ["name_bindome_biosample_1", "name_bindome_biosample_2", "..."]
 tmp_df = great.tl.GREAT.enrichment_multiple(
-    tests=test,
-    regdom_file="../data/human/hg38/regulatory_domain.bed",
-    chr_size_file="../data/human/hg38/chr_size.bed",
-    annotation_file="../data/human/ontologies.csv",
-    binom=True,
-    hypergeom=True,
+    tests = test,
+    regdom_file = "../data/human/hg38/regulatory_domain.bed",
+    chr_size_file = "../data/human/hg38/chr_size.bed",
+    annotation_file = "../data/human/ontologies.csv",
+    binom = True,
+    hypergeom = True,
 )
 ```
 
@@ -189,23 +189,7 @@ For cite greatpy:
 
 ## References
 
-```bibtex
-@article{GREAT,
-  author   = {McLean, C.
-              and Bristor, D.
-              and Hiller, M. et al.},
-  title    = {GREAT improves functional interpretation of cis-regulatory regions},
-  journal  = {Nat Biotechnol},
-  year     = {2010},
-  month    = {May},
-  day      = {02},
-  volume   = {28},
-  number   = {495},
-  pages    = {501},
-  doi      = {10.1038/nbt.1630},
-  url      = {https://doi.org/10.1038/nbt.1630}
-}
-```
+References aviable in the [references page][reference].
 
 [scverse-discourse]: https://discourse.scverse.org/
 [issue-tracker]: https://github.com/theislab/greatpy/issues
@@ -215,6 +199,8 @@ For cite greatpy:
 [notebook1]: https://greatpy.readthedocs.io/en/latest/notebooks/01_create_regdom.html
 [notebook2]: https://greatpy.readthedocs.io/en/latest/notebooks/02_binom_vs_hypergeom.html
 [notebook3]: https://greatpy.readthedocs.io/en/latest/notebooks/07_plot.html
+[reference]: https://greatpy.readthedocs.io/en/latest/references.html
+
 [great_article]: https://www.nature.com/articles/nbt.1630
 [great_figure]: https://www.nature.com/articles/nbt.1630/figures/1
 [association_rules]: https://great-help.atlassian.net/wiki/spaces/GREAT/pages/655443/Association+Rules

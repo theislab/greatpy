@@ -207,6 +207,16 @@ For cite greatpy :
 }
 ```
 
+```bibtex
+@Manual{rGREAT,
+  title = {rGREAT: GREAT Analysis - Functional Enrichment on Genomic Regions},
+  author = {Zuguang Gu},
+  year = {2022},
+  note = {https://github.com/jokergoo/rGREAT, http://great.stanford.edu/public/html/},
+}
+```
+
+
 [scverse-discourse]: https://discourse.scverse.org/
 [issue-tracker]: https://github.com/ilibarra/greatpy/issues
 [changelog]: https://greatpy.readthedocs.io/latest/changelog.html
