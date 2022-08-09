@@ -76,7 +76,7 @@ plt.show()
 ```
 
 ```{image} _static/output_images/scatterplot.png
-:width: 200px
+:width: 500px
 ```
 
 #### Graph of the number of associations per peak

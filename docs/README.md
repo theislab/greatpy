@@ -102,12 +102,20 @@ greatpy.pl.graph_absolute_dist_tss(
 plt.show()
 ```
 
+```{image} _static/output_images/plot1.png
+
+```
+
 -   Dotplot of the enrichment GO term in the genomic test region
 
 ```python
 plot = enrichment_df.rename(columns={"binom_p_value": "p_value", "go_term": "name"})
 plt.figure(figsize=(10, 10))
 great.pl.plot_enrich(plot)
+```
+
+```{image} _static/output_images/dotplot.png
+:width: 600px
 ```
 
 -   Dotplot of the enrichment GO terms in multiple genomic test regions
@@ -122,6 +130,10 @@ tmp_df = great.tl.GREAT.enrichment_multiple(
     binom=True,
     hypergeom=True,
 )
+```
+
+```{image} _static/output_images/multidot.png
+:width: 600px
 ```
 
 Several examples of uses can be found in the notebook part of the package:
