@@ -370,7 +370,6 @@ def plot_enrich(data: pd.DataFrame, n_terms: int = 20, color: str = "cool", save
         scatterpoints=1,
         bbox_to_anchor=(-2, 1.5),
         facecolor="black",
-        fontweight="normal"
     )
 
     if save:
