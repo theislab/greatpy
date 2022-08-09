@@ -18,7 +18,7 @@ def scatterplot(
     title: str = "",
     minus_log10=True,
     ax: matplotlib.axes or None = None,
-) -> None :
+) -> None:
     """
     Create a scatterplot from a
     pandas dataframe between two columns.
@@ -60,7 +60,7 @@ def graph_nb_asso_per_peaks(
     regdom: str or pd.DataFrame,
     ax: matplotlib.axes or None = None,
     color: str = None,
-) -> None :
+) -> None:
     """
     Creates a barplot representing the
     percentage of peaks for all possible association numbers
@@ -113,7 +113,7 @@ def graph_dist_tss(
     regdom: str or pd.DataFrame,
     ax: matplotlib.axes or None = None,
     color: str = "#325fa8",
-) -> None :
+) -> None:
     """
     Creation of a barplot of the distance
     between the peaks and the TSS of the associated gene(s).
@@ -183,7 +183,7 @@ def graph_absolute_dist_tss(
     regdom: str or pd.DataFrame,
     ax: matplotlib.axes or None = None,
     color: str = "#325fa8",
-) -> None :
+) -> None:
     """
     Creation of a barplot of the absolute
     distance between the peaks and the TSS of the associated gene(s).
@@ -232,9 +232,7 @@ def graph_absolute_dist_tss(
     g.set_title("Binned by absolute distance to TSS", fontsize=20)
 
 
-def scale_data_5_75(
-    data
-    ) :
+def scale_data_5_75(data):
     mind = np.min(data)
     maxd = np.max(data)
 
@@ -246,12 +244,7 @@ def scale_data_5_75(
     return (((data - mind) / drange * 0.70) + 0.05) * 100
 
 
-def plot_enrich(
-    data: pd.DataFrame, 
-    n_terms: int = 20, 
-    color: str = "cool", 
-    save: bool = False
-    ) :
+def plot_enrich(data: pd.DataFrame, n_terms: int = 20, color: str = "cool", save: bool = False):
     """
     Creation of a dotplot of the enrichment
     GO term in the inputs datas
@@ -401,7 +394,7 @@ def make_bubble_heatmap(
     ncols: int or None = 8,
     marker: str or None = None,
     **kwargs,
-) -> None :
+) -> None:
     """
     Generate a dotplot with multiple categories
 
@@ -638,11 +631,7 @@ def make_bubble_heatmap(
     despine_all()
 
 
-def get_specific_color_gradient(
-    colormap, 
-    inputList, 
-    **kwargs
-    ) -> tuple :
+def get_specific_color_gradient(colormap, inputList, **kwargs) -> tuple:
     vmin = kwargs.get("vmin", "blaq")
     vmax = kwargs.get("vmax", "blaq")
     cm = plt.get_cmap(colormap)
@@ -659,13 +648,11 @@ def get_specific_color_gradient(
     return scalarMap, colorList
 
 
-def despine_all() -> None :
+def despine_all() -> None:
     sns.despine(offset=10, trim=True, top=True, right=True, left=True, bottom=True)
 
 
-def remove_top_n_right_ticks(
-    ax
-    ) -> None :
+def remove_top_n_right_ticks(ax) -> None:
     # Hide the right and top spines
     ax.spines["right"].set_visible(False)
     ax.spines["top"].set_visible(False)
@@ -686,7 +673,7 @@ def get_legendHandle_for_second_sanity_check_plot(
     min_size_default=1.0,
     edgecolor="black",
     color="grey",
-) :
+):
     labels = [0.1, 0.5, 1.0, 1.5] if labels is None else labels
 
     legendHandleList = list()
@@ -733,7 +720,7 @@ def dotplot_multi_sample(
     line_width: int = 0.1,
     circle_legend: str = "log2(odd ratio)",
     **kwargs,
-) :
+):
     """
     Dotplot of enrichment GO terms for a given list of example genomic regions.
 

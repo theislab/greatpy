@@ -4,12 +4,7 @@ pd.options.display.float_format = "{:12.5e}".format
 
 
 class REGDOM:
-    def __validate_input(
-        association: str, 
-        max_extension: int, 
-        basal_upstream: int, 
-        basal_downstream: int
-        ) -> bool :
+    def __validate_input(association: str, max_extension: int, basal_upstream: int, basal_downstream: int) -> bool:
         """
         Checks that the inputs (association_rule, max_extension, basal_upstream, basal_downstream) are valid
 
@@ -51,10 +46,7 @@ class REGDOM:
             return False
         return True
 
-    def __write_regdom(
-        regdom: pd.DataFrame, 
-        file_name: str
-        ) -> None :
+    def __write_regdom(regdom: pd.DataFrame, file_name: str) -> None:
         """
         Write the regulatory regions calculated in a file given in argument
 
@@ -83,12 +75,8 @@ class REGDOM:
         f.close()
 
     def __create_basal_plus_extension_regdom(
-        tss: pd.DataFrame, 
-        maximumExtension: int, 
-        basalUp: int, 
-        basalDown: int, 
-        chr_size: pd.DataFrame
-    ) -> pd.DataFrame :
+        tss: pd.DataFrame, maximumExtension: int, basalUp: int, basalDown: int, chr_size: pd.DataFrame
+    ) -> pd.DataFrame:
         """
         Create the regulatory domains using the Basalplusextention association rule
 
@@ -195,11 +183,7 @@ class REGDOM:
         tss["chr_end"] = end
         return tss
 
-    def __create_two_closet_regdom(
-        tss: pd.DataFrame, 
-        max_extension: int, 
-        chr_size: pd.DataFrame
-        ) -> pd.DataFrame :
+    def __create_two_closet_regdom(tss: pd.DataFrame, max_extension: int, chr_size: pd.DataFrame) -> pd.DataFrame:
         """
         Create the regulatory domains using the TwoCloset association rule.
         It is based on the basal plus extension rule but with basalUp and basalDown equals to 0.
@@ -237,11 +221,7 @@ class REGDOM:
         """
         return REGDOM.__create_basal_plus_extension_regdom(tss, max_extension, 0, 0, chr_size)
 
-    def create_one_closet_regdom(
-        tss: pd.DataFrame, 
-        maximum_extension: int, 
-        chr_size: pd.DataFrame
-        ) -> pd.DataFrame :
+    def create_one_closet_regdom(tss: pd.DataFrame, maximum_extension: int, chr_size: pd.DataFrame) -> pd.DataFrame:
         """
         Create the regulatory domains using the OneCloset association rule
 
@@ -326,7 +306,7 @@ class REGDOM:
         basal_upstream: int = 5000,
         basal_downstream: int = 1000,
         out_path: str or None = None,
-    ) -> pd.DataFrame :
+    ) -> pd.DataFrame:
         """\
         Create regdoms according to the three association rules, to write the result in a file or not and to return the result as a pd.DataFrame
 
