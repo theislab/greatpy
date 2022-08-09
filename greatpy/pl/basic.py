@@ -99,8 +99,8 @@ def graph_nb_asso_per_peaks(
 
     g = sns.barplot(data=nb, x="number", y="percentage", ax=ax, color=color)
     g.set_title("Number of associated genes per region", fontsize=20)
-    g.set_xlabel("Number of associated genes per region", fontsize=13)
-    g.set_ylabel("Genomic region (%)", fontsize=13)
+    g.set_xlabel("Number of associated genes per region", fontsize=15)
+    g.set_ylabel("Genomic region (%)", fontsize=15)
 
     for i in range(nb.shape[0]):
         x = nb.iloc[i]["number"]
@@ -173,8 +173,8 @@ def graph_dist_tss(
     g = sns.barplot(data=df, x="distance", y="percentage", color=color, ax=ax)
     for idx, p in enumerate(g.patches):
         g.annotate(str(df.iloc[idx]["count"]), (p.get_x() + p.get_width() / 2, p.get_height()))
-    g.set_xlabel("Distance to TSS (kb)", fontsize=13)
-    g.set_ylabel("Genomic region (%)", fontsize=13)
+    g.set_xlabel("Distance to TSS (kb)", fontsize=15)
+    g.set_ylabel("Genomic region (%)", fontsize=15)
     g.set_title("Binned by absolute distance to TSS", fontsize=20)
 
 
@@ -227,8 +227,8 @@ def graph_absolute_dist_tss(
     g = sns.barplot(data=df, x="distance", y="percentage", color=color, ax=ax)
     for idx, p in enumerate(g.patches):
         g.annotate(str(df.iloc[idx]["count"]), (p.get_x() + p.get_width() / 2, p.get_height()))
-    g.set_xlabel("Absolute distance to TSS (kb)", fontsize=13)
-    g.set_ylabel("Genomic region (%)", fontsize=13)
+    g.set_xlabel("Absolute distance to TSS (kb)", fontsize=15)
+    g.set_ylabel("Genomic region (%)", fontsize=15)
     g.set_title("Binned by absolute distance to TSS", fontsize=20)
 
 
