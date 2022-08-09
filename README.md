@@ -216,7 +216,6 @@ For cite greatpy :
 }
 ```
 
-
 [scverse-discourse]: https://discourse.scverse.org/
 [issue-tracker]: https://github.com/ilibarra/greatpy/issues
 [changelog]: https://greatpy.readthedocs.io/latest/changelog.html
