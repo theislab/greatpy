@@ -198,7 +198,7 @@ def get_all_comparison(
             test_file=test,
             regdom_file=regdom,
             chr_size_file=size,
-            annotation_file=f"../data/human/ontologies.csv",
+            annotation_file="../data/human/ontologies.csv",
             binom=True,
             hypergeom=True,
         )
