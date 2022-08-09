@@ -16,7 +16,7 @@ class GREAT:
         regdom_file: None or str or pd.DataFrame,
         chr_size_file: None or str or pd.DataFrame,
         annotation_file: None or str or pd.DataFrame,
-    ):
+        ) :
         """
         Load all datasets needed for the enrichment calculation
 
@@ -201,8 +201,12 @@ class GREAT:
         return test_data, regdom, size, ann
 
     def __enrichment_binom_and_hypergeom(
-        test: pd.DataFrame, regdom: pd.DataFrame, size: pd.DataFrame, ann: pd.DataFrame, asso: list
-    ) -> pd.DataFrame:
+        test: pd.DataFrame, 
+        regdom: pd.DataFrame, 
+        size: pd.DataFrame, 
+        ann: pd.DataFrame, 
+        asso: list
+        ) -> pd.DataFrame:
         """
         Used to compute the enrichment of the test data using the binomial test and the hypergeometric test.
 
@@ -327,7 +331,11 @@ class GREAT:
         )
 
     def __enrichment_binom(
-        test: pd.DataFrame, regdom: pd.DataFrame, size: pd.DataFrame, ann: pd.DataFrame, asso: list
+        test: pd.DataFrame,
+        regdom: pd.DataFrame, 
+        size: pd.DataFrame, 
+        ann: pd.DataFrame, 
+        asso: list
     ) -> pd.DataFrame:
         """
         Used to compute the enrichment of the test data using the binomial test.
@@ -437,7 +445,12 @@ class GREAT:
             .sort_values(by="binom_p_value")
         )
 
-    def __enrichment_hypergeom(test: pd.DataFrame, regdom: pd.DataFrame, ann: pd.DataFrame, asso: list) -> pd.DataFrame:
+    def __enrichment_hypergeom(
+        test: pd.DataFrame, 
+        regdom: pd.DataFrame,
+        ann: pd.DataFrame, 
+        asso: list
+        ) -> pd.DataFrame:
         """
         Used to compute the enrichment of the test data using the hypergeometric test.
 
@@ -547,7 +560,7 @@ class GREAT:
         annotation_file: str or pd.DataFrame,
         binom=True,
         hypergeom=True,
-    ) -> pd.DataFrame:
+        ) -> pd.DataFrame:
         """
         Compute the enrichment GO terms for the test genomic region
 
@@ -653,9 +666,9 @@ class GREAT:
         chr_size_file: str or pd.DataFrame,
         annotation_file: str or pd.DataFrame,
         annpath: str = "../../annotation/",
-        binom=True,
-        hypergeom=True,
-    ) -> dict:
+        binom = True,
+        hypergeom = True,
+        ) -> dict:
         """
         Compute the enrichment of GO term for multiple tests sets using bindome.
 
@@ -727,7 +740,10 @@ class GREAT:
 
         return res
 
-    def set_bonferroni(self, alpha: float = 0.05) -> pd.DataFrame:
+    def set_bonferroni(
+        self, 
+        alpha: float = 0.05
+        ) -> pd.DataFrame:
         """
         Create new columns in the dataframe with the Bonferroni correction
 
@@ -774,7 +790,10 @@ class GREAT:
                 self[f"{col_split[0]}_bonferroni"] = multipletests(self[col], alpha=alpha, method="bonferroni")[1]
         return self
 
-    def set_fdr(self, alpha: float = 0.05) -> pd.DataFrame:
+    def set_fdr(
+        self, 
+        alpha: float = 0.05
+        ) -> pd.DataFrame:
         """
         Create new columns in the dataframe with the fdr correction
 
@@ -821,7 +840,11 @@ class GREAT:
                 self[f"{col_split[0]}_fdr"] = multipletests(self[col], alpha=alpha, method="fdr_bh")[1]
         return self
 
-    def set_threshold(self, colname: str, alpha: int = 0.05) -> pd.DataFrame:
+    def set_threshold(
+        self, 
+        colname: str, 
+        alpha: int = 0.05
+        ) -> pd.DataFrame:
         """
         Delete rows according to the p-value of the column taken as argument. By default the alpha value is 0.05
 
@@ -867,7 +890,10 @@ class GREAT:
 ######################################################################
 ################# Utils function used by GREAT class #################
 ######################################################################
-def get_association(test, regdom) -> list:
+def get_association(
+    test, 
+    regdom
+    ) -> list:
     """
     Determine the names of genes associated with at least one genomic region
 
@@ -933,7 +959,9 @@ def get_association(test, regdom) -> list:
     return list(dict.fromkeys(res))
 
 
-def len_regdom(regdom: pd.DataFrame) -> dict:
+def len_regdom(
+    regdom: pd.DataFrame
+    ) -> dict :
     """
     Calculate for each gene name the size of the regulatory region in the genome
 
@@ -968,7 +996,10 @@ def len_regdom(regdom: pd.DataFrame) -> dict:
     return pd.DataFrame({"len": list(test)}, index=regdom["name"]).to_dict()["len"]
 
 
-def number_of_hits(test, regdom) -> int:
+def number_of_hits(
+    test, 
+    regdom
+    ) -> int :
     """
     Calculate the number of hits from several genomic regions and the file describing the regulatory regions
 
@@ -1025,7 +1056,11 @@ def number_of_hits(test, regdom) -> int:
     return nb
 
 
-def betacf(a, b, x):
+def betacf(
+    a, 
+    b, 
+    x
+    ) -> float :
     """Used by betai: Evaluates continued fraction for incomplete beta function"""
     maxit = 10000
     eps = 3.0e-7
@@ -1068,7 +1103,11 @@ def betacf(a, b, x):
     return h
 
 
-def betai(a, b, x):
+def betai(
+    a, 
+    b, 
+    x
+    ) -> float :
     """Returns the incomplete beta function Ix(a, b)."""
     if x < 0 or x > 1:
         # print("bad x in routine betai")
@@ -1082,7 +1121,11 @@ def betai(a, b, x):
     return 1 - bt * betacf(b, a, 1 - x) / b
 
 
-def get_binom_pval(n: int, k: int, p: float) -> float:
+def get_binom_pval(
+    n: int, 
+    k: int, 
+    p: float
+    ) -> float :
     """
     Calculate the binomial probability
     of obtaining k in a set of size n and whose probability is p
@@ -1113,7 +1156,12 @@ def get_binom_pval(n: int, k: int, p: float) -> float:
         return betai(k, n - k + 1, p)
 
 
-def hypergeom_pmf(N: int, K: int, n: int, k: int) -> float:
+def hypergeom_pmf(
+    N: int, 
+    K: int, 
+    n: int, 
+    k: int
+    ) -> float :
     """
     Calculate the probability mass function for hypergeometric distribution
 
@@ -1145,7 +1193,12 @@ def hypergeom_pmf(N: int, K: int, n: int, k: int) -> float:
     return ((Achoosex) * NAchoosenx) / Nchoosen
 
 
-def hypergeom_cdf(N: int, K: int, n: int, k: int) -> float:
+def hypergeom_cdf(
+    N: int, 
+    K: int, 
+    n: int, 
+    k: int
+    ) -> float :
     """
     Calculate the cumulative density funtion for hypergeometric distribution
 

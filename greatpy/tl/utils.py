@@ -9,7 +9,10 @@ import greatpy as gp
 import greatpy as great
 
 
-def get_nb_asso_per_region(test: str or pd.DataFrame, regdom: str or pd.DataFrame) -> dict:
+def get_nb_asso_per_region(
+    test: str or pd.DataFrame, 
+    regdom: str or pd.DataFrame
+    ) -> dict :
     """
     Determine number of peaks associated with each gene in the regulatory domain.
 
@@ -76,7 +79,10 @@ def get_nb_asso_per_region(test: str or pd.DataFrame, regdom: str or pd.DataFram
     return res
 
 
-def get_dist_to_tss(test: str or pd.DataFrame, regdom: str or pd.DataFrame) -> dict:
+def get_dist_to_tss(
+    test: str or pd.DataFrame, 
+    regdom: str or pd.DataFrame
+    ) -> dict :
     """
     Determine the distance from peaks to the transcription start site of the associated gene
 
@@ -147,7 +153,9 @@ def get_dist_to_tss(test: str or pd.DataFrame, regdom: str or pd.DataFrame) -> d
 
 
 def get_all_comparison(
-    preprocessing: bool = True, good_gene_associations: bool = True, disp_scatterplot: bool = True, stats: bool = True
+    good_gene_associations: bool = True, 
+    disp_scatterplot: bool = True, 
+    stats: bool = True
 ):
     pp = {
         "name": [],
@@ -323,7 +331,13 @@ def get_all_comparison(
             asso["number_genes_asso_lost"].append(str(len(in_out)))
             asso["number_gene_asso_excess"].append(str(len(out_in)))
 
-    if stat_df:
-        stat_df = pd.DataFrame(stat_df)
+    if stat_df and good_gene_associations :
+        return pd.DataFrame(pp), pd.DataFrame(asso), pd.DataFrame(stat_df)
 
-    return pd.DataFrame(pp), pd.DataFrame(asso), stat_df
+    elif stat_df : 
+        return pd.DataFrame(pp), pd.DataFrame(stat_df)
+    
+    elif good_gene_associations : 
+        pd.DataFrame(pp), pd.DataFrame(asso)
+    else : 
+        return pd.DataFrame(pp)
