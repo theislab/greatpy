@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from scipy.stats import pearsonr
 
-import greatpy as gp
 import greatpy as great
 
 
@@ -48,7 +47,7 @@ def get_nb_asso_per_region(test: str or pd.DataFrame, regdom: str or pd.DataFram
 
     """
     res = {}
-    test, regdom, _, _ = gp.tl.GREAT.loader(test, regdom, None, None)
+    test, regdom, _, _ = great.tl.GREAT.loader(test, regdom, None, None)
     for i in range(test.shape[0]):
         currTest = test.iloc[i]
         regdom_curr_test = regdom.loc[(regdom["chr"] == currTest["chr"])].sort_values("chr_start")
@@ -115,7 +114,7 @@ def get_dist_to_tss(test: str or pd.DataFrame, regdom: str or pd.DataFrame) -> d
 
     """
     res = {}
-    test, regdom, _, _ = gp.tl.GREAT.loader(test, regdom, None, None)
+    test, regdom, _, _ = great.tl.GREAT.loader(test, regdom, None, None)
     for i in range(test.shape[0]):
         currTest = test.iloc[i]
         mean_pos_test = (currTest["chr_end"] + currTest["chr_start"]) / 2
@@ -192,7 +191,7 @@ def get_all_comparison(good_gene_associations: bool = True, disp_scatterplot: bo
         if great_out == "" or great_asso == "":
             return False
 
-        enrichment_tot = gp.tl.GREAT.enrichment(
+        enrichment_tot = great.tl.GREAT.enrichment(
             test_file=test,
             regdom_file=regdom,
             chr_size_file=size,
@@ -200,8 +199,8 @@ def get_all_comparison(good_gene_associations: bool = True, disp_scatterplot: bo
             binom=True,
             hypergeom=True,
         )
-        enrichment_tot = gp.tl.GREAT.set_bonferroni(enrichment_tot, 0.05)
-        enrichment_tot = gp.tl.GREAT.set_fdr(enrichment_tot, 0.05)
+        enrichment_tot = great.tl.GREAT.set_bonferroni(enrichment_tot, 0.05)
+        enrichment_tot = great.tl.GREAT.set_fdr(enrichment_tot, 0.05)
 
         great_webserver = pd.read_csv(
             great_out,
@@ -266,9 +265,9 @@ def get_all_comparison(good_gene_associations: bool = True, disp_scatterplot: bo
                 fig = plt.figure(figsize=(10, 5), dpi=80)
                 fig.subplots_adjust(hspace=0.4, wspace=0.4)
                 ax = fig.add_subplot(2, 2, 1)
-                gp.pl.scatterplot(binom, colname_x="binom_greatpy", colname_y="binom_great", title=None, ax=ax)
+                great.pl.scatterplot(binom, colname_x="binom_greatpy", colname_y="binom_great", title=None, ax=ax)
                 ax = fig.add_subplot(2, 2, 2)
-                gp.pl.scatterplot(hyper, colname_x="hyper_greatpy", colname_y="hyper_great", title=None, ax=ax)
+                great.pl.scatterplot(hyper, colname_x="hyper_greatpy", colname_y="hyper_great", title=None, ax=ax)
                 fig.suptitle(f"results for {name}")
                 plt.show()
 
