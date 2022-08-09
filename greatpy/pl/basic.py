@@ -287,7 +287,7 @@ def plot_enrich(data: pd.DataFrame, n_terms: int = 20, color: str = "cool", save
     sm = plt.cm.ScalarMappable(cmap=color, norm=norm)
     sm.set_array([])
 
-    rcParams.update({"font.size": 14, "font.weight": "bold"})
+    rcParams.update({"font.size": 14, "font.weight": "normal"})
 
     sns.set(style="whitegrid")
 
@@ -306,7 +306,7 @@ def plot_enrich(data: pd.DataFrame, n_terms: int = 20, color: str = "cool", save
     ax.invert_yaxis()
 
     ax.set_ylabel("")
-    ax.set_xlabel("Gene ratio", fontsize=14, fontweight="bold")
+    ax.set_xlabel("Gene ratio", fontsize=14, fontweight="normal")
     ax.xaxis.grid(False)
     ax.yaxis.grid(True)
 
@@ -333,7 +333,7 @@ def plot_enrich(data: pd.DataFrame, n_terms: int = 20, color: str = "cool", save
     cbaxes = fig.add_axes([0.8, 0.15, 0.03, 0.4])
     cbar = ax.figure.colorbar(sm, ticks=ticks_vals, shrink=0.5, anchor=(0, 0.1), cax=cbaxes)
     cbar.ax.set_yticklabels(ticks_labs)
-    cbar.set_label("Adjusted p-value", fontsize=14, fontweight="bold")
+    cbar.set_label("Adjusted p-value", fontsize=14, fontweight="normal")
 
     # Size legend
     min_olap = data_to_plot["intersection_size"].min()
@@ -370,6 +370,7 @@ def plot_enrich(data: pd.DataFrame, n_terms: int = 20, color: str = "cool", save
         scatterpoints=1,
         bbox_to_anchor=(-2, 1.5),
         facecolor="black",
+        fontweight="normal"
     )
 
     if save:
