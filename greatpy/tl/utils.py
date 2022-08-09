@@ -19,7 +19,7 @@ def get_nb_asso_per_region(test: str or pd.DataFrame, regdom: str or pd.DataFram
         path of the file with the tests pics => columns: ["chr","chr_start","chr_end"]
 
     regdom : str or pd.DataFrame
-        path of the file with the regulatory domains => columns: ["chr"	"chr_start"	"chr_end"	"Name"	"tss"	"strand"].
+        path of the file with the regulatory domains => columns: ["chr"	"chr_start"	"chr_end"	"name"	"tss"	"strand"].
 
     Returns
     -------
@@ -39,7 +39,7 @@ def get_nb_asso_per_region(test: str or pd.DataFrame, regdom: str or pd.DataFram
             "chr":["chr1","chr1"],
             "chr_start":[1034992,1079306],
             "chr_end": [1115089,1132016],
-            "Name":["RNF223","C1orf159"],
+            "name":["RNF223","C1orf159"],
             "tss":[1074306,1116089],
             "strand":['-','-']
         })
@@ -86,7 +86,7 @@ def get_dist_to_tss(test: str or pd.DataFrame, regdom: str or pd.DataFrame) -> d
         path of the file with the tests pics => columns: ["chr","chr_start","chr_end"]
 
     regdom : str
-        path of the file with the regulatory domains => columns: ["chr"	"chr_start"	"chr_end"	"Name"	"tss"	"strand"].
+        path of the file with the regulatory domains => columns: ["chr"	"chr_start"	"chr_end"	"name"	"tss"	"strand"].
 
     Returns
     -------
@@ -106,7 +106,7 @@ def get_dist_to_tss(test: str or pd.DataFrame, regdom: str or pd.DataFrame) -> d
             "chr":["chr1","chr1"],
             "chr_start":[1034992,1079306],
             "chr_end": [1115089,1132016],
-            "Name":["RNF223","C1orf159"],
+            "name":["RNF223","C1orf159"],
             "tss":[1074306,1116089],
             "strand":['-','-']
         })
@@ -295,19 +295,19 @@ def get_all_comparison(
                     sep="\t",
                     comment="#",
                     usecols=[0, 1, 2],
-                    names=["Chr", "Chr_Start", "Chr_End"],
-                    dtype={"Chr": "object", "Chr_Start": "int64", "Chr_End": "int64"},
+                    names=["Chr", "chr_start", "chr_end"],
+                    dtype={"Chr": "object", "chr_start": "int64", "chr_end": "int64"},
                 ),
                 regdom=pd.read_csv(
                     regdom,
                     sep="\t",
                     comment="#",
-                    names=["Chr", "Chr_Start", "Chr_End", "Name", "tss", "Strand"],
+                    names=["Chr", "chr_start", "chr_end", "name", "tss", "Strand"],
                     dtype={
                         "Chr": "object",
-                        "Chr_Start": "int64",
-                        "Chr_End": "int64",
-                        "Name": "object",
+                        "chr_start": "int64",
+                        "chr_end": "int64",
+                        "name": "object",
                         "tss": "int64",
                         "Strand": "object",
                     },

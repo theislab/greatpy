@@ -52,7 +52,7 @@ class GREAT:
             )
 
         >>> test.head()
-        ...    |    | Chr   |   Chr_Start |   Chr_End |
+        ...    |    | chr   |   chr_start |   chr_end |
         ...    |---:|:------|------------:|----------:|
         ...    |  0 | chr1  |     1052028 |   1052049 |
         ...    |  1 | chr1  |     1065512 |   1065533 |
@@ -61,7 +61,7 @@ class GREAT:
         ...    |  4 | chr1  |    10520283 |  10520490 |
 
         >>> regdom.head()
-        ...    |    | Chr   |   Chr_Start |   Chr_End | Name      |   tss | Strand   |
+        ...    |    | chr   |   chr_start |   chr_end | name      |   tss | strand   |
         ...    |---:|:------|------------:|----------:|:----------|------:|:---------|
         ...    |  0 | chr1  |           0 |     22436 | MIR6859-1 | 17436 | -        |
         ...    |  1 | chr1  |       16436 |     22436 | MIR6859-2 | 17436 | -        |
@@ -70,7 +70,7 @@ class GREAT:
         ...    |  4 | chr1  |       22436 |     34370 | WASH7P    | 29370 | -        |
 
         >>> size.head()
-        ...    |    | Chrom   |      Size |
+        ...    |    | chrom   |      size |
         ...    |---:|:--------|----------:|
         ...    |  0 | chr1    | 248956422 |
         ...    |  1 | chr2    | 242193529 |
@@ -94,14 +94,14 @@ class GREAT:
                 regdom_file,
                 sep="\t",
                 comment="#",
-                names=["chr", "chr_start", "chr_end", "Name", "tss", "Strand"],
+                names=["chr", "chr_start", "chr_end", "name", "tss", "strand"],
                 dtype={
                     "chr": "object",
                     "chr_start": "int64",
                     "chr_end": "int64",
-                    "Name": "object",
+                    "name": "object",
                     "tss": "int64",
-                    "Strand": "object",
+                    "strand": "object",
                 },
             )
         elif type(regdom_file) == pd.DataFrame:
@@ -113,14 +113,14 @@ class GREAT:
                         colname[0]: "chr",
                         colname[1]: "chr_start",
                         colname[2]: "chr_end",
-                        colname[3]: "Name",
+                        colname[3]: "name",
                         colname[4]: "tss",
-                        colname[5]: "Strand",
+                        colname[5]: "strand",
                     }
                 )
             except:
                 print("Error in the format of the regdom file")
-                print("The regdom file must have the following columns : Chr, Chr_Start, Chr_End, Name, tss, Strand")
+                print("The regdom file must have the following columns : chr, chr_start, chr_end, name, tss, strand")
                 return False
         else:
             regdom = regdom_file
@@ -153,17 +153,17 @@ class GREAT:
                 chr_size_file,
                 sep="\t",
                 comment="#",
-                names=["Chrom", "Size"],
-                dtype={"Chrom": "object", "Size": "int64"},
+                names=["chrom", "size"],
+                dtype={"chrom": "object", "size": "int64"},
             )
         elif type(chr_size_file) == pd.DataFrame:
             size = chr_size_file.iloc[:, :2]
             colname = list(size.columns)
             try:
-                size = size.rename(columns={colname[0]: "Chrom", colname[1]: "Size"})
+                size = size.rename(columns={colname[0]: "chrom", colname[1]: "size"})
             except:
                 print("Error in the format of the chr_size file")
-                print("The chr_size file must have the following columns : Chrom, Size")
+                print("The chr_size file must have the following columns : chrom, size")
                 return False
         else:
             size = chr_size_file
@@ -259,11 +259,11 @@ class GREAT:
 
         # Init binom
         n_binom = test.shape[0]  # get the number of genomic region in the test set
-        total_nu = size["Size"].sum()  # get the total number of nucleotides in the genome
+        total_nu = size["size"].sum()  # get the total number of nucleotides in the genome
 
         ann_red = ann[ann["symbol"].isin(asso)]
         regdom = regdom[
-            regdom["Name"].isin(list(ann[ann["id"].isin(list(ann_red["id"]))]["symbol"]))
+            regdom["name"].isin(list(ann[ann["id"].isin(list(ann_red["id"]))]["symbol"]))
         ]  # reduction of the regdom file by selecting only the genes whose GO ID is owned by a gene of the association
         len_on_chr = len_regdom(regdom)  # get the length of each regulatory domain
 
@@ -276,8 +276,8 @@ class GREAT:
             for i in list(id.unique()):
                 gene_imply = ann_reduce[ann_reduce["id"].isin([i])]
                 K_hypergeom = gene_imply.shape[0]  # get be the number of genes in the genome with annotation
-                curr_regdom = regdom.loc[regdom["Name"].isin(list(gene_imply["symbol"]))]
-                k_hypergeom = curr_regdom.loc[curr_regdom["Name"].isin(asso)].shape[
+                curr_regdom = regdom.loc[regdom["name"].isin(list(gene_imply["symbol"]))]
+                k_hypergeom = curr_regdom.loc[curr_regdom["name"].isin(asso)].shape[
                     0
                 ]  # get the number of genes in the test gene set with annotation
 
@@ -287,7 +287,7 @@ class GREAT:
                     )  # get the number of test genomic regions in the regulatory domain of a gene with annotation
                 k_binom = hit[i]
                 nb_binom = sum(
-                    len_on_chr[i] for i in curr_regdom["Name"]
+                    len_on_chr[i] for i in curr_regdom["name"]
                 )  # get the portion of the genome in the regulatory domain of a gene with annotation
                 tmp.append((k_binom, nb_binom, i, gene_imply.iloc[0]["name"], K_hypergeom, k_hypergeom))
 
@@ -380,11 +380,11 @@ class GREAT:
 
         # Init binom
         n_binom = test.shape[0]  # get the number of genomic region in the test set
-        total_nu = size["Size"].sum()  # get the total number of nucleotides in the genome
+        total_nu = size["size"].sum()  # get the total number of nucleotides in the genome
 
         ann_red = ann[ann["symbol"].isin(asso)]
         regdom = regdom[
-            regdom["Name"].isin(list(ann[ann["id"].isin(list(ann_red["id"]))]["symbol"]))
+            regdom["name"].isin(list(ann[ann["id"].isin(list(ann_red["id"]))]["symbol"]))
         ]  # reduction of the regdom file by selecting only the genes whose GO ID is owned by a gene of the association
         len_on_chr = len_regdom(regdom)  # get the length of each regulatory domain
 
@@ -397,7 +397,7 @@ class GREAT:
             for i in list(id.unique()):
                 gene_imply = ann_reduce[ann_reduce["id"].isin([i])]
                 K = gene_imply.shape[0]
-                curr_regdom = regdom.loc[regdom["Name"].isin(list(gene_imply["symbol"]))]
+                curr_regdom = regdom.loc[regdom["name"].isin(list(gene_imply["symbol"]))]
 
                 if i not in list(hit.keys()):
                     hit[i] = number_of_hits(
@@ -405,7 +405,7 @@ class GREAT:
                     )  # get the number of test genomic regions in the regulatory domain of a gene with annotation
                 k_binom = hit[i]
                 nb_binom = sum(
-                    len_on_chr[i] for i in curr_regdom["Name"]
+                    len_on_chr[i] for i in curr_regdom["name"]
                 )  # get the portion of the genome in the regulatory domain of a gene with annotation
                 tmp.append(k_binom, nb_binom, i, gene_imply.iloc[0]["name"], K)
 
@@ -491,7 +491,7 @@ class GREAT:
 
         ann_red = ann[ann["symbol"].isin(asso)]
         regdom = regdom[
-            regdom["Name"].isin(list(ann[ann["id"].isin(list(ann_red["id"]))]["symbol"]))
+            regdom["name"].isin(list(ann[ann["id"].isin(list(ann_red["id"]))]["symbol"]))
         ]  # reduction of the regdom file by selecting only the genes whose GO ID is owned by a gene of the association
 
         # Compute for all associating gene and for each GO id associated with the gene the probability.
@@ -503,8 +503,8 @@ class GREAT:
             for i in list(id.unique()):
                 gene_imply = ann_reduce[ann_reduce["id"] == i]
                 K_hypergeom = gene_imply.shape[0]  # get be the number of genes in the genome with annotation
-                curr_regdom = regdom.loc[regdom["Name"].isin(list(gene_imply["symbol"]))]
-                k_hypergeom = curr_regdom.loc[curr_regdom["Name"].isin(asso)].shape[
+                curr_regdom = regdom.loc[regdom["name"].isin(list(gene_imply["symbol"]))]
+                k_hypergeom = curr_regdom.loc[curr_regdom["name"].isin(asso)].shape[
                     0
                 ]  # get the number of genes in the test gene set with annotation
                 tmp.append((i, gene_imply.iloc[0]["name"], K_hypergeom, k_hypergeom))
@@ -877,7 +877,7 @@ def get_association(test, regdom) -> list:
         df of the tests pics => columns: ["chr","chr_start","chr_end"]
 
     regdom : pd.dataFrame
-        df of the regulatory domains => columns: ["chr"	"chr_start"	"chr_end"	"Name"	"tss"	"strand"].
+        df of the regulatory domains => columns: ["chr"	"chr_start"	"chr_end"	"name"	"tss"	"strand"].
 
     Returns
     -------
@@ -897,7 +897,7 @@ def get_association(test, regdom) -> list:
             "chr":["chr1","chr1"],
             "chr_start":[1034992,1079306],
             "chr_end": [1115089,1132016],
-            "Name":["RNF223","C1orf159"],
+            "name":["RNF223","C1orf159"],
             "tss":[1074306,1116089],
             "strand":['-','-']
         })
@@ -929,7 +929,7 @@ def get_association(test, regdom) -> list:
                 & (regdom_curr_test["chr_start"] <= currTest["chr_end"])
             )  # regdom overlap not totally test on right side
         ]
-        res = res + list(regdom_curr_test["Name"])
+        res = res + list(regdom_curr_test["name"])
     return list(dict.fromkeys(res))
 
 
@@ -940,7 +940,7 @@ def len_regdom(regdom: pd.DataFrame) -> dict:
     Parameters
     ----------
     regdom : pd.dataFrame
-        df of the regulatory domains => columns: ["chr"	"chr_start"	"chr_end"	"Name"	"tss"	"strand"].
+        df of the regulatory domains => columns: ["chr"	"chr_start"	"chr_end"	"name"	"tss"	"strand"].
 
     Returns
     -------
@@ -956,7 +956,7 @@ def len_regdom(regdom: pd.DataFrame) -> dict:
             "chr":["chr1","chr1"],
             "chr_start":[1034992,1079306],
             "chr_end": [1115089,1132016],
-            "Name":["RNF223","C1orf159"],
+            "name":["RNF223","C1orf159"],
             "tss":[1074306,1116089],
             "strand":['-','-']
             })
@@ -965,7 +965,7 @@ def len_regdom(regdom: pd.DataFrame) -> dict:
 
     """
     test = regdom["chr_end"] - regdom["chr_start"]
-    return pd.DataFrame({"len": list(test)}, index=regdom["Name"]).to_dict()["len"]
+    return pd.DataFrame({"len": list(test)}, index=regdom["name"]).to_dict()["len"]
 
 
 def number_of_hits(test, regdom) -> int:
@@ -978,7 +978,7 @@ def number_of_hits(test, regdom) -> int:
         df of the tests pics => columns: ["chr","chr_start","chr_end"]
 
     regdom : pd.dataFrame
-        df of the regulatory domains => columns: ["chr"	"chr_start"	"chr_end"	"Name"	"tss"	"strand"].
+        df of the regulatory domains => columns: ["chr"	"chr_start"	"chr_end"	"name"	"tss"	"strand"].
 
     Returns
     -------
@@ -998,7 +998,7 @@ def number_of_hits(test, regdom) -> int:
             "chr":["chr1","chr1"],
             "chr_start":[1034992,1079306],
             "chr_end": [1115089,1132016],
-            "Name":["RNF223","C1orf159"],
+            "name":["RNF223","C1orf159"],
             "tss":[1074306,1116089],
             "strand":['-','-']
         })

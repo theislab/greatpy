@@ -62,7 +62,7 @@ class REGDOM:
         None.
         """
         f = open(file_name, "w")
-        f.write("#chr\tChrStart\tChrEnd\tname\ttss\tstrand\n")
+        f.write("#chr\tchrstart\tchrend\tname\ttss\tstrand\n")
         for i in range(regdom.shape[0]):
             curr = regdom.iloc[i]
             chr = curr["chr"]
@@ -70,7 +70,7 @@ class REGDOM:
             end = curr["chr_end"]
             name = curr["name"]
             tss = curr["tss"]
-            strand = curr["Strand"]
+            strand = curr["strand"]
             f.write(f"{chr}\t{start}\t{end}\t{name}\t{tss}\t{strand}\n")
         f.close()
 
@@ -101,14 +101,14 @@ class REGDOM:
         Examples
         --------
         >>> regdom = create_basal_plus_extension_regdom(
-            tss_file=pd.read_csv("../../data/human/tss.bed",sep="\t",names=["chr","tss","Strand"]),
+            tss_file=pd.read_csv("../../data/human/tss.bed",sep="\t",names=["chr","tss","strand"]),
             maximumExtension=100000,
             basalUp=5000,
             basalDown=1000,
-            chr_sizes=pd.read_csv("../../data/human/chr_size.bed",sep="\t",names=["chr","Size"])
+            chr_sizes=pd.read_csv("../../data/human/chr_size.bed",sep="\t",names=["chr","size"])
         )
         >>> regdom.head()
-        ...    |    | Chr   |   Chr_Start |   Chr_End | name      |   tss | Strand   |
+        ...    |    | chr   |   chr_start |   chr_end | name      |   tss | strand   |
         ...    |---:|:------|------------:|----------:|:----------|------:|:---------|
         ...    |  0 | chr1  |           0 |     22436 | MIR6859-1 | 17436 | -        |
         ...    |  1 | chr1  |       16436 |     22436 | MIR6859-2 | 17436 | -        |
@@ -126,21 +126,21 @@ class REGDOM:
         for i in range(tss.shape[0]):
             curr = tss.iloc[i]
             chr = curr["chr"]
-            curr_chr_size = int(chr_size.loc[chr_size["chr"] == chr, "Size"])
+            curr_chr_size = int(chr_size.loc[chr_size["chr"] == chr, "size"])
             tmp = curr["tss"]
-            if curr["Strand"] == "+":
+            if curr["strand"] == "+":
                 curr_chr_start = max(0, tmp - basalUp)
                 curr_chr_end = min(curr_chr_size, tmp + basalDown)
-            elif curr["Strand"] == "-":
+            elif curr["strand"] == "-":
                 curr_chr_start = max(0, tmp - basalDown)
                 curr_chr_end = min(curr_chr_size, tmp + basalUp)
-            elif curr["Strand"] == ".":
+            elif curr["strand"] == ".":
                 print(
                     "Invalid_Input : Impossible to create a basal expression regdom if you have not specify the strand"
                 )
                 return False
             else:
-                err = curr["Strand"]
+                err = curr["strand"]
                 print(f"Invalid input : strand should be '+' or '-'. Line {i} : strand = {err}")
                 return False
             chr_strat_end.append([curr_chr_start, curr_chr_end])
@@ -149,7 +149,7 @@ class REGDOM:
             curr = tss.iloc[i]
             chr = curr["chr"]
 
-            curr_chr_size = int(chr_size.loc[chr_size["chr"] == chr, "Size"])
+            curr_chr_size = int(chr_size.loc[chr_size["chr"] == chr, "size"])
             if i != tss.shape[0] - 1:
                 next = tss.iloc[i + 1]
             else:
@@ -159,7 +159,7 @@ class REGDOM:
             basal_start = chr_strat_end[i][0]
             tmp_start = min(basal_start, tmp_start)
             if type(prev) != int and prev["chr"] == curr["chr"]:
-                if prev["Strand"] == "+":
+                if prev["strand"] == "+":
                     prev_end = prev["tss"] + basalDown
                 else:
                     prev_end = prev["tss"] + basalUp
@@ -170,11 +170,11 @@ class REGDOM:
 
             tmp_end = max(basal_end, tmp_end)
             if type(next) != int and next["chr"] == curr["chr"]:
-                if next["Strand"] == "+":
-                    nextStart = next["tss"] - basalUp
+                if next["strand"] == "+":
+                    nextstart = next["tss"] - basalUp
                 else:
-                    nextStart = next["tss"] - basalDown
-                tmp_end = max(basal_end, min(nextStart, tmp_end))
+                    nextstart = next["tss"] - basalDown
+                tmp_end = max(basal_end, min(nextstart, tmp_end))
 
             prev = tss.iloc[i]
             start.append(int(tmp_start))
@@ -205,12 +205,12 @@ class REGDOM:
         Examples
         --------
         >>> regdom = __create_two_closet_regdom(
-            tss_file=pd.read_csv("../../data/human/tss.bed",sep="\t",names=["chr","tss","Strand"]),
+            tss_file=pd.read_csv("../../data/human/tss.bed",sep="\t",names=["chr","tss","strand"]),
             maximumExtension=100000,
-            chr_sizes=pd.read_csv("../../data/human/chr_size.bed",sep="\t",names=["chr","Size"])
+            chr_sizes=pd.read_csv("../../data/human/chr_size.bed",sep="\t",names=["chr","size"])
         )
         >>> regdom.head()
-        ...    |    | Chr   |   Chr_Start |   Chr_End | name      |   tss | Strand   |
+        ...    |    | chr   |   chr_start |   chr_end | name      |   tss | strand   |
         ...    |---:|:------|------------:|----------:|:----------|------:|:---------|
         ...    |  0 | chr1  |           0 |     17436 | MIR6859-1 | 17436 | -        |
         ...    |  1 | chr1  |       17436 |     17436 | MIR6859-2 | 17436 | -        |
@@ -246,12 +246,12 @@ class REGDOM:
         Examples
         --------
         >>> regdom = create_basal_plus_extension_regdom(
-            tss_file=pd.read_csv("../../data/human/tss.bed",sep="\t",names=["chr","tss","Strand"]),
+            tss_file=pd.read_csv("../../data/human/tss.bed",sep="\t",names=["chr","tss","strand"]),
             maximum_extension=100000,
-            chr_sizes=pd.read_csv("../../data/human/chr_size.bed",sep="\t",names=["chr","Size"])
+            chr_sizes=pd.read_csv("../../data/human/chr_size.bed",sep="\t",names=["chr","size"])
         )
         >>> regdom.head()
-        ...    |    | Chr   |   Chr_Start |   Chr_End | name      |   tss | Strand   |
+        ...    |    | chr   |   chr_start |   chr_end | name      |   tss | strand   |
         ...    |---:|:------|------------:|----------:|:----------|------:|:---------|
         ...    |  0 | chr1  |           0 |     17436 | MIR6859-1 | 17436 | -        |
         ...    |  1 | chr1  |       17436 |     17436 | MIR6859-2 | 17436 | -        |
@@ -269,7 +269,7 @@ class REGDOM:
         for i in range(tss.shape[0]):
             curr = tss.iloc[i]
             chr = curr["chr"]
-            curr_chr_size = int(chr_size.loc[chr_size["chr"] == chr, "Size"])
+            curr_chr_size = int(chr_size.loc[chr_size["chr"] == chr, "size"])
             if i < tss.shape[0] - 1:
                 next = tss.iloc[i + 1]
             else:
@@ -339,11 +339,11 @@ class REGDOM:
             tss_file="../../data/human/tss.bed",
             chr_sizes_file="../../data/human/chr_size.bed",
             sep="\t",
-            names=["chr","Size"],
+            names=["chr","size"],
             association_rule="one_closet"
             )
         >>> regdom.head()
-        ...    |    | Chr   |   Chr_Start |   Chr_End | name      |   tss | Strand   |
+        ...    |    | chr   |   chr_start |   chr_end | name      |   tss | strand   |
         ...    |---:|:------|------------:|----------:|:----------|------:|:---------|
         ...    |  0 | chr1  |           0 |     17436 | MIR6859-1 | 17436 | -        |
         ...    |  1 | chr1  |       17436 |     17436 | MIR6859-2 | 17436 | -        |
@@ -355,11 +355,11 @@ class REGDOM:
         if not REGDOM.__validate_input(association_rule, max_extension, basal_upstream, basal_downstream):
             print("Invalid input")
             return False
-        df = pd.read_csv(tss_file, sep="\t", comment="#", names=["chr", "tss", "Strand", "name"])
+        df = pd.read_csv(tss_file, sep="\t", comment="#", names=["chr", "tss", "strand", "name"])
 
-        df = df.sort_values(["chr", "tss", "Strand", "name"])
+        df = df.sort_values(["chr", "tss", "strand", "name"])
 
-        chr_size = pd.read_csv(chr_sizes_file, sep="\t", comment="#", names=["chr", "Size"])
+        chr_size = pd.read_csv(chr_sizes_file, sep="\t", comment="#", names=["chr", "size"])
 
         if association_rule == "one_closet":
             out = REGDOM.create_one_closet_regdom(df, max_extension, chr_size)
@@ -372,7 +372,7 @@ class REGDOM:
         else:
             return False
         out = out.astype({"chr_start": int, "chr_end": int})
-        out = out.reindex(["chr", "chr_start", "chr_end", "name", "tss", "Strand"], axis=1)
+        out = out.reindex(["chr", "chr_start", "chr_end", "name", "tss", "strand"], axis=1)
 
         if out_path != None:
             REGDOM.__write_regdom(out, out_path)
