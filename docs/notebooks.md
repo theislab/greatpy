@@ -90,8 +90,6 @@ plt.show()
 ```
 
 ```{image} _static/output_images/plot1.png
-:height: 200px
-:width: 500px
 ```
 
 #### Dotplot showing the enrichment of the GO terms
