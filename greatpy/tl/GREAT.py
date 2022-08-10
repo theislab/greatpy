@@ -9,6 +9,8 @@ from statsmodels.stats.multitest import multipletests
 
 pd.options.display.float_format = "{:12.5e}".format
 
+import time 
+
 
 class GREAT:
     def loader(
@@ -646,7 +648,7 @@ class GREAT:
 
         else:
             return GREAT.__enrichment_hypergeom(test, regdom, ann, asso)
-
+    
     def enrichment_multiple(
         tests: list,
         regdom_file: str or pd.DataFrame,
@@ -738,7 +740,7 @@ class GREAT:
                 res[name_TF] = enrichment
             else :
                 res[name] = enrichment
-
+            time.sleep(100)
         return res
 
     def set_bonferroni(self, alpha: float = 0.05) -> pd.DataFrame:
