@@ -652,9 +652,9 @@ class GREAT:
         regdom_file: str or pd.DataFrame,
         chr_size_file: str or pd.DataFrame,
         annotation_file: str or pd.DataFrame,
-        annpath: str = "../../annotation/",
-        binom=True,
-        hypergeom=True,
+        annpath: str or None = "../../annotation/",
+        binom: bool=True,
+        hypergeom: bool=True,
     ) -> dict:
         """
         Compute the enrichment of GO term for multiple tests sets using bindome.
@@ -700,15 +700,19 @@ class GREAT:
 
         _, regdom, size, ann = GREAT.loader(None, regdom_file, chr_size_file, annotation_file)
 
-        bd.bindome.constants.ANNOTATIONS_DIRECTORY = annpath
+        if annpath != None : 
+            bd.bindome.constants.ANNOTATIONS_DIRECTORY = annpath
 
         res = {}
 
         for name in tests:
-            name_TF = name.split(":")[0]
-            tmp_df = bd.bindome.datasets.REMAP2020.get_remap_peaks(name_TF)
-            tmp = tmp_df[tmp_df[3] == name].iloc[:, 0:3]
-            tmp = tmp.rename(columns={"chr": "chr", "start": "chr_start", "end": "chr_end"})
+            if annpath != None : 
+                name_TF = name.split(":")[0]
+                tmp_df = bd.bindome.datasets.REMAP2020.get_remap_peaks(name_TF)
+                tmp = tmp_df[tmp_df[3] == name].iloc[:, 0:3]
+                tmp = tmp.rename(columns={"chr": "chr", "start": "chr_start", "end": "chr_end"})
+            else : 
+                tmp,_,_,_ = GREAT.loader(name,None,None,None)
 
             asso = get_association(
                 tmp, regdom
