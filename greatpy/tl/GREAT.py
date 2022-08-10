@@ -712,7 +712,14 @@ class GREAT:
                 tmp = tmp_df[tmp_df[3] == name].iloc[:, 0:3]
                 tmp = tmp.rename(columns={"chr": "chr", "start": "chr_start", "end": "chr_end"})
             else : 
-                tmp,_,_,_ = GREAT.loader(name,None,None,None)
+                tmp = pd.read_csv(
+                    name,
+                    sep="\t",
+                    comment="#",
+                    usecols=[0, 1, 2],
+                    names=["chr", "chr_start", "chr_end"],
+                    dtype={"chr": "object", "chr_start": "int64", "chr_end": "int64"},
+                )
 
             asso = get_association(
                 tmp, regdom
@@ -726,8 +733,11 @@ class GREAT:
 
             else:
                 enrichment = GREAT.__enrichment_hypergeom(tmp, regdom, ann, asso)
-
-            res[name_TF] = enrichment
+            
+            if annpath != None : 
+                res[name_TF] = enrichment
+            else :
+                res[name] = enrichment
 
         return res
 
