@@ -144,7 +144,6 @@ def get_dist_to_tss(test: str or pd.DataFrame, regdom: str or pd.DataFrame) -> d
             res[i].append(regdom_curr_test.iloc[j]["tss"] - mean_pos_test)
     return res
 
-import time
 def get_all_comparison(good_gene_associations: bool = True, disp_scatterplot: bool = True, stats: bool = True):
     pp = {
         "name": [],
@@ -200,7 +199,6 @@ def get_all_comparison(good_gene_associations: bool = True, disp_scatterplot: bo
         )
         enrichment_tot = great.tl.GREAT.set_bonferroni(enrichment_tot, 0.05)
         enrichment_tot = great.tl.GREAT.set_fdr(enrichment_tot, 0.05)
-        time.sleep(120)
 
         great_webserver = pd.read_csv(
             great_out,
