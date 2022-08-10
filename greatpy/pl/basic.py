@@ -50,9 +50,15 @@ def scatterplot(
     if minus_log10:
         great_df[f"-log({colname_x})"] = -log(great_df[colname_x])
         great_df[f"-log({colname_y})"] = -log(great_df[colname_y])
-        sns.scatterplot(data=great_df, x=f"-log({colname_x})", y=f"-log({colname_y})", ax=ax).set_title(title)
+        g = sns.scatterplot(data=great_df, x=f"-log({colname_x})", y=f"-log({colname_y})", ax=ax)
+        g.set_title(title,fontsize = 20)
+        g.set_xlabel(f"-log({colname_x})",fontsize=15)
+        g.set_ylabel(f"-log({colname_y})",fontsize=15)
     else:
-        sns.scatterplot(data=great_df, x=colname_x, y=colname_y, ax=ax).set_title(title)
+        g = sns.scatterplot(data=great_df, x=colname_x, y=colname_y, ax=ax)
+        g.set_title(title,fontsize = 20)
+        g.set_xlabel(colname_x,fontsize=15)
+        g.set_ylabel(colname_y,fontsize=15)
 
 
 def graph_nb_asso_per_peaks(
