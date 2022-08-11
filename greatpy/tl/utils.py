@@ -1,9 +1,18 @@
 import os
 import re
 
+import rpy2
+from rpy2.robjects.packages import importr
+from rpy2.robjects import pandas2ri
+from rpy2.robjects import r as r
+pandas2ri.activate()
+import pandas as pd
+
 import matplotlib.pyplot as plt
 import pandas as pd
 from scipy.stats import pearsonr
+import numpy as np 
+import seaborn as sns
 
 import greatpy as great
 
