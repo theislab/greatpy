@@ -8,6 +8,7 @@ import rpy2
 import seaborn as sns
 from rpy2.robjects import pandas2ri
 from rpy2.robjects import r as r
+from rpy2.robjects.packages import importr
 from scipy.stats import pearsonr
 
 import greatpy as great
