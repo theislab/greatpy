@@ -339,8 +339,8 @@ def get_all_comparison(good_gene_associations: bool = True, disp_scatterplot: bo
 
 
 def online_vs_local_vs_greatpy_comparison():
-    importr('rGREAT')
-    ranges = importr('GenomicRanges')
+    importr("rGREAT")
+    ranges = importr("GenomicRanges")
 
     stat_df = {"name": [], "pearson_binom": [], "pearson_hypergeom": []}
     pp = {
