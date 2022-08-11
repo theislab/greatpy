@@ -11,7 +11,6 @@ from .GREAT import (
 )
 from .REGDOM import REGDOM
 from .utils import (
-    get_all_comparison,
     get_dist_to_tss,
     get_nb_asso_per_region,
     online_vs_local_vs_greatpy_comparison,
