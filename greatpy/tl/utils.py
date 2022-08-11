@@ -144,6 +144,7 @@ def get_dist_to_tss(test: str or pd.DataFrame, regdom: str or pd.DataFrame) -> d
             res[i].append(regdom_curr_test.iloc[j]["tss"] - mean_pos_test)
     return res
 
+
 def get_all_comparison(good_gene_associations: bool = True, disp_scatterplot: bool = True, stats: bool = True):
     pp = {
         "name": [],

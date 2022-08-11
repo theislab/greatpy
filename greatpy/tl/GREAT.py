@@ -1,3 +1,4 @@
+import time
 from math import exp, fabs, lgamma, log
 
 import bindome as bd
@@ -8,8 +9,6 @@ from scipy.special import comb
 from statsmodels.stats.multitest import multipletests
 
 pd.options.display.float_format = "{:12.5e}".format
-
-import time 
 
 
 class GREAT:
@@ -648,29 +647,31 @@ class GREAT:
 
         else:
             return GREAT.__enrichment_hypergeom(test, regdom, ann, asso)
-    
+
     def enrichment_multiple(
         tests: list,
         regdom_file: str or pd.DataFrame,
         chr_size_file: str or pd.DataFrame,
         annotation_file: str or pd.DataFrame,
         annpath: str or None = "../../annotation/",
-        binom: bool=True,
-        hypergeom: bool=True,
+        binom: bool = True,
+        hypergeom: bool = True,
     ) -> dict:
         """
-        Compute the enrichment of GO term for multiple tests sets using bindome.
+        Compute the enrichment of GO term for multiple tests sets using bindome or a list of file path.
 
         Parameters
         ----------
         tests : list
-            List of complete name of data to compute with bindome
+            List of complete name of data to compute
         regdom_file : str or pd.DataFrame
             Regulatory domain of all genes in the genome
         chr_size_file : str or pd.DataFrame
             Table with the size of each chromosome
         annotation_file : str or pd.DataFrame
             Table with the annotation of each gene in the genome
+        annpath : str or None, optional
+            Path to the annotation files used for bindome computation. If None, the function doesn't use bindome.
         binom : bool (default True)
             If True, the binomial test is used.
         hypergeom : bool (default True)
@@ -702,18 +703,18 @@ class GREAT:
 
         _, regdom, size, ann = GREAT.loader(None, regdom_file, chr_size_file, annotation_file)
 
-        if annpath != None : 
+        if annpath != None:
             bd.bindome.constants.ANNOTATIONS_DIRECTORY = annpath
 
         res = {}
 
         for name in tests:
-            if annpath != None : 
+            if annpath != None:
                 name_TF = name.split(":")[0]
                 tmp_df = bd.bindome.datasets.REMAP2020.get_remap_peaks(name_TF)
                 tmp = tmp_df[tmp_df[3] == name].iloc[:, 0:3]
                 tmp = tmp.rename(columns={"chr": "chr", "start": "chr_start", "end": "chr_end"})
-            else : 
+            else:
                 tmp = pd.read_csv(
                     name,
                     sep="\t",
@@ -735,10 +736,10 @@ class GREAT:
 
             else:
                 enrichment = GREAT.__enrichment_hypergeom(tmp, regdom, ann, asso)
-            
-            if annpath != None : 
+
+            if annpath != None:
                 res[name_TF] = enrichment
-            else :
+            else:
                 res[name] = enrichment
             time.sleep(100)
         return res

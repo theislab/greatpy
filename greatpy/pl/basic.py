@@ -1,4 +1,4 @@
-import os 
+import os
 import re
 
 import matplotlib
@@ -55,14 +55,14 @@ def scatterplot(
         great_df[f"-log({colname_x})"] = -log(great_df[colname_x])
         great_df[f"-log({colname_y})"] = -log(great_df[colname_y])
         g = sns.scatterplot(data=great_df, x=f"-log({colname_x})", y=f"-log({colname_y})", ax=ax)
-        g.set_title(title,fontsize = 18)
-        g.set_xlabel(f"-log({colname_x})",fontsize=12)
-        g.set_ylabel(f"-log({colname_y})",fontsize=12)
+        g.set_title(title, fontsize=18)
+        g.set_xlabel(f"-log({colname_x})", fontsize=12)
+        g.set_ylabel(f"-log({colname_y})", fontsize=12)
     else:
         g = sns.scatterplot(data=great_df, x=colname_x, y=colname_y, ax=ax)
-        g.set_title(title,fontsize = 20)
-        g.set_xlabel(colname_x,fontsize=15)
-        g.set_ylabel(colname_y,fontsize=15)
+        g.set_title(title, fontsize=20)
+        g.set_xlabel(colname_x, fontsize=15)
+        g.set_ylabel(colname_y, fontsize=15)
 
 
 def graph_nb_asso_per_peaks(
@@ -241,7 +241,10 @@ def graph_absolute_dist_tss(
     g.set_ylabel("Genomic region (%)", fontsize=15)
     g.set_title("Binned by absolute distance to TSS", fontsize=20)
 
-def get_all_comparison(results:dict, good_gene_associations: bool = True, disp_scatterplot: bool = True, stats: bool = True) :
+
+def get_all_comparison(
+    results: dict, good_gene_associations: bool = True, disp_scatterplot: bool = True, stats: bool = True
+):
     """
     Plot the comparaison between greatpy and GREAT from some files compute by `great.tl.GREAT.enrichment_multiple`.
 
@@ -255,7 +258,7 @@ def get_all_comparison(results:dict, good_gene_associations: bool = True, disp_s
         If True, the function display the scatterplot of the comparaison
     stats : bool
         If True, the function return the statistics of the comparaison
-    
+
     Returns
     -------
     pp : pd.DataFrame
@@ -268,17 +271,17 @@ def get_all_comparison(results:dict, good_gene_associations: bool = True, disp_s
     Example
     -------
     >>> test = [
-    ...    '../data/tests/test_data/input/09_ERF.bed', '../data/tests/test_data/input/10_MAX.bed', 
-    ...    '../data/tests/test_data/input/01_random.bed', '../data/tests/test_data/input/04_ultra_hg38.bed', 
-    ...    '../data/tests/test_data/input/02_srf_hg38.bed', '../data/tests/test_data/input/08_FOXO3.bed', 
+    ...    '../data/tests/test_data/input/09_ERF.bed', '../data/tests/test_data/input/10_MAX.bed',
+    ...    '../data/tests/test_data/input/01_random.bed', '../data/tests/test_data/input/04_ultra_hg38.bed',
+    ...    '../data/tests/test_data/input/02_srf_hg38.bed', '../data/tests/test_data/input/08_FOXO3.bed',
     ...    '../data/tests/test_data/input/06_height_snps_hg38.bed'
     ...     ]
     >>> results = great.tl.GREAT.enrichment_multiple(
-    ...    tests = t, 
+    ...    tests = t,
     ...    regdom_file=regdom,
-    ...    chr_size_file=size,    
+    ...    chr_size_file=size,
     ...    annotation_file="../data/human/ontologies.csv",
-    ...    annpath=None, 
+    ...    annpath=None,
     ...    binom=True,
     ...    hypergeom=True
     ...    )
@@ -292,7 +295,7 @@ def get_all_comparison(results:dict, good_gene_associations: bool = True, disp_s
     ...    |  2 | random |                      579 |                    197 |          117 |                     40.61 |
     ...    |  3 | ultra  |                     3265 |                   2175 |         1393 |                     35.95 |
     ...    |  4 | srf    |                     4810 |                   2681 |         1854 |                     30.85 |
-    
+
     >>> asso
     ...    |    | name   |   number_good_gene_asso |   number_genes_asso_lost |   number_gene_asso_excess |
     ...    |---:|:-------|------------------------:|-------------------------:|--------------------------:|
@@ -327,7 +330,7 @@ def get_all_comparison(results:dict, good_gene_associations: bool = True, disp_s
 
     stat_df = {"name": [], "pearson_binom": [], "pearson_hypergeom": []}
 
-    for path in results.keys() :
+    for path in results.keys():
         # sp = path.split(".")
         id = path.split("/")[-1].split("_")[0]
         name = path.split("/")[-1].split("_")[1].split(".")[0]
@@ -346,15 +349,15 @@ def get_all_comparison(results:dict, good_gene_associations: bool = True, disp_s
                     great_out = "../data/tests/test_data/output/" + out_path
                 else:
                     great_asso = "../data/tests/test_data/output/" + out_path
-        
+
         test = path
         regdom = f"../data/human/{assembly}/regulatory_domain.bed"
-        size = f"../data/human/{assembly}/chr_size.bed"
+        f"../data/human/{assembly}/chr_size.bed"
 
         if great_out == "" or great_asso == "":
             return False
 
-        pp["name"].append(name) 
+        pp["name"].append(name)
         enrichment_tot = results[test]
         enrichment_tot = great.tl.GREAT.set_bonferroni(enrichment_tot, 0.05)
         enrichment_tot = great.tl.GREAT.set_fdr(enrichment_tot, 0.05)
@@ -425,7 +428,7 @@ def get_all_comparison(results:dict, good_gene_associations: bool = True, disp_s
                 great.pl.scatterplot(binom, colname_x="binom_greatpy", colname_y="binom_great", title=None, ax=ax)
                 ax = fig.add_subplot(2, 2, 2)
                 great.pl.scatterplot(hyper, colname_x="hyper_greatpy", colname_y="hyper_great", title=None, ax=ax)
-                fig.suptitle(f"results for {name}",fontsize = 18)
+                fig.suptitle(f"results for {name}", fontsize=18)
                 plt.show()
 
             if stats:
@@ -476,7 +479,7 @@ def get_all_comparison(results:dict, good_gene_associations: bool = True, disp_s
             asso["number_good_gene_asso"].append(str(in_in))
             asso["number_genes_asso_lost"].append(str(len(in_out)))
             asso["number_gene_asso_excess"].append(str(len(out_in)))
-    
+
     if stats and good_gene_associations:
         return pd.DataFrame(pp), pd.DataFrame(asso), pd.DataFrame(stat_df)
 
