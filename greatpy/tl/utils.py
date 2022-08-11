@@ -1,4 +1,3 @@
-import os
 import re
 
 import matplotlib.pyplot as plt
@@ -155,7 +154,7 @@ def get_dist_to_tss(test: str or pd.DataFrame, regdom: str or pd.DataFrame) -> d
 
 def online_vs_local_vs_greatpy_comparison():
     """
-    Make a comparison between the online and the local version of rGREAT and greatpy. 
+    Make a comparison between the online and the local version of rGREAT and greatpy.
     The function return a clustermap of the results between online vs local and greatpy.
 
     Parameters

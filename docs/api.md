@@ -34,17 +34,18 @@ import greatpy as gp
 
 ### greatpy computation
 
-#### Main functions 
+#### Main functions
+
 ```{eval-rst}
 .. autosummary::
     :toctree: generated
 
-    tl.GREAT.GREAT.loader
     tl.GREAT.GREAT.enrichment
     tl.GREAT.GREAT.enrichment_multiple
 ```
 
 #### Additional functions
+
 ```{eval-rst}
 .. autosummary::
     :toctree: generated
