@@ -34,6 +34,7 @@ import greatpy as gp
 
 ### greatpy computation
 
+#### Main functions 
 ```{eval-rst}
 .. autosummary::
     :toctree: generated
@@ -41,6 +42,14 @@ import greatpy as gp
     tl.GREAT.GREAT.loader
     tl.GREAT.GREAT.enrichment
     tl.GREAT.GREAT.enrichment_multiple
+```
+
+#### Additional functions
+```{eval-rst}
+.. autosummary::
+    :toctree: generated
+
+    tl.GREAT.GREAT.loader
     tl.GREAT.GREAT.set_bonferroni
     tl.GREAT.GREAT.set_fdr
     tl.GREAT.GREAT.set_threshold
@@ -54,6 +63,7 @@ import greatpy as gp
 
     tl.utils.get_nb_asso_per_region
     tl.utils.get_dist_to_tss
+    tl.utils.online_vs_local_vs_greatpy_comparison
     tl.get_association
     tl.len_regdom
     tl.number_of_hits
@@ -78,4 +88,5 @@ import greatpy as gp
     pl.plot_enrich
     pl.make_bubble_heatmap
     pl.dotplot_multi_sample
+    pl.get_all_comparaison
 ```
