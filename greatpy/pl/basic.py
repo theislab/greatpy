@@ -1,3 +1,6 @@
+import os 
+import re
+
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
@@ -5,8 +8,9 @@ import pandas as pd
 import seaborn as sns
 from matplotlib import colors, rc, rcParams
 from numpy import log
+from scipy.stats import pearsonr
 
-import greatpy as gp
+import greatpy as great
 
 plt.rcParams.update({"font.size": 14, "font.weight": "normal"})
 
@@ -51,9 +55,9 @@ def scatterplot(
         great_df[f"-log({colname_x})"] = -log(great_df[colname_x])
         great_df[f"-log({colname_y})"] = -log(great_df[colname_y])
         g = sns.scatterplot(data=great_df, x=f"-log({colname_x})", y=f"-log({colname_y})", ax=ax)
-        g.set_title(title,fontsize = 20)
-        g.set_xlabel(f"-log({colname_x})",fontsize=15)
-        g.set_ylabel(f"-log({colname_y})",fontsize=15)
+        g.set_title(title,fontsize = 18)
+        g.set_xlabel(f"-log({colname_x})",fontsize=12)
+        g.set_ylabel(f"-log({colname_y})",fontsize=12)
     else:
         g = sns.scatterplot(data=great_df, x=colname_x, y=colname_y, ax=ax)
         g.set_title(title,fontsize = 20)
@@ -88,7 +92,7 @@ def graph_nb_asso_per_peaks(
         Barplot of the number of associated genes per peak
 
     """
-    nb_asso_per_peaks = gp.tl.get_nb_asso_per_region(test, regdom)
+    nb_asso_per_peaks = great.tl.get_nb_asso_per_region(test, regdom)
 
     nb = {
         "number": [],
@@ -153,7 +157,7 @@ def graph_dist_tss(
     }
     nb = 0
 
-    dist = gp.tl.get_dist_to_tss(test, regdom)
+    dist = great.tl.get_dist_to_tss(test, regdom)
     for i in dist.values():
         for j in i:
             if j < -500000:
@@ -213,7 +217,7 @@ def graph_absolute_dist_tss(
     """
     res = {"0:5": [0], "5:50": [0], "50:500": [0], ">500": [0]}
     nb = 0
-    dist = gp.tl.get_dist_to_tss(test, regdom)
+    dist = great.tl.get_dist_to_tss(test, regdom)
 
     for i in dist.values():
         for j in i:
@@ -236,6 +240,253 @@ def graph_absolute_dist_tss(
     g.set_xlabel("Absolute distance to TSS (kb)", fontsize=15)
     g.set_ylabel("Genomic region (%)", fontsize=15)
     g.set_title("Binned by absolute distance to TSS", fontsize=20)
+
+def get_all_comparison(results:dict, good_gene_associations: bool = True, disp_scatterplot: bool = True, stats: bool = True) :
+    """
+    Plot the comparaison between greatpy and GREAT from some files compute by `great.tl.GREAT.enrichment_multiple`.
+
+    Parameters
+    ----------
+    results : dict
+        Dictionary of results from `great.tl.GREAT.enrichment_multiple`
+    good_gene_associations : bool
+        If True, the function return the number of good gene associations
+    disp_scatterplot : bool
+        If True, the function display the scatterplot of the comparaison
+    stats : bool
+        If True, the function return the statistics of the comparaison
+    
+    Returns
+    -------
+    pp : pd.DataFrame
+        Dataframe of the number of row lost between before preprocessing and after preprocessing
+    asso : pd.DataFrame
+        DataFrame of the number of good gene associations for each file
+    stats_df : pd.DataFrame
+        DataFrame of the statistics of the comparaison for each file
+
+    Example
+    -------
+    >>> test = [
+    ...    '../data/tests/test_data/input/09_ERF.bed', '../data/tests/test_data/input/10_MAX.bed', 
+    ...    '../data/tests/test_data/input/01_random.bed', '../data/tests/test_data/input/04_ultra_hg38.bed', 
+    ...    '../data/tests/test_data/input/02_srf_hg38.bed', '../data/tests/test_data/input/08_FOXO3.bed', 
+    ...    '../data/tests/test_data/input/06_height_snps_hg38.bed'
+    ...     ]
+    >>> results = great.tl.GREAT.enrichment_multiple(
+    ...    tests = t, 
+    ...    regdom_file=regdom,
+    ...    chr_size_file=size,    
+    ...    annotation_file="../data/human/ontologies.csv",
+    ...    annpath=None, 
+    ...    binom=True,
+    ...    hypergeom=True
+    ...    )
+    >>> pp,asso,stat = get_all_comparison(results)
+
+    >>> pp
+    ...    |    | name   |   before_pp_greatpy_size |   before_pp_great_size |   final_size |   %_of_GO_from_great_lost |
+    ...    |---:|:-------|-------------------------:|-----------------------:|-------------:|--------------------------:|
+    ...    |  0 | ERF    |                     6014 |                   2410 |         1833 |                     23.94 |
+    ...    |  1 | MAX    |                     2996 |                   2395 |         1481 |                     38.16 |
+    ...    |  2 | random |                      579 |                    197 |          117 |                     40.61 |
+    ...    |  3 | ultra  |                     3265 |                   2175 |         1393 |                     35.95 |
+    ...    |  4 | srf    |                     4810 |                   2681 |         1854 |                     30.85 |
+    
+    >>> asso
+    ...    |    | name   |   number_good_gene_asso |   number_genes_asso_lost |   number_gene_asso_excess |
+    ...    |---:|:-------|------------------------:|-------------------------:|--------------------------:|
+    ...    |  0 | ERF    |                    1456 |                        0 |                        36 |
+    ...    |  1 | MAX    |                     428 |                        0 |                         4 |
+    ...    |  2 | random |                      57 |                        0 |                         1 |
+    ...    |  3 | ultra  |                     496 |                        0 |                         2 |
+    ...    |  4 | srf    |                     923 |                        0 |                         7 |
+
+    >>> stat
+    ...    |    | name   |   pearson_binom |   pearson_hypergeom |
+    ...    |---:|:-------|----------------:|--------------------:|
+    ...    |  0 | ERF    |        0.57644  |            0.609552 |
+    ...    |  1 | MAX    |        0.601492 |            0.670499 |
+    ...    |  2 | random |        0.240765 |            0.124707 |
+    ...    |  3 | ultra  |        0.52949  |            0.675438 |
+    ...    |  4 | srf    |        0.631909 |            0.597787 |
+    """
+    pp = {
+        "name": [],
+        "before_pp_greatpy_size": [],
+        "before_pp_great_size": [],
+        "final_size": [],
+        "%_of_GO_from_great_lost": [],
+    }
+    asso = {
+        "name": [],
+        "number_good_gene_asso": [],
+        "number_genes_asso_lost": [],
+        "number_gene_asso_excess": [],
+    }
+
+    stat_df = {"name": [], "pearson_binom": [], "pearson_hypergeom": []}
+
+    for path in results.keys() :
+        # sp = path.split(".")
+        id = path.split("/")[-1].split("_")[0]
+        name = path.split("/")[-1].split("_")[1].split(".")[0]
+        i = 0
+        great_out = ""
+        great_asso = ""
+
+        for out_path in os.listdir("../data/tests/test_data/output/"):
+            if out_path.split("_")[0] == id:
+                if re.match(".*hg19.*", out_path) != None:
+                    assembly = "hg19"
+                else:
+                    assembly = "hg38"
+
+                if re.match(".*output.*", out_path) != None:
+                    great_out = "../data/tests/test_data/output/" + out_path
+                else:
+                    great_asso = "../data/tests/test_data/output/" + out_path
+        
+        test = path
+        regdom = f"../data/human/{assembly}/regulatory_domain.bed"
+        size = f"../data/human/{assembly}/chr_size.bed"
+
+        if great_out == "" or great_asso == "":
+            return False
+
+        pp["name"].append(name) 
+        enrichment_tot = results[test]
+        enrichment_tot = great.tl.GREAT.set_bonferroni(enrichment_tot, 0.05)
+        enrichment_tot = great.tl.GREAT.set_fdr(enrichment_tot, 0.05)
+
+        great_webserver = pd.read_csv(
+            great_out,
+            sep="\t",
+            comment="#",
+            names=[
+                "ontologie",
+                "term_name",
+                "ID",
+                "binom_p_value",
+                "binom_bonferroni",
+                "binom_fdr",
+                "hyper_p_value",
+                "hyper_bonferroni",
+                "hyper_fdr",
+            ],
+            index_col=False,
+            dtype={
+                "term_name": "object",
+                "ID": "object",
+                "binom_p_value": "float64",
+                "binom_bonferroni": "float64",
+                "binom_fdr": "float64",
+                "hyper_p_value": "float64",
+                "hyper_bonferroni": "float64",
+                "hyper_fdr": "float64",
+            },
+        )
+        great_webserver.rename(columns={"ID": "id"}, inplace=True)
+        del great_webserver["ontologie"]
+        del great_webserver["term_name"]
+
+        pp["before_pp_greatpy_size"].append(enrichment_tot.shape[0])
+        enrichment_tot = enrichment_tot[enrichment_tot.index.isin(list(great_webserver["id"]))]
+        pp["final_size"].append(enrichment_tot.shape[0])
+
+        pp["before_pp_great_size"].append(great_webserver.shape[0])
+        pp["%_of_GO_from_great_lost"].append(
+            round(((great_webserver.shape[0] - enrichment_tot.shape[0]) / great_webserver.shape[0]) * 100, 2)
+        )
+        great_webserver = great_webserver[great_webserver["id"].isin(list(enrichment_tot.index))]
+
+        great_webserver = great_webserver.sort_values("id")
+
+        if disp_scatterplot or stats:
+            binom_greatpy = []
+            hyper_greatpy = []
+            binom_great = []
+            hyper_great = []
+            for i in range(enrichment_tot.shape[0]):
+                go_id = list(enrichment_tot.index)[i]
+                curr_enrichment = enrichment_tot.iloc[i]
+                curr_great_webserver = great_webserver.loc[great_webserver["id"] == go_id]
+                binom_greatpy.append(float(curr_enrichment["binom_p_value"]))
+                hyper_greatpy.append(float(curr_enrichment["hypergeom_p_value"]))
+                binom_great.append(float(curr_great_webserver["binom_p_value"]))
+                hyper_great.append(float(curr_great_webserver["hyper_p_value"]))
+            binom = pd.DataFrame({"binom_greatpy": binom_greatpy, "binom_great": binom_great})
+            hyper = pd.DataFrame({"hyper_greatpy": hyper_greatpy, "hyper_great": hyper_great})
+
+            if disp_scatterplot:
+                fig = plt.figure(figsize=(10, 5), dpi=80)
+                fig.subplots_adjust(hspace=0.4, wspace=0.4)
+                ax = fig.add_subplot(2, 2, 1)
+                great.pl.scatterplot(binom, colname_x="binom_greatpy", colname_y="binom_great", title=None, ax=ax)
+                ax = fig.add_subplot(2, 2, 2)
+                great.pl.scatterplot(hyper, colname_x="hyper_greatpy", colname_y="hyper_great", title=None, ax=ax)
+                fig.suptitle(f"results for {name}",fontsize = 18)
+                plt.show()
+
+            if stats:
+                stat_df["name"].append(name)
+                stat_df["pearson_binom"].append(pearsonr(binom_great, binom_greatpy)[0])
+                stat_df["pearson_hypergeom"].append(pearsonr(hyper_great, hyper_greatpy)[0])
+
+        if good_gene_associations:
+            gene_asso_great = pd.read_csv(
+                great_asso,
+                sep="\t",
+                comment="#",
+                names=["ontologies", "gene"],
+                index_col=False,
+                dtype={"ontologies": "object", "gene": "object"},
+                usecols=["gene"],
+            )
+            gene_asso_greatpy = great.tl.get_association(
+                test=pd.read_csv(
+                    test,
+                    sep="\t",
+                    comment="#",
+                    usecols=[0, 1, 2],
+                    names=["chr", "chr_start", "chr_end"],
+                    dtype={"chr": "object", "chr_start": "int64", "chr_end": "int64"},
+                ),
+                regdom=pd.read_csv(
+                    regdom,
+                    sep="\t",
+                    comment="#",
+                    names=["chr", "chr_start", "chr_end", "name", "tss", "strand"],
+                    dtype={
+                        "chr": "object",
+                        "chr_start": "int64",
+                        "chr_end": "int64",
+                        "name": "object",
+                        "tss": "int64",
+                        "strand": "object",
+                    },
+                ),
+            )
+
+            in_in = gene_asso_great[gene_asso_great["gene"].isin(gene_asso_greatpy)].shape[0]
+            in_out = [i for i in list(gene_asso_great["gene"]) if i not in gene_asso_greatpy]
+            out_in = [i for i in gene_asso_greatpy if i not in list(gene_asso_great["gene"])]
+
+            asso["name"].append(name)
+            asso["number_good_gene_asso"].append(str(in_in))
+            asso["number_genes_asso_lost"].append(str(len(in_out)))
+            asso["number_gene_asso_excess"].append(str(len(out_in)))
+    
+    if stats and good_gene_associations:
+        return pd.DataFrame(pp), pd.DataFrame(asso), pd.DataFrame(stat_df)
+
+    elif stat_df:
+        return pd.DataFrame(pp), pd.DataFrame(stat_df)
+
+    elif good_gene_associations:
+        pd.DataFrame(pp), pd.DataFrame(asso)
+    else:
+        return pd.DataFrame(pp)
 
 
 def scale_data_5_75(data):

@@ -6,4 +6,5 @@ from .basic import (
     make_bubble_heatmap,
     plot_enrich,
     scatterplot,
+    get_all_comparison,
 )
