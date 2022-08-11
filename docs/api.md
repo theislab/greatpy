@@ -89,5 +89,5 @@ import greatpy as gp
     pl.plot_enrich
     pl.make_bubble_heatmap
     pl.dotplot_multi_sample
-    pl.get_all_comparaison
+    pl.get_all_comparison
 ```
