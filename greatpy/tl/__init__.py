@@ -10,4 +10,8 @@ from .GREAT import (
     number_of_hits,
 )
 from .REGDOM import REGDOM
-from .utils import get_all_comparison, get_dist_to_tss, get_nb_asso_per_region
+from .utils import (
+    get_all_comparison, 
+    get_dist_to_tss, 
+    get_nb_asso_per_region, 
+    online_vs_local_vs_greatpy_comparison)
