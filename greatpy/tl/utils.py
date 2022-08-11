@@ -1,20 +1,18 @@
 import os
 import re
 
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 import rpy2
-from rpy2.robjects.packages import importr
+import seaborn as sns
 from rpy2.robjects import pandas2ri
 from rpy2.robjects import r as r
-pandas2ri.activate()
-import pandas as pd
-
-import matplotlib.pyplot as plt
-import pandas as pd
 from scipy.stats import pearsonr
-import numpy as np 
-import seaborn as sns
 
 import greatpy as great
+
+pandas2ri.activate()
 
 
 def get_nb_asso_per_region(test: str or pd.DataFrame, regdom: str or pd.DataFrame) -> dict:
@@ -341,6 +339,9 @@ def get_all_comparison(good_gene_associations: bool = True, disp_scatterplot: bo
 
 
 def online_vs_local_vs_greatpy_comparison():
+    importr('rGREAT')
+    ranges = importr('GenomicRanges')
+
     stat_df = {"name": [], "pearson_binom": [], "pearson_hypergeom": []}
     pp = {
         "name": [],
