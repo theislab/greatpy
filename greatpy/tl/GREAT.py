@@ -706,13 +706,13 @@ class GREAT:
 
         _, regdom, size, ann = GREAT.loader(None, regdom_file, chr_size_file, annotation_file)
 
-        if annpath != None:
+        if annpath is not None:
             bd.bindome.constants.ANNOTATIONS_DIRECTORY = annpath
 
         res = {}
 
         for name in tests:
-            if annpath != None:
+            if annpath is not None:
                 name_TF = name.split(":")[0]
                 tmp_df = bd.bindome.datasets.REMAP2020.get_remap_peaks(name_TF)
                 tmp = tmp_df[tmp_df[3] == name].iloc[:, 0:3]
@@ -740,7 +740,7 @@ class GREAT:
             else:
                 enrichment = GREAT.__enrichment_hypergeom(tmp, regdom, ann, asso)
 
-            if annpath != None:
+            if annpath is not None:
                 res[name_TF] = enrichment
             else:
                 res[name] = enrichment
@@ -888,9 +888,7 @@ class GREAT:
         return self
 
 
-######################################################################
-################# Utils function used by GREAT class #################
-######################################################################
+# Utils function used by GREAT class 
 def get_association(test: pd.DataFrame, regdom: pd.DataFrame) -> list:
     """
     Determine the names of genes associated with at least one genomic region

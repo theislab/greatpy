@@ -379,6 +379,6 @@ class REGDOM:
         out = out.astype({"chr_start": int, "chr_end": int})
         out = out.reindex(["chr", "chr_start", "chr_end", "name", "tss", "strand"], axis=1)
 
-        if out_path != None:
+        if out_path is not None:
             REGDOM.__write_regdom(out, out_path)
         return out

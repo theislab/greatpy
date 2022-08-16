@@ -199,15 +199,6 @@ def online_vs_local_vs_greatpy_comparison(
     importr("rGREAT")
     ranges = importr("GenomicRanges")
 
-    stat_df = {"name": [], "pearson_binom": [], "pearson_hypergeom": []}
-    pp = {
-        "name": [],
-        "before_pp_greatpy_size": [],
-        "before_pp_local_size": [],
-        "final_size": [],
-        "%_of_diffrent_GO_term": [],
-    }
-
     ann = pd.read_csv(
         annotation_file,
         sep=";",
@@ -227,7 +218,7 @@ def online_vs_local_vs_greatpy_comparison(
         "10_MAX.bed",
     ]:
         # find the assembly
-        if re.match(".*hg19.*", name) != None:
+        if re.match(".*hg19.*", name) is not None:
             assembly = "hg19"
         else:
             assembly = "hg38"

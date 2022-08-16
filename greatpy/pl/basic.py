@@ -362,12 +362,12 @@ def get_all_comparison(
 
         for out_path in os.listdir(out_dir):
             if out_path.split("_")[0] == id:
-                if re.match(".*hg19.*", out_path) != None:
+                if re.match(".*hg19.*", out_path) is not None:
                     assembly = "hg19"
                 else:
                     assembly = "hg38"
 
-                if re.match(".*output.*", out_path) != None:
+                if re.match(".*output.*", out_path) is not None:
                     great_out = out_dir + out_path
                 else:
                     great_asso = out_dir + out_path
