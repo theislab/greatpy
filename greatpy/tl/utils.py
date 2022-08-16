@@ -88,10 +88,10 @@ def get_dist_to_tss(test: str or pd.DataFrame, regdom: str or pd.DataFrame) -> d
 
     Parameters
     ----------
-    test : str
+    test : str or pd.DataFrame
         path of the file with the tests pics => columns: ["chr","chr_start","chr_end"]
 
-    regdom : str
+    regdom : str or pd.DataFrame
         path of the file with the regulatory domains => columns: ["chr"	"chr_start"	"chr_end"	"name"	"tss"	"strand"].
 
     Returns
@@ -152,18 +152,47 @@ def get_dist_to_tss(test: str or pd.DataFrame, regdom: str or pd.DataFrame) -> d
     return res
 
 
-def online_vs_local_vs_greatpy_comparison():
+def online_vs_local_vs_greatpy_comparison(
+    input_folder:str = "../data/tests/test_data/input/", 
+    information_folder:str = "../data/human/",
+    annotation_file: str = "../../data/human/ontologies.csv"
+    ) :
     """
     Make a comparison between the online and the local version of rGREAT and greatpy.
     The function return a clustermap of the results between online vs local and greatpy.
 
     Parameters
     ----------
-    None
+    input_folder : str
+        path of the folder with the input files for the tests.
+        Default is `"../data/tests/test_data/input/"`
+    information_folder : str
+        path of the folder with the information files for the tests. 
+        Default is `"../data/human/"`
+        The input folder should contains the files : 
+        - information_folder/assembly_eg_hg38/regulatory_domain.bed 
+        - information_folder/assembly_eg_hg38/chr_size.bed
+    annotation_file : str
+        path of the file with the ontologies annotations. The file should be in the csv format with `;` as separator and contain the following columns :
+        - "ensembl": ensemble id (optionnal)
+        - "id": id of the ontology
+        - "name": name of the ontology
+        - "ontology.group": group of the ontology,
+        - "gene.name": name of the gene
+        - "symbol": symbol of the gene equivalent to the gene.name
+        Default is `"../../data/human/ontologies.csv"`
 
     Returns
     -------
     None
+
+    Note
+    ----
+    To use this function, you should have installed in your environment: 
+        - rpy2
+        - R base with the version 3.6.1 
+        - The following R packages : `rGREAT`, `GenomicRanges`
+    
     """
     importr("rGREAT")
     ranges = importr("GenomicRanges")
@@ -178,7 +207,7 @@ def online_vs_local_vs_greatpy_comparison():
     }
 
     ann = pd.read_csv(
-        "../../data/human/ontologies.csv",
+        annotation_file,
         sep=";",
         comment="#",
         header=0,
@@ -203,13 +232,13 @@ def online_vs_local_vs_greatpy_comparison():
 
         # online test
         res_online = rpy2.robjects.r["submitGreatJob"](
-            f"../data/tests/test_data/input/{name}", species=f"{assembly}", help=False
+            f"{input_folder}{name}", species=f"{assembly}", help=False
         )
         res_online = rpy2.robjects.r["getEnrichmentTables"](res_online)
 
         # local test
         # proprocessing : make a Grange frame
-        df = r["read.csv"](f"../data/tests/test_data/input/{name}", sep="\t")
+        df = r["read.csv"](f"{input_folder}{name}", sep="\t")
         seqname = rpy2.robjects.StrVector(
             ["seqnames", "seqname", "chromosome", "X.Chr", "chr", "chromosome_name", "seqid"]
         )
@@ -222,10 +251,10 @@ def online_vs_local_vs_greatpy_comparison():
 
         # greatpy calculation
         greatpy = great.tl.GREAT.enrichment(
-            test_file=f"../data/tests/test_data/input/{name}",
-            regdom_file=f"../data/human/{assembly}/regulatory_domain.bed",
-            chr_size_file=f"../data/human/{assembly}/chr_size.bed",
-            annotation_file=f"../data/human/ontologies.csv",
+            test_file=f"{input_folder}{name}",
+            regdom_file=f"{information_folder}{assembly}/regulatory_domain.bed",
+            chr_size_file=f"{information_folder}{assembly}/chr_size.bed",
+            annotation_file=f"{annotation_file}",
             binom=True,
             hypergeom=True,
         )

@@ -319,14 +319,19 @@ class REGDOM:
         association_rule : str
             The association rule to use. Could be : "one_closet", "two_closet", "basal_plus_extention".
             Documentation aviable at https://great-help.atlassian.net/wiki/spaces/GREAT/pages/655443/Association+Rules.
-        maximumExtension : int : default 1000000
+        maximumExtension : int 
             The maximum extension of the regulatory domain.
-        basalUp : int : default 5000
+            Default is `100000`
+        basalUp : int 
             The basal upstream of the regulatory domain.
-        basalDown : int : default 1000
+            Default is `5000`
+        basalDown : int
             The basal downstream of the regulatory domain.
-        out_path : str or NoneType : default None
+            Default is `1000`
+        out_path : str or NoneType
             The path of the output file.
+            If None, the result is only returned as a pd.DataFrame.
+            Default is `None`
 
         Returns
         -------

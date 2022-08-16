@@ -672,10 +672,13 @@ class GREAT:
             Table with the annotation of each gene in the genome
         annpath : str or None, optional
             Path to the annotation files used for bindome computation. If None, the function doesn't use bindome.
-        binom : bool (default True)
+            Default is `"../../annotation/"`
+        binom : bool
             If True, the binomial test is used.
-        hypergeom : bool (default True)
-            If True, the hypergeometric test is used.
+            Default is `True`
+        hypergeom : bool
+            If True, the hypergeometric test is used. 
+            Default is `True`
 
         Returns
         -------
@@ -741,7 +744,6 @@ class GREAT:
                 res[name_TF] = enrichment
             else:
                 res[name] = enrichment
-            time.sleep(100)
         return res
 
     def set_bonferroni(self, alpha: float = 0.05) -> pd.DataFrame:
@@ -752,6 +754,7 @@ class GREAT:
         ----------
         alpha : float
             alpha value for the Bonferroni correction
+            Default is `0.05`
 
         Returns
         -------
@@ -799,6 +802,7 @@ class GREAT:
         ----------
         alpha : float
             alpha value for the fdr correction
+            Default is `0.05`
 
         Returns
         -------
@@ -844,8 +848,11 @@ class GREAT:
 
         Parameters
         ----------
+        colname : str
+            name of the column to take the p-value from
         alpha : float
-            alpha value for the fdr correction
+            alpha value used for the threshold filter 
+            Default is `0.05`
 
         Returns
         -------
@@ -884,16 +891,16 @@ class GREAT:
 ######################################################################
 ################# Utils function used by GREAT class #################
 ######################################################################
-def get_association(test, regdom) -> list:
+def get_association(test:pd.DataFrame, regdom:pd.DataFrame) -> list:
     """
     Determine the names of genes associated with at least one genomic region
 
     Parameters
     ----------
-    test : pd.dataFrame
+    test : pd.DataFrame
         df of the tests pics => columns: ["chr","chr_start","chr_end"]
 
-    regdom : pd.dataFrame
+    regdom : pd.DataFrame
         df of the regulatory domains => columns: ["chr"	"chr_start"	"chr_end"	"name"	"tss"	"strand"].
 
     Returns
@@ -956,7 +963,7 @@ def len_regdom(regdom: pd.DataFrame) -> dict:
 
     Parameters
     ----------
-    regdom : pd.dataFrame
+    regdom : pd.DataFrame
         df of the regulatory domains => columns: ["chr"	"chr_start"	"chr_end"	"name"	"tss"	"strand"].
 
     Returns
@@ -985,16 +992,16 @@ def len_regdom(regdom: pd.DataFrame) -> dict:
     return pd.DataFrame({"len": list(test)}, index=regdom["name"]).to_dict()["len"]
 
 
-def number_of_hits(test, regdom) -> int:
+def number_of_hits(test: pd.DataFrame, regdom: pd.DataFrame) -> int:
     """
     Calculate the number of hits from several genomic regions and the file describing the regulatory regions
 
     Parameters
     ----------
-    test : pd.dataFrame
+    test : pd.DataFrame
         df of the tests pics => columns: ["chr","chr_start","chr_end"]
 
-    regdom : pd.dataFrame
+    regdom : pd.DataFrame
         df of the regulatory domains => columns: ["chr"	"chr_start"	"chr_end"	"name"	"tss"	"strand"].
 
     Returns

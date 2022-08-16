@@ -37,11 +37,14 @@ def scatterplot(
     colname_y : str
         Name of the column to be used as y axis
     title : str
-        Title of the plot
+        Title of the plot. 
+        Default is `""`
     minus_log10 : bool
         If True, the logarithmic scale is used
+        Default is `True`
     ax : matplotlib.axes or None
         Define the position of the plot in a figure
+        Default is `None`
 
     Returns
     -------
@@ -83,8 +86,10 @@ def graph_nb_asso_per_peaks(
         Regulatory domain of all genes in the genome
     ax : matplotlib.axes or None
         Define the position of the plot in a figure
+        Default is `None`
     color : str
         Color of the bar
+        Default is `None` 
 
     Returns
     -------
@@ -136,8 +141,10 @@ def graph_dist_tss(
         Regulatory domain of all genes in the genome
     ax : matplotlib.axes or None
         Define the position of the plot in a figure
+        Default is None
     color : str
         Color of the bar
+        Default is `#325fa8`
 
     Returns
     -------
@@ -206,8 +213,10 @@ def graph_absolute_dist_tss(
         Regulatory domain of all genes in the genome
     ax : matplotlib.axes or None
         Define the position of the plot in a figure
+        Default is None
     color : str
         Color of the bar
+        Default is `#325fa8`
 
     Returns
     -------
@@ -243,7 +252,10 @@ def graph_absolute_dist_tss(
 
 
 def get_all_comparison(
-    results: dict, good_gene_associations: bool = True, disp_scatterplot: bool = True, stats: bool = True
+    results: dict, 
+    out_dir: str = "../data/tests/test_data/output/",
+    information_folder: str = "../data/human/",
+    good_gene_associations: bool = True, disp_scatterplot: bool = True, stats: bool = True
 ):
     """
     Plot the comparaison between greatpy and GREAT from some files compute by `great.tl.GREAT.enrichment_multiple`.
@@ -252,6 +264,15 @@ def get_all_comparison(
     ----------
     results : dict
         Dictionary of results from `great.tl.GREAT.enrichment_multiple`
+    out_dir : str
+        Path of the output directory with the results of great webserver. 
+        Default is `../data/tests/test_data/output/`
+    information_folder : str
+        path of the folder with the information files for the tests. 
+        Default is `../data/human/`
+        The input folder should contains the files : 
+        - `information_folder/assembly_eg_hg38/regulatory_domain.bed` 
+        - `information_folder/assembly_eg_hg38/chr_size.bed`
     good_gene_associations : bool
         If True, the function return the number of good gene associations
     disp_scatterplot : bool
@@ -331,14 +352,13 @@ def get_all_comparison(
     stat_df = {"name": [], "pearson_binom": [], "pearson_hypergeom": []}
 
     for path in results.keys():
-        # sp = path.split(".")
         id = path.split("/")[-1].split("_")[0]
         name = path.split("/")[-1].split("_")[1].split(".")[0]
         i = 0
         great_out = ""
         great_asso = ""
 
-        for out_path in os.listdir("../data/tests/test_data/output/"):
+        for out_path in os.listdir(out_dir):
             if out_path.split("_")[0] == id:
                 if re.match(".*hg19.*", out_path) != None:
                     assembly = "hg19"
@@ -346,13 +366,12 @@ def get_all_comparison(
                     assembly = "hg38"
 
                 if re.match(".*output.*", out_path) != None:
-                    great_out = "../data/tests/test_data/output/" + out_path
+                    great_out = out_dir + out_path
                 else:
-                    great_asso = "../data/tests/test_data/output/" + out_path
+                    great_asso = out_dir + out_path
 
         test = path
-        regdom = f"../data/human/{assembly}/regulatory_domain.bed"
-        f"../data/human/{assembly}/chr_size.bed"
+        regdom = f"{information_folder}{assembly}/regulatory_domain.bed"
 
         if great_out == "" or great_asso == "":
             return False
@@ -514,11 +533,14 @@ def plot_enrich(data: pd.DataFrame, n_terms: int = 20, color: str = "cool", save
     data : pd.DataFrame
         Results for greatpy
     n_terms : int
-        the number of term to be shown
+        the number of term to be shown. 
+        Default is `20`
     color : str
         The color of the cmap in the plot
+        Default is `"cool"`
     save : bool
         Is the plot should be save
+        Default is `False`
 
     Returns
     -------
@@ -642,7 +664,6 @@ def make_bubble_heatmap(
     p_val_df: pd.DataFrame,
     odd_ratio_df: pd.DataFrame,
     na_color: str = "gray",
-    title: str = "title",
     tickscolorbar: list = [-2, -1, 0, 1, 2],
     vmin: int or float = -2.5,
     vmax: int or float = 2.5,
@@ -666,28 +687,37 @@ def make_bubble_heatmap(
         DataFrame of the odds ratios computed by enrichment function
     na_color : str
         Color for NA values
-    title : str
-        Title of the plot
+        Default is `"gray"`
     tickscolorbar : list
         List of ticks should be add on the colorbar
+        Default is `[-2, -1, 0, 1, 2]`
     vmin : int or float
         Minimum value for the colorbar
+        Default is `-2.5`
     vmax : int or float
         Maximum value for the colorbar
+        Default is `2.5`
     heatmap_grid : list
         Grid for the heatmap
+        Default is `[2, 4, 0, 2, 2, 1]`
     circle_legend_grid : list
         Grid for the circle legend
+        Default is `[2, 4, 0, 2, 2, 1]`
     colorbar_grid : list
         Grid for the colorbar
+        Default is `[2, 5, 0, 3, 2, 1]`
     palette_id : str
         Palette id for the colorbar
+        Default is `"RdBu_r"`
     cbar_label : str
         Label for the colorbar
+        Default is `"cbar_label"`
     ncols : int or None
         Number of columns for the colorbar
+        Default is `8`
     marker : str or None
         Marker for the dots
+        Default is `None`
     kwargs
         Additional keyword arguments for the plot
 
@@ -802,15 +832,6 @@ def make_bubble_heatmap(
         alpha=1,
     )
 
-    # # set different color for x_tick labels
-    # nb = int((len(ylabelList)+1)/(len(order_frame.columns)+1))
-    # color = (["r"]*5+["black"]*5)*((len(order_frame.columns)+1) // 2)
-    # if len(color) != len(order_frame.columns):
-    #     color += ["r"]*(len(order_frame.columns)-len(color))
-
-    # for ticklabel,tickcolor in zip(plt.gca().get_yticklabels(),color):
-    #     ticklabel.set_color(tickcolor)
-
     remove_top_n_right_ticks(ax)
 
     plt.xticks(
@@ -869,14 +890,6 @@ def make_bubble_heatmap(
             scatterpoints=1,
             frameon=False,
         )
-
-    # nrows, ncols, rowi, coli, rowspan, colspan = colorbar_grid
-    # plt.show()
-    # ax1 = plt.subplot2grid([nrows, ncols], [rowi, coli], rowspan=rowspan, colspan=colspan)
-
-    # plt.axis('off')
-    # ax1.set_xticklabels([])
-    # ax1.set_yticklabels([])
 
     if kwargs.get("show_colorbar", True):
         cbar = fig.colorbar(
@@ -990,32 +1003,46 @@ def dotplot_multi_sample(
         dict of multiple tests output
     n_row : int
         Number of rows pick in each dataframe.
+        Default is `5`
     list_id : list
-        List of IDs to be plotted.
+        List of IDs to be plotted. If list_id == [], any filter will be applied.
+        Default is `[]`
     fig : matplotlib.figure.Figure or None
         Figure to plot the dotplot.
+        Default is `None`
     show_term_name : bool
         Whether to show the GO term name.
+        Default is `False`
     term_name_nchars : int
         Number of characters to show for the GO term name.
+        Default is `30`
     dot_size_amplifier : int or float
         Amplifier for the dot size.
+        Default is `7`
     palette_id : str or matplotlib.cm
         Color palette for the dotplot.
+        Default is `Reds`
     ylab : str
         Y-axis label.
+        Default is `"GO"`
     xlab : str
         X-axis label.
+        Default is `""`
     label_colorbar : str
         Label for the colorbar.
+        Default is `"-log(p_hypergeometric)"`
     marker : str
         Marker for the dotplot.
+        Default is `"o"`
     plot_title : str
         Plot title.
+        Default is `"Dotplot of enrichment GO terms"`
     line_width : int
         Dot line width.
+        Default is `0.1`
     circle_legend : str
         Legend for the circle.
+        Default is `"log2(odd ratio)"`
     kwargs
         Other parameters to be passed to the make make_bubble_heatmap function.
 
