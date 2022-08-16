@@ -655,7 +655,7 @@ def plot_enrich(data: pd.DataFrame, n_terms: int = 20, color: str = "cool", save
     )
 
     if save:
-        plt.savefig("dotplot_save", dpi=500)
+        plt.savefig("dotplot_save.png", dpi=500)
 
     plt.show()
 
@@ -992,6 +992,7 @@ def dotplot_multi_sample(
     plot_title: str = "Dotplot of enrichment GO terms",
     line_width: int = 0.1,
     circle_legend: str = "log2(odd ratio)",
+    save: bool = False,
     **kwargs,
 ):
     """
@@ -1196,5 +1197,7 @@ def dotplot_multi_sample(
         cbar_fmt_ticks="%.0f",
         fig=fig,
     )
+    if save:
+        plt.savefig("multidotplot.png", dpi=300)
 
     return p_val, odd_ratio, df
