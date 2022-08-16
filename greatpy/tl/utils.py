@@ -23,14 +23,15 @@ def get_nb_asso_per_region(test: str or pd.DataFrame, regdom: str or pd.DataFram
     ----------
     test : str or pd.DataFrame
         path of the file with the tests pics => columns: ["chr","chr_start","chr_end"]\n
-
     regdom : str or pd.DataFrame
         path of the file with the regulatory domains => columns: ["chr"	"chr_start"	"chr_end"	"name"	"tss"	"strand"].\n
 
     Returns
     -------
     res : dict
-        dict with the number of associated genes per genomic region : key = associated gene, value = number of peaks associated with the gene
+        dict with the number of associated genes per genomic region : \n
+        - key = associated gene\n
+        - value = number of peaks associated with the gene
 
     Examples
     --------
@@ -90,16 +91,15 @@ def get_dist_to_tss(test: str or pd.DataFrame, regdom: str or pd.DataFrame) -> d
     ----------
     test : str or pd.DataFrame
         path of the file with the tests pics => columns: ["chr","chr_start","chr_end"]\n
-
     regdom : str or pd.DataFrame
         path of the file with the regulatory domains => columns: ["chr"	"chr_start"	"chr_end"	"name"	"tss"	"strand"].\n
 
     Returns
     -------
     res : dict
-        dict with the distance from tss to the associated genes : 
+        dict with the distance from tss to the associated genes : \n
         - key = number of the input \n
-        - value = distance from peaks to tss of associated genes
+        - value = distance from peaks to tss of associated genes\n
 
     Examples
     --------

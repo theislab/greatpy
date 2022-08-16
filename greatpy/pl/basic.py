@@ -283,11 +283,11 @@ def get_all_comparison(
     Returns
     -------
     pp : pd.DataFrame
-        Dataframe of the number of row lost between before preprocessing and after preprocessing
+        Dataframe of the number of row lost between before preprocessing and after preprocessing\n
     asso : pd.DataFrame
-        DataFrame of the number of good gene associations for each file
+        DataFrame of the number of good gene associations for each file\n
     stats_df : pd.DataFrame
-        DataFrame of the statistics of the comparaison for each file
+        DataFrame of the statistics of the comparaison for each file\n
 
     Example
     -------

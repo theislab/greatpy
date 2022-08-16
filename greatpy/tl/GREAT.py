@@ -900,7 +900,6 @@ def get_association(test:pd.DataFrame, regdom:pd.DataFrame) -> list:
     ----------
     test : pd.DataFrame
         df of the tests pics => columns: ["chr","chr_start","chr_end"]\n
-
     regdom : pd.DataFrame
         df of the regulatory domains => columns: ["chr"	"chr_start"	"chr_end"	"name"	"tss"	"strand"].\n
 
