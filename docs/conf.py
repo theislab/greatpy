@@ -97,6 +97,7 @@ nitpick_ignore = [
     ("py:class", "matplotlib.cm"),
     ("py:class", "matplotlib.axes"),
     ("py:class", "optional"),
+    ("py:class", "NoneType"),
 ]
 
 
