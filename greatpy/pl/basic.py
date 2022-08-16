@@ -1006,7 +1006,7 @@ def dotplot_multi_sample(
         Number of rows pick in each dataframe.
         Default is `5`
     list_id : list
-        List of IDs to be plotted. If list_id == [], any filter will be applied.
+        List of IDs to be plotted. If `list_id == []`, any filter will be applied.
         Default is `[]`
     fig : matplotlib.figure.Figure or None
         Figure to plot the dotplot.
