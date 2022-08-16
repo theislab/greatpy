@@ -888,7 +888,7 @@ class GREAT:
         return self
 
 
-# Utils function used by GREAT class 
+# Utils function used by GREAT class
 def get_association(test: pd.DataFrame, regdom: pd.DataFrame) -> list:
     """
     Determine the names of genes associated with at least one genomic region
