@@ -164,23 +164,23 @@ def online_vs_local_vs_greatpy_comparison(
     Parameters
     ----------
     input_folder : str
-        path of the folder with the input files for the tests.
-        Default is `"../data/tests/test_data/input/"`
+        path of the folder with the input files for the tests.\n
+        Default is `"../data/tests/test_data/input/"`. \n
     information_folder : str
-        path of the folder with the information files for the tests. 
-        Default is `"../data/human/"`
-        The input folder should contains the files : 
-        - information_folder/assembly_eg_hg38/regulatory_domain.bed 
-        - information_folder/assembly_eg_hg38/chr_size.bed
+        path of the folder with the information files for the tests. \n
+        Default is `"../data/human/"`\n
+        The input folder should contains the files : \n
+        - information_folder/assembly_eg_hg38/regulatory_domain.bed \n
+        - information_folder/assembly_eg_hg38/chr_size.bed\n
     annotation_file : str
-        path of the file with the ontologies annotations. The file should be in the csv format with `;` as separator and contain the following columns :
-        - "ensembl": ensemble id (optionnal)
-        - "id": id of the ontology
-        - "name": name of the ontology
-        - "ontology.group": group of the ontology,
-        - "gene.name": name of the gene
-        - "symbol": symbol of the gene equivalent to the gene.name
-        Default is `"../../data/human/ontologies.csv"`
+        path of the file with the ontologies annotations. The file should be in the csv format with `;` as separator and contain the following columns :\n
+        - "ensembl": ensemble id (optionnal)\n
+        - "id": id of the ontology\n
+        - "name": name of the ontology\n
+        - "ontology.group": group of the ontology\n
+        - "gene.name": name of the gene\n
+        - "symbol": symbol of the gene equivalent to the gene.name\n
+        Default is `"../../data/human/ontologies.csv"`\n
 
     Returns
     -------
