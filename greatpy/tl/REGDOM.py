@@ -11,13 +11,13 @@ class REGDOM:
         Parameters
         ----------
         association : str
-            The association rule to use. Documentation aviable at https://great-help.atlassian.net/wiki/spaces/GREAT/pages/655443/Association+Rules
+            The association rule to use. Documentation aviable at https://great-help.atlassian.net/wiki/spaces/GREAT/pages/655443/Association+Rules\n
         max_extension : int
-            The maximum extension of the regulatory domain.
+            The maximum extension of the regulatory domain.\n
         basal_upstream : int
-            The basal upstream of the regulatory domain.
+            The basal upstream of the regulatory domain.\n
         basal_downstream : int
-            The basal downstream of the regulatory domain.
+            The basal downstream of the regulatory domain.\n
 
         Returns
         -------
@@ -53,9 +53,9 @@ class REGDOM:
         Parameters
         ----------
         regdom : pd.DataFrame
-            The regulatory regions to write.
+            The regulatory regions to write.\n
         file_name : str
-            The path of the file to write.
+            The path of the file to write.\n
 
         Returns
         -------
@@ -83,15 +83,15 @@ class REGDOM:
         Parameters
         ----------
         tss : pd.DataFrame
-            The TSS of the genes.
+            The TSS of the genes.\n
         maximumExtension : int
-            The maximum extension of the regulatory domain.
+            The maximum extension of the regulatory domain.\n
         basalUp : int
-            The basal upstream of the regulatory domain.
+            The basal upstream of the regulatory domain.\n
         basalDown : int
-            The basal downstream of the regulatory domain.
+            The basal downstream of the regulatory domain.\n
         chr_size : pd.DataFrame
-            The chromosome size.
+            The chromosome size.\n
 
         Returns
         -------
@@ -185,17 +185,17 @@ class REGDOM:
 
     def __create_two_closet_regdom(tss: pd.DataFrame, max_extension: int, chr_size: pd.DataFrame) -> pd.DataFrame:
         """
-        Create the regulatory domains using the TwoCloset association rule.
-        It is based on the basal plus extension rule but with basalUp and basalDown equals to 0.
+        Create the regulatory domains using the TwoCloset association rule.\n
+        It is based on the basal plus extension rule but with basalUp and basalDown equals to 0.\n
 
         Parameters
         ----------
         tss : pd.DataFrame
-            The TSS of the genes.
+            The TSS of the genes.\n
         maximumExtension : int
-            The maximum extension of the regulatory domain.
+            The maximum extension of the regulatory domain.\n
         chr_size : pd.DataFrame
-            The chromosome size.
+            The chromosome size.\n
 
         Returns
         -------
@@ -228,15 +228,15 @@ class REGDOM:
         Parameters
         ----------
         tss : pd.DataFrame
-            The TSS of the genes.
+            The TSS of the genes.\n
         maximumExtension : int
-            The maximum extension of the regulatory domain.
+            The maximum extension of the regulatory domain.\n
         basalUp : int
-            The basal upstream of the regulatory domain.
+            The basal upstream of the regulatory domain.\n
         basalDown : int
-            The basal downstream of the regulatory domain.
+            The basal downstream of the regulatory domain.\n
         chr_size : pd.DataFrame
-            The chromosome size.
+            The chromosome size.\n
 
         Returns
         -------
@@ -313,25 +313,25 @@ class REGDOM:
         Parameters
         ----------
         tss_file : str
-            The path of the TSS file.
+            The path of the TSS file.\n
         chr_sizes_file : str
-            The path of the chromosome size file.
+            The path of the chromosome size file.\n
         association_rule : str
-            The association rule to use. Could be : "one_closet", "two_closet", "basal_plus_extention".
-            Documentation aviable at https://great-help.atlassian.net/wiki/spaces/GREAT/pages/655443/Association+Rules.
+            The association rule to use. Could be : "one_closet", "two_closet", "basal_plus_extention".\n
+            Documentation aviable at https://great-help.atlassian.net/wiki/spaces/GREAT/pages/655443/Association+Rules.\n
         maximumExtension : int 
-            The maximum extension of the regulatory domain.
-            Default is `100000`
+            The maximum extension of the regulatory domain.\n
+            Default is `100000`\n
         basalUp : int 
-            The basal upstream of the regulatory domain.
-            Default is `5000`
+            The basal upstream of the regulatory domain.\n
+            Default is `5000`\n
         basalDown : int
-            The basal downstream of the regulatory domain.
-            Default is `1000`
+            The basal downstream of the regulatory domain.\n
+            Default is `1000`\n
         out_path : str or NoneType
-            The path of the output file.
-            If None, the result is only returned as a pd.DataFrame.
-            Default is `None`
+            The path of the output file.\n
+            If None, the result is only returned as a pd.DataFrame.\n
+            Default is `None`\n
 
         Returns
         -------

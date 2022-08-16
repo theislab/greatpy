@@ -24,24 +24,24 @@ class GREAT:
         Parameters
         ----------
         test_data : None or str or pd.DataFrame
-            Genomic set of peaks to be tested
+            Genomic set of peaks to be tested\n
         regdom_file : None or str or pd.DataFrame
-            Regulatory domain of all genes in the genome
+            Regulatory domain of all genes in the genome\n
         chr_size_file : None or str or pd.DataFrame
-            Table with the size of each chromosome
+            Table with the size of each chromosome\n
         annotation_file : None or str or pd.DataFrame
-            Table with the annotation of each gene in the genome
+            Table with the annotation of each gene in the genome\n
 
         Returns
         -------
         test_data : pd.DataFrame
-            Genomic set of peaks to be tested in the good format
+            Genomic set of peaks to be tested in the good format\n
         regdom : pd.DataFrame
-            Regulatory domain of all genes in the genome in the good format
+            Regulatory domain of all genes in the genome in the good format\n
         size : pd.DataFrame
-            Table with the size of each chromosome in the good format
+            Table with the size of each chromosome in the good format\n
         ann : pd.DataFrame
-            Table with the annotation of each gene in the genome in the good format
+            Table with the annotation of each gene in the genome in the good format\n
 
         Examples
         --------
@@ -555,17 +555,17 @@ class GREAT:
         Parameters
         ----------
         test_file : str or pd.DataFrame
-            Genomic set of peaks to be tested
+            Genomic set of peaks to be tested\n
         regdom_file : str or pd.DataFrame
-            Regulatory domain of all genes in the genome
+            Regulatory domain of all genes in the genome\n
         chr_size_file : str or pd.DataFrame
-            Table with the size of each chromosome
+            Table with the size of each chromosome\n
         annotation_file : str or pd.DataFrame
-            Table with the annotation of each gene in the genome
+            Table with the annotation of each gene in the genome\n
         binom : bool (default True)
-            If True, the binomial test is used.
+            If True, the binomial test is used.\n
         hypergeom : bool (default True)
-            If True, the hypergeometric test is used.
+            If True, the hypergeometric test is used.\n
 
         Returns
         -------
@@ -663,22 +663,23 @@ class GREAT:
         Parameters
         ----------
         tests : list
-            List of complete name of data to compute
+            List of complete name of data to compute\n
         regdom_file : str or pd.DataFrame
-            Regulatory domain of all genes in the genome
+            Regulatory domain of all genes in the genome\n
         chr_size_file : str or pd.DataFrame
-            Table with the size of each chromosome
+            Table with the size of each chromosome\n
         annotation_file : str or pd.DataFrame
-            Table with the annotation of each gene in the genome
+            Table with the annotation of each gene in the genome\n
         annpath : str or None, optional
-            Path to the annotation files used for bindome computation. If None, the function doesn't use bindome.
-            Default is `"../../annotation/"`
+            Path to the annotation files used for bindome computation. \n
+            If None, the function doesn't use bindome.\n
+            Default is `"../../annotation/"`\n
         binom : bool
-            If True, the binomial test is used.
-            Default is `True`
+            If True, the binomial test is used.\n
+            Default is `True`\n
         hypergeom : bool
-            If True, the hypergeometric test is used. 
-            Default is `True`
+            If True, the hypergeometric test is used. \n
+            Default is `True`\n
 
         Returns
         -------
@@ -753,8 +754,8 @@ class GREAT:
         Parameters
         ----------
         alpha : float
-            alpha value for the Bonferroni correction
-            Default is `0.05`
+            alpha value for the Bonferroni correction\n
+            Default is `0.05`\n
 
         Returns
         -------
@@ -801,8 +802,8 @@ class GREAT:
         Parameters
         ----------
         alpha : float
-            alpha value for the fdr correction
-            Default is `0.05`
+            alpha value for the fdr correction\n
+            Default is `0.05`\n
 
         Returns
         -------
@@ -849,10 +850,10 @@ class GREAT:
         Parameters
         ----------
         colname : str
-            name of the column to take the p-value from
+            name of the column to take the p-value from\n
         alpha : float
-            alpha value used for the threshold filter 
-            Default is `0.05`
+            alpha value used for the threshold filter \n
+            Default is `0.05`\n
 
         Returns
         -------
@@ -898,10 +899,10 @@ def get_association(test:pd.DataFrame, regdom:pd.DataFrame) -> list:
     Parameters
     ----------
     test : pd.DataFrame
-        df of the tests pics => columns: ["chr","chr_start","chr_end"]
+        df of the tests pics => columns: ["chr","chr_start","chr_end"]\n
 
     regdom : pd.DataFrame
-        df of the regulatory domains => columns: ["chr"	"chr_start"	"chr_end"	"name"	"tss"	"strand"].
+        df of the regulatory domains => columns: ["chr"	"chr_start"	"chr_end"	"name"	"tss"	"strand"].\n
 
     Returns
     -------
@@ -964,7 +965,7 @@ def len_regdom(regdom: pd.DataFrame) -> dict:
     Parameters
     ----------
     regdom : pd.DataFrame
-        df of the regulatory domains => columns: ["chr"	"chr_start"	"chr_end"	"name"	"tss"	"strand"].
+        df of the regulatory domains => columns: ["chr"	"chr_start"	"chr_end"	"name"	"tss"	"strand"].\n
 
     Returns
     -------
@@ -999,10 +1000,9 @@ def number_of_hits(test: pd.DataFrame, regdom: pd.DataFrame) -> int:
     Parameters
     ----------
     test : pd.DataFrame
-        df of the tests pics => columns: ["chr","chr_start","chr_end"]
-
+        df of the tests pics => columns: ["chr","chr_start","chr_end"]\n
     regdom : pd.DataFrame
-        df of the regulatory domains => columns: ["chr"	"chr_start"	"chr_end"	"name"	"tss"	"strand"].
+        df of the regulatory domains => columns: ["chr"	"chr_start"	"chr_end"	"name"	"tss"	"strand"].\n
 
     Returns
     -------
@@ -1114,11 +1114,11 @@ def get_binom_pval(n: int, k: int, p: float) -> float:
     Parameters
     ----------
     n : int
-        Number of genomic region in the test set
+        Number of genomic region in the test set\n
     k : int
-        Number of test genomic regions in the regulatory domain of a gene with annotation
+        Number of test genomic regions in the regulatory domain of a gene with annotation\n
     p : float
-        Percentage of genome annotated
+        Percentage of genome annotated\n
 
     Returns
     -------
@@ -1144,13 +1144,13 @@ def hypergeom_pmf(N: int, K: int, n: int, k: int) -> float:
     Parameters
     ----------
     N : int
-        Total number of gene in the genome
+        Total number of gene in the genome\n
     K : int
-        Number of genes in the genome with annotation
+        Number of genes in the genome with annotation\n
     n : int
-        Number of gene in the test set
+        Number of gene in the test set\n
     k : int
-        Number of genes in the test gene set with annotation
+        Number of genes in the test gene set with annotation\n
 
     Returns
     -------
@@ -1176,13 +1176,13 @@ def hypergeom_cdf(N: int, K: int, n: int, k: int) -> float:
     Parameters
     ----------
     N : int
-        Total number of gene in the genome
+        Total number of gene in the genome\n
     K : int
-        Number of genes in the genome with annotation
+        Number of genes in the genome with annotation\n
     n : int
-        Number of gene in the test set
+        Number of gene in the test set\n
     k : int
-        Number of genes in the test gene set with annotation
+        Number of genes in the test gene set with annotation\n
 
     Returns
     -------

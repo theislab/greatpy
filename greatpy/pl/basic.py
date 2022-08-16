@@ -25,26 +25,26 @@ def scatterplot(
 ) -> None:
     """
     Create a scatterplot from a
-    pandas dataframe between two columns.
-    A logarithmic scale can be used.
+    pandas dataframe between two columns.\n
+    A logarithmic scale can be used.\n
 
     Parameters
     ----------
     great_df : pd.DataFrame
-        Output of the greatpy.tl.GREAT.enrichment function
+        Output of the greatpy.tl.GREAT.enrichment function\n
     colname_x : str
-        Name of the column to be used as x axis
+        Name of the column to be used as x axis\n
     colname_y : str
-        Name of the column to be used as y axis
+        Name of the column to be used as y axis\n
     title : str
         Title of the plot. 
-        Default is `""`
+        Default is `""`\n
     minus_log10 : bool
-        If True, the logarithmic scale is used
-        Default is `True`
+        If True, the logarithmic scale is used\n
+        Default is `True`\n
     ax : matplotlib.axes or None
-        Define the position of the plot in a figure
-        Default is `None`
+        Define the position of the plot in a figure\n
+        Default is `None`\n
 
     Returns
     -------
@@ -81,15 +81,15 @@ def graph_nb_asso_per_peaks(
     Parameters
     ----------
     test : str or pd.DataFrame
-        Genomic set of peaks to be tested
+        Genomic set of peaks to be tested\n
     regdom : str or pd.DataFrame
-        Regulatory domain of all genes in the genome
+        Regulatory domain of all genes in the genome\n
     ax : matplotlib.axes or None
-        Define the position of the plot in a figure
-        Default is `None`
+        Define the position of the plot in a figure\n
+        Default is `None`\n
     color : str
-        Color of the bar
-        Default is `None` 
+        Color of the bar\n
+        Default is `None` \n
 
     Returns
     -------
@@ -131,20 +131,20 @@ def graph_dist_tss(
 ) -> None:
     """
     Creation of a barplot of the distance
-    between the peaks and the TSS of the associated gene(s).
+    between the peaks and the TSS of the associated gene(s).\n
 
     Parameters
     ----------
     test : str or pd.DataFrame
-        Genomic set of peaks to be tested
+        Genomic set of peaks to be tested\n
     regdom : str or pd.DataFrame
-        Regulatory domain of all genes in the genome
+        Regulatory domain of all genes in the genome\n
     ax : matplotlib.axes or None
-        Define the position of the plot in a figure
-        Default is None
+        Define the position of the plot in a figure\n
+        Default is `None`\n
     color : str
-        Color of the bar
-        Default is `#325fa8`
+        Color of the bar\n
+        Default is `#325fa8`\n
 
     Returns
     -------
@@ -208,15 +208,15 @@ def graph_absolute_dist_tss(
     Parameters
     ----------
     test : str or pd.DataFrame
-        Genomic set of peaks to be tested
+        Genomic set of peaks to be tested\n
     regdom : str or pd.DataFrame
-        Regulatory domain of all genes in the genome
+        Regulatory domain of all genes in the genome\n
     ax : matplotlib.axes or None
-        Define the position of the plot in a figure
-        Default is None
+        Define the position of the plot in a figure\n
+        Default is `None`\n
     color : str
-        Color of the bar
-        Default is `#325fa8`
+        Color of the bar\n
+        Default is `#325fa8`\n
 
     Returns
     -------
@@ -263,22 +263,22 @@ def get_all_comparison(
     Parameters
     ----------
     results : dict
-        Dictionary of results from `great.tl.GREAT.enrichment_multiple`
+        Dictionary of results from `great.tl.GREAT.enrichment_multiple`\n
     out_dir : str
-        Path of the output directory with the results of great webserver. 
-        Default is `../data/tests/test_data/output/`
+        Path of the output directory with the results of great webserver. \n
+        Default is `../data/tests/test_data/output/`\n
     information_folder : str
-        path of the folder with the information files for the tests. 
-        Default is `../data/human/`
-        The input folder should contains the files : 
-        - `information_folder/assembly_eg_hg38/regulatory_domain.bed` 
-        - `information_folder/assembly_eg_hg38/chr_size.bed`
+        path of the folder with the information files for the tests. \n
+        Default is `../data/human/`\n
+        The input folder should contains the files : \n
+        - `information_folder/assembly_eg_hg38/regulatory_domain.bed` \n
+        - `information_folder/assembly_eg_hg38/chr_size.bed`\n
     good_gene_associations : bool
-        If True, the function return the number of good gene associations
+        If True, the function return the number of good gene associations\n
     disp_scatterplot : bool
-        If True, the function display the scatterplot of the comparaison
+        If True, the function display the scatterplot of the comparaison\n
     stats : bool
-        If True, the function return the statistics of the comparaison
+        If True, the function return the statistics of the comparaison\n
 
     Returns
     -------
@@ -531,16 +531,16 @@ def plot_enrich(data: pd.DataFrame, n_terms: int = 20, color: str = "cool", save
     Parameters
     ----------
     data : pd.DataFrame
-        Results for greatpy
+        Results for greatpy\n
     n_terms : int
-        the number of term to be shown. 
-        Default is `20`
+        the number of term to be shown. \n
+        Default is `20`\n
     color : str
-        The color of the cmap in the plot
-        Default is `"cool"`
+        The color of the cmap in the plot\n
+        Default is `"cool"`\n
     save : bool
-        Is the plot should be save
-        Default is `False`
+        Is the plot should be save\n
+        Default is `False`\n
 
     Returns
     -------
@@ -682,42 +682,42 @@ def make_bubble_heatmap(
     Parameters
     ----------
     p_val_df : pd.DataFrame
-        DataFrame of the p-values computed by enrichment function
+        DataFrame of the p-values computed by enrichment function\n
     odd_ratio_df : pd.DataFrame
-        DataFrame of the odds ratios computed by enrichment function
+        DataFrame of the odds ratios computed by enrichment function\n
     na_color : str
-        Color for NA values
-        Default is `"gray"`
+        Color for NA values\n
+        Default is `"gray"`\n
     tickscolorbar : list
-        List of ticks should be add on the colorbar
-        Default is `[-2, -1, 0, 1, 2]`
+        List of ticks should be add on the colorbar\n
+        Default is `[-2, -1, 0, 1, 2]`\n
     vmin : int or float
-        Minimum value for the colorbar
-        Default is `-2.5`
+        Minimum value for the colorbar\n
+        Default is `-2.5`\n
     vmax : int or float
-        Maximum value for the colorbar
-        Default is `2.5`
+        Maximum value for the colorbar\n
+        Default is `2.5`\n
     heatmap_grid : list
-        Grid for the heatmap
-        Default is `[2, 4, 0, 2, 2, 1]`
+        Grid for the heatmap\n
+        Default is `[2, 4, 0, 2, 2, 1]`\n
     circle_legend_grid : list
-        Grid for the circle legend
-        Default is `[2, 4, 0, 2, 2, 1]`
+        Grid for the circle legend\n
+        Default is `[2, 4, 0, 2, 2, 1]`\n
     colorbar_grid : list
-        Grid for the colorbar
-        Default is `[2, 5, 0, 3, 2, 1]`
+        Grid for the colorbar\n
+        Default is `[2, 5, 0, 3, 2, 1]`\n
     palette_id : str
-        Palette id for the colorbar
-        Default is `"RdBu_r"`
+        Palette id for the colorbar\n
+        Default is `"RdBu_r"`\n
     cbar_label : str
-        Label for the colorbar
-        Default is `"cbar_label"`
+        Label for the colorbar\n
+        Default is `"cbar_label"`\n
     ncols : int or None
-        Number of columns for the colorbar
-        Default is `8`
+        Number of columns for the colorbar\n
+        Default is `8`\n
     marker : str or None
-        Marker for the dots
-        Default is `None`
+        Marker for the dots\n
+        Default is `None`\n
     kwargs
         Additional keyword arguments for the plot
 
@@ -1001,63 +1001,62 @@ def dotplot_multi_sample(
     Parameters
     ----------
     test_data : dict
-        dict of multiple tests output
+        dict of multiple tests output\n
     n_row : int
-        Number of rows pick in each dataframe.
-        Default is `5`
+        Number of rows pick in each dataframe.\n
+        Default is `5`\n
     list_id : list
-        List of IDs to be plotted. If `list_id == []`, any filter will be applied.
-        Default is `[]`
+        List of IDs to be plotted. If `list_id == []`, any filter will be applied.\n
+        Default is `[]`\n
     fig : matplotlib.figure.Figure or None
-        Figure to plot the dotplot.
-        Default is `None`
+        Figure to plot the dotplot.\n
+        Default is `None`\n
     show_term_name : bool
-        Whether to show the GO term name.
-        Default is `False`
+        Whether to show the GO term name.\n
+        Default is `False`\n
     term_name_nchars : int
-        Number of characters to show for the GO term name.
-        Default is `30`
+        Number of characters to show for the GO term name.\n
+        Default is `30`\n
     dot_size_amplifier : int or float
-        Amplifier for the dot size.
-        Default is `7`
+        Amplifier for the dot size.\n
+        Default is `7`\n
     palette_id : str or matplotlib.cm
-        Color palette for the dotplot.
-        Default is `Reds`
+        Color palette for the dotplot.\n
+        Default is `Reds`\n
     ylab : str
-        Y-axis label.
-        Default is `"GO"`
+        Y-axis label.\n
+        Default is `"GO"`\n
     xlab : str
-        X-axis label.
-        Default is `""`
+        X-axis label.\n
+        Default is `""`\n
     label_colorbar : str
-        Label for the colorbar.
-        Default is `"-log(p_hypergeometric)"`
+        Label for the colorbar.\n
+        Default is `"-log(p_hypergeometric)"`\n
     marker : str
-        Marker for the dotplot.
-        Default is `"o"`
+        Marker for the dotplot.\n
+        Default is `"o"`\n
     plot_title : str
-        Plot title.
-        Default is `"Dotplot of enrichment GO terms"`
+        Plot title.\n
+        Default is `"Dotplot of enrichment GO terms"`\n
     line_width : int
-        Dot line width.
-        Default is `0.1`
+        Dot line width.\n
+        Default is `0.1`\n
     circle_legend : str
-        Legend for the circle.
-        Default is `"log2(odd ratio)"`
+        Legend for the circle.\n
+        Default is `"log2(odd ratio)"`\n
     kwargs
         Other parameters to be passed to the make make_bubble_heatmap function.
-
 
     Returns
     -------
     None
-        Dotplot of enrichment GO terms for the given df
+        Dotplot of enrichment GO terms for the given df\n
     p_val : pandas.DataFrame
-        Dataframe of plotted p-values
+        Dataframe of plotted p-values\n
     odds_ratio : pandas.DataFrame
-        Dataframe of plotted odds ratios
+        Dataframe of plotted odds ratios\n
     df : pandas.DataFrame
-        Dataframe of all results concatenated
+        Dataframe of all results concatenated\n
 
     Examples
     --------

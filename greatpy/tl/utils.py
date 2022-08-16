@@ -22,10 +22,10 @@ def get_nb_asso_per_region(test: str or pd.DataFrame, regdom: str or pd.DataFram
     Parameters
     ----------
     test : str or pd.DataFrame
-        path of the file with the tests pics => columns: ["chr","chr_start","chr_end"]
+        path of the file with the tests pics => columns: ["chr","chr_start","chr_end"]\n
 
     regdom : str or pd.DataFrame
-        path of the file with the regulatory domains => columns: ["chr"	"chr_start"	"chr_end"	"name"	"tss"	"strand"].
+        path of the file with the regulatory domains => columns: ["chr"	"chr_start"	"chr_end"	"name"	"tss"	"strand"].\n
 
     Returns
     -------
@@ -89,15 +89,17 @@ def get_dist_to_tss(test: str or pd.DataFrame, regdom: str or pd.DataFrame) -> d
     Parameters
     ----------
     test : str or pd.DataFrame
-        path of the file with the tests pics => columns: ["chr","chr_start","chr_end"]
+        path of the file with the tests pics => columns: ["chr","chr_start","chr_end"]\n
 
     regdom : str or pd.DataFrame
-        path of the file with the regulatory domains => columns: ["chr"	"chr_start"	"chr_end"	"name"	"tss"	"strand"].
+        path of the file with the regulatory domains => columns: ["chr"	"chr_start"	"chr_end"	"name"	"tss"	"strand"].\n
 
     Returns
     -------
     res : dict
-        dict with the distance from tss to the associated genes : key = number of the input, value = distance from peaks to tss of associated genes
+        dict with the distance from tss to the associated genes : 
+        - key = number of the input \n
+        - value = distance from peaks to tss of associated genes
 
     Examples
     --------
@@ -158,8 +160,8 @@ def online_vs_local_vs_greatpy_comparison(
     annotation_file: str = "../../data/human/ontologies.csv"
     ) :
     """
-    Make a comparison between the online and the local version of rGREAT and greatpy.
-    The function return a clustermap of the results between online vs local and greatpy.
+    Make a comparison between the online and the local version of rGREAT and greatpy.\n
+    The function return a clustermap of the results between online vs local and greatpy.\n
 
     Parameters
     ----------
