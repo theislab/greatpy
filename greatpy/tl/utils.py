@@ -155,10 +155,10 @@ def get_dist_to_tss(test: str or pd.DataFrame, regdom: str or pd.DataFrame) -> d
 
 
 def online_vs_local_vs_greatpy_comparison(
-    input_folder:str = "../data/tests/test_data/input/", 
-    information_folder:str = "../data/human/",
-    annotation_file: str = "../../data/human/ontologies.csv"
-    ) :
+    input_folder: str = "../data/tests/test_data/input/",
+    information_folder: str = "../data/human/",
+    annotation_file: str = "../../data/human/ontologies.csv",
+):
     """
     Make a comparison between the online and the local version of rGREAT and greatpy.\n
     The function return a clustermap of the results between online vs local and greatpy.\n
@@ -190,11 +190,11 @@ def online_vs_local_vs_greatpy_comparison(
 
     Note
     ----
-    To use this function, you should have installed in your environment: 
+    To use this function, you should have installed in your environment:
         - rpy2
-        - R base with the version 3.6.1 
+        - R base with the version 3.6.1
         - The following R packages : `rGREAT`, `GenomicRanges`
-    
+
     """
     importr("rGREAT")
     ranges = importr("GenomicRanges")
@@ -233,9 +233,7 @@ def online_vs_local_vs_greatpy_comparison(
             assembly = "hg38"
 
         # online test
-        res_online = rpy2.robjects.r["submitGreatJob"](
-            f"{input_folder}{name}", species=f"{assembly}", help=False
-        )
+        res_online = rpy2.robjects.r["submitGreatJob"](f"{input_folder}{name}", species=f"{assembly}", help=False)
         res_online = rpy2.robjects.r["getEnrichmentTables"](res_online)
 
         # local test

@@ -37,7 +37,7 @@ def scatterplot(
     colname_y : str
         Name of the column to be used as y axis\n
     title : str
-        Title of the plot. 
+        Title of the plot.
         Default is `""`\n
     minus_log10 : bool
         If True, the logarithmic scale is used\n
@@ -252,10 +252,12 @@ def graph_absolute_dist_tss(
 
 
 def get_all_comparison(
-    results: dict, 
+    results: dict,
     out_dir: str = "../data/tests/test_data/output/",
     information_folder: str = "../data/human/",
-    good_gene_associations: bool = True, disp_scatterplot: bool = True, stats: bool = True
+    good_gene_associations: bool = True,
+    disp_scatterplot: bool = True,
+    stats: bool = True,
 ):
     """
     Plot the comparaison between greatpy and GREAT from some files compute by `great.tl.GREAT.enrichment_multiple`.

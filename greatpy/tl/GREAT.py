@@ -1,4 +1,3 @@
-import time
 from math import exp, fabs, lgamma, log
 
 import bindome as bd
@@ -892,7 +891,7 @@ class GREAT:
 ######################################################################
 ################# Utils function used by GREAT class #################
 ######################################################################
-def get_association(test:pd.DataFrame, regdom:pd.DataFrame) -> list:
+def get_association(test: pd.DataFrame, regdom: pd.DataFrame) -> list:
     """
     Determine the names of genes associated with at least one genomic region
 

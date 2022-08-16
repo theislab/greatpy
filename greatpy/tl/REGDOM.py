@@ -319,10 +319,10 @@ class REGDOM:
         association_rule : str
             The association rule to use. Could be : "one_closet", "two_closet", "basal_plus_extention".\n
             Documentation aviable at https://great-help.atlassian.net/wiki/spaces/GREAT/pages/655443/Association+Rules.\n
-        maximumExtension : int 
+        maximumExtension : int
             The maximum extension of the regulatory domain.\n
             Default is `100000`\n
-        basalUp : int 
+        basalUp : int
             The basal upstream of the regulatory domain.\n
             Default is `5000`\n
         basalDown : int
