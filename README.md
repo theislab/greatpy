@@ -84,10 +84,10 @@ The [association rules][association_rules] parameters could be :
 
 -   Analyzes the significance of proximal and distal cis-regulatory regions in the genome.
 -   Some files should be used as input : 
-  -   test file should have the following columns :`\t` `chr` `\t` `chr_start` `\t` `chr_end`.
-  -   regulatory domain file should have the following columns :`chr` `\t` `chr_start` `\t` `chr_end` `\t` `name` `\t` `tss	strand`
-  -   chromosome size file should have the following columns :`\t` `chromosome_number` `\t` `chromosome_size`.
-  -   annotation file should have the following columns :`\t` `ensembl` `\t` `id` `\t` `name` `\t` `ontology.group` `\t` `gene.name` `\t` `symbol`
+    -   test file should have the following columns :`\t` `chr` `\t` `chr_start` `\t` `chr_end`.
+    -   regulatory domain file should have the following columns :`chr` `\t` `chr_start` `\t` `chr_end` `\t` `name` `\t` `tss	strand`
+    -   chromosome size file should have the following columns :`\t` `chromosome_number` `\t` `chromosome_size`.
+    -   annotation file should have the following columns :`\t` `ensembl` `\t` `id` `\t` `name` `\t` `ontology.group` `\t` `gene.name` `\t` `symbol`
 
 ```python
 res = greatpy.tl.GREAT.enrichment(
