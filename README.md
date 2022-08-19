@@ -58,8 +58,8 @@ This package is strongly inspired by [GREAT][great_article] allowing Helmholtz t
 #### <ins>1. Create regulatory domain from tss</ins>
 
 -   Translate a genetic file in `.bed` format and containing the following information: 
-  -   TSS file should have the following columns :`\t` `chromosome_number` `\t` `position` `\t` `strand` `\t` `gene_name`.
-  -   Chromosome size file should have the following columns :`\t` `chromosome_number` `\t` `chromosome_size`.
+    -   TSS file should have the following columns :`\t` `chromosome_number` `\t` `position` `\t` `strand` `\t` `gene_name`.
+    -   Chromosome size file should have the following columns :`\t` `chromosome_number` `\t` `chromosome_size`.
 
 ```python
 regdom = greatpy.tl.REGDOM.create_regdom(
