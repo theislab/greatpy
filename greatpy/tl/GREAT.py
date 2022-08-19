@@ -1,6 +1,6 @@
 from math import exp, fabs, lgamma, log
 
-import bindome as bd
+# import bindome as bd
 import dask.dataframe as dd
 import numpy as np
 import pandas as pd
@@ -647,6 +647,7 @@ class GREAT:
         else:
             return GREAT.__enrichment_hypergeom(test, regdom, ann, asso)
 
+# TODO : add bindome when it is available
     def enrichment_multiple(
         tests: list,
         regdom_file: str or pd.DataFrame,
@@ -706,26 +707,26 @@ class GREAT:
 
         _, regdom, size, ann = GREAT.loader(None, regdom_file, chr_size_file, annotation_file)
 
-        if annpath is not None:
-            bd.bindome.constants.ANNOTATIONS_DIRECTORY = annpath
+        # if annpath is not None:
+        #     bd.bindome.constants.ANNOTATIONS_DIRECTORY = annpath
 
         res = {}
 
         for name in tests:
-            if annpath is not None:
-                name_TF = name.split(":")[0]
-                tmp_df = bd.bindome.datasets.REMAP2020.get_remap_peaks(name_TF)
-                tmp = tmp_df[tmp_df[3] == name].iloc[:, 0:3]
-                tmp = tmp.rename(columns={"chr": "chr", "start": "chr_start", "end": "chr_end"})
-            else:
-                tmp = pd.read_csv(
-                    name,
-                    sep="\t",
-                    comment="#",
-                    usecols=[0, 1, 2],
-                    names=["chr", "chr_start", "chr_end"],
-                    dtype={"chr": "object", "chr_start": "int64", "chr_end": "int64"},
-                )
+            # if annpath is not None:
+            #     name_TF = name.split(":")[0]
+            #     tmp_df = bd.bindome.datasets.REMAP2020.get_remap_peaks(name_TF)
+            #     tmp = tmp_df[tmp_df[3] == name].iloc[:, 0:3]
+            #     tmp = tmp.rename(columns={"chr": "chr", "start": "chr_start", "end": "chr_end"})
+            # else:
+            tmp = pd.read_csv(
+                name,
+                sep="\t",
+                comment="#",
+                usecols=[0, 1, 2],
+                names=["chr", "chr_start", "chr_end"],
+                dtype={"chr": "object", "chr_start": "int64", "chr_end": "int64"},
+            )
 
             asso = get_association(
                 tmp, regdom
