@@ -58,8 +58,9 @@ This package is strongly inspired by [GREAT][great_article] allowing Helmholtz t
 
 #### <ins>1. Create regulatory domain from tss</ins>
 
--   Translate a genetic file in .bed format and containing the following information: chromosome number, start position on the chromosome, end position, gene name and TSS.
-    Into a regulatory region file that can then be used in the great :
+-   Translate a genetic file in `.bed` format and containing the following information: 
+  -   TSS file should have the following columns :`\t` `chromosome_number` `\t` `position` `\t` `strand` `\t` `gene_name`.
+  -   Chromosome size file should have the following columns :`\t` `chromosome_number` `\t` `chromosome_size`.
 
 ```python
 regdom = greatpy.tl.REGDOM.create_regdom(
@@ -82,8 +83,12 @@ The [association rules][association_rules] parameters could be :
 
 #### <ins>2. Get enrichment of GO term in the tests genomics regions</ins>
 
--   Analyzes the significance of proximal and distal cis-regulatory regions in the genome. To do this:
-
+-   Analyzes the significance of proximal and distal cis-regulatory regions in the genome.
+-   Some files should be used as input : 
+  -   test file should have the following columns :`\t` `chr` `\t` `chr_start` `\t` `chr_end`.
+  -   regulatory domain file should have the following columns :`chr` `\t` `chr_start` `\t` `chr_end` `\t` `name` `\t` `tss	strand`
+  -   chromosome size file should have the following columns :`\t` `chromosome_number` `\t` `chromosome_size`.
+  -   annotation file should have the following columns :`\t` `ensembl` `\t` `id` `\t` `name` `\t` `ontology.group` `\t` `gene.name` `\t` `symbol`
 ```python
 res = greatpy.tl.GREAT.enrichment(
     test_file=Input_path_or_df, # eg : "../data/tests/test_data/input/10_MAX.bed"
