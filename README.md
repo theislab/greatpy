@@ -146,6 +146,7 @@ Several examples of uses can be found in the notebook part of the package:
 Both types of tests (binomial and hypergeometric) performed may be susceptible to certain biases of which one must be aware to analyze the results with a critical mind. 
 -   The hypergeometric test may be biased by the size of the regulatory domains of the genes since isolated genes have very large regulatory domains and are therefore more likely to generate false positives. 
 -   The binomial test can also be biased if a large number of genomic regions to be tested are associated with a small set of genes that can also generate false positives. 
+
 But these biases are partially compensated between each of the tests the binomial test reduces the hypergeometric bias by taking into account exactly the size of the regulatory domains of the genes and the hypergeometric test compensates for the bias of the binomial test by counting each gene only once.
 The two types of tests are complementary and must be analyzed together to conclude. 
 
