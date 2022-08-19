@@ -41,7 +41,7 @@ def get_nb_asso_per_region(test: str or pd.DataFrame, regdom: str or pd.DataFram
 
     """
     res = {}
-    test, regdom, _, _ = great.tl.Great.loader(test, regdom, None, None)
+    test, regdom, _, _ = great.tl.loader(test, regdom, None, None)
     for i in range(test.shape[0]):
         currTest = test.iloc[i]
         regdom_curr_test = regdom.loc[(regdom["chr"] == currTest["chr"])].sort_values("chr_start")
@@ -109,7 +109,7 @@ def get_dist_to_tss(test: str or pd.DataFrame, regdom: str or pd.DataFrame) -> d
 
     """
     res = {}
-    test, regdom, _, _ = great.tl.Great.loader(test, regdom, None, None)
+    test, regdom, _, _ = great.tl.loader(test, regdom, None, None)
     for i in range(test.shape[0]):
         currTest = test.iloc[i]
         mean_pos_test = (currTest["chr_end"] + currTest["chr_start"]) / 2

@@ -31,7 +31,7 @@ def scatterplot(
     Parameters
     ----------
     great_df : pd.DataFrame
-        Output of the greatpy.tl.Great.enrichment function\n
+        Output of the greatpy.tl.enrichment function\n
     colname_x : str
         Name of the column to be used as x axis\n
     colname_y : str
@@ -260,12 +260,12 @@ def get_all_comparison(
     stats: bool = True,
 ):
     """
-    Plot the comparaison between greatpy and Great from some files compute by `great.tl.Great.enrichment_multiple`.
+    Plot the comparaison between greatpy and Great from some files compute by `great.tl.enrichment_multiple`.
 
     Parameters
     ----------
     results : dict
-        Dictionary of results from `great.tl.Great.enrichment_multiple`\n
+        Dictionary of results from `great.tl.enrichment_multiple`\n
     out_dir : str
         Path of the output directory with the results of great webserver. \n
         Default is `../data/tests/test_data/output/`\n
@@ -299,7 +299,7 @@ def get_all_comparison(
     ...    '../data/tests/test_data/input/02_srf_hg38.bed', '../data/tests/test_data/input/08_FOXO3.bed',
     ...    '../data/tests/test_data/input/06_height_snps_hg38.bed'
     ...     ]
-    >>> results = great.tl.Great.enrichment_multiple(
+    >>> results = great.tl.enrichment_multiple(
     ...    tests = t,
     ...    regdom_file=regdom,
     ...    chr_size_file=size,
@@ -380,8 +380,8 @@ def get_all_comparison(
 
         pp["name"].append(name)
         enrichment_tot = results[test]
-        enrichment_tot = great.tl.Great.set_bonferroni(enrichment_tot, 0.05)
-        enrichment_tot = great.tl.Great.set_fdr(enrichment_tot, 0.05)
+        enrichment_tot = great.tl.set_bonferroni(enrichment_tot, 0.05)
+        enrichment_tot = great.tl.set_fdr(enrichment_tot, 0.05)
 
         great_webserver = pd.read_csv(
             great_out,
@@ -1063,7 +1063,7 @@ def dotplot_multi_sample(
     Examples
     --------
     >>> test = ["SRF:Ishikawa,A-673-clone-Asp114,K-562,MCF-7,Hep-G2","MAX:K-562,WA01,HeLa-S3", "BACH1:A-549,GM12878"]
-    >>> tmp_df = great.tl.Great.enrichment_multiple(
+    >>> tmp_df = great.tl.enrichment_multiple(
         tests = test, regdom_file="../data/human/hg38/regulatory_domain.bed",
         chr_size_file="../data/human/hg38/chr_size.bed",
         annotation_file="../data/human/ontologies.csv", binom=True, hypergeom=True,)

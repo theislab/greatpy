@@ -102,7 +102,7 @@ def online_vs_local_vs_greatpy_comparison(
         local = rpy2.robjects.r["getEnrichmentTables"](local)
 
         # greatpy calculation
-        greatpy = great.tl.Great.enrichment(
+        greatpy = great.tl.enrichment(
             test_file=f"{input_folder}{name}",
             regdom_file=f"{information_folder}{assembly}/regulatory_domain.bed",
             chr_size_file=f"{information_folder}{assembly}/chr_size.bed",

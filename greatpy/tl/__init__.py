@@ -1,5 +1,10 @@
 from .great import (
-    Great,
+    loader,
+    enrichment,
+    enrichment_multiple,
+    set_bonferroni,
+    set_fdr,
+    set_threshold,
     betacf,
     betai,
     get_association,
@@ -9,7 +14,7 @@ from .great import (
     len_regdom,
     number_of_hits,
 )
-from .regdom import Regdom
+from .regdom import create_regdom
 from .utils import (
     get_dist_to_tss,
     get_nb_asso_per_region,
