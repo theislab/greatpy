@@ -29,7 +29,7 @@ import greatpy as gp
 .. autosummary::
     :toctree: generated/
 
-    tl.regdom.Regdom.create_regdom
+    tl.Regdom.create_regdom
 ```
 
 ### greatpy computation
@@ -40,8 +40,8 @@ import greatpy as gp
 .. autosummary::
     :toctree: generated
 
-    tl.great.Great.enrichment
-    tl.great.Great.enrichment_multiple
+    tl.Great.enrichment
+    tl.Great.enrichment_multiple
 ```
 
 #### Additional functions
@@ -50,10 +50,10 @@ import greatpy as gp
 .. autosummary::
     :toctree: generated
 
-    tl.great.Great.loader
-    tl.great.Great.set_bonferroni
-    tl.great.Great.set_fdr
-    tl.great.Great.set_threshold
+    tl.Great.loader
+    tl.Great.set_bonferroni
+    tl.Great.set_fdr
+    tl.Great.set_threshold
 ```
 
 ### utils additional tools
@@ -62,9 +62,9 @@ import greatpy as gp
 .. autosummary::
     :toctree: generated
 
-    tl.utils.get_nb_asso_per_region
-    tl.utils.get_dist_to_tss
-    tl.utils.online_vs_local_vs_greatpy_comparison
+    tl.get_nb_asso_per_region
+    tl.get_dist_to_tss
+    tl.online_vs_local_vs_greatpy_comparison
     tl.get_association
     tl.len_regdom
     tl.number_of_hits
