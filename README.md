@@ -62,7 +62,7 @@ This package is strongly inspired by [GREAT][great_article] allowing Helmholtz t
     -   Chromosome size file should have the following columns :`chromosome_number \t chromosome_size`.
 
 ```python
-regdom = greatpy.tl.Regdom.create_regdom(
+regdom = greatpy.tl.create_regdom(
     tss_file=Input_TSS_path,  # eg : "../data/human/hg38/tss.bed"
     chr_sizes_file=Input_chromosome_size_path,  # eg : "../data/human/hg38/chr_size.bed"
     association_rule="Basalplusextention",
@@ -90,7 +90,7 @@ The [association rules][association_rules] parameters could be :
     -   annotation file should have the following columns :`ensembl \t id \t name \t ontology.group \t gene.name \t symbol`
 
 ```python
-res = greatpy.tl.Great.enrichment(
+res = greatpy.tl.enrichment(
     test_file=Input_path_or_df,  # eg : "../data/tests/test_data/input/10_MAX.bed"
     regdom_file=regdom_path_or_df,  # eg : "../data/human/hg38/regdom.bed"
     chr_size_file=chromosome_size_path_or_df,  # eg : "../data/human/hg38/chr_size.bed"
@@ -106,8 +106,8 @@ Several arguments can be added to this function such as :
 It is then possible to apply a Bonferroni and/or FDR correction to the found p-values:
 
 ```python
-great.tl.Great.set_fdr(res, alpha=0.05)
-great.tl.Great.set_bonferroni(res, alpha=0.05)
+res = great.tl.set_fdr(res, alpha=0.05)
+res = great.tl.set_bonferroni(res, alpha=0.05)
 ```
 
 #### <ins>3. Plot</ins>
@@ -158,7 +158,7 @@ great.pl.plot_enrich(plot)
 
 ```python
 test = ["name_bindome_biosample_1", "name_bindome_biosample_2", "..."]
-tmp_df = great.tl.Great.enrichment_multiple(
+tmp_df = great.tl.enrichment_multiple(
     tests=test,
     regdom_file="../data/human/hg38/regulatory_domain.bed",
     chr_size_file="../data/human/hg38/chr_size.bed",
