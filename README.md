@@ -32,12 +32,12 @@ pip install git+https://github.com/theislab/greatpy.git@main
 
 ## Notebook
 
-|   Information             |   link                    |
-| ------------------------- | ------------------------- |
-|   Create regdom           | [notebook][notebook1]     |
-|   enrichment              | [notebook][notebook2]     |
-|   plot                    | [notebook][notebook3]     |
-|   Comparaison with GREAT  | [notebook][notebook4]     |
+| Information            | link                  |
+| ---------------------- | --------------------- |
+| Create regdom          | [notebook][notebook1] |
+| enrichment             | [notebook][notebook2] |
+| plot                   | [notebook][notebook3] |
+| Comparaison with GREAT | [notebook][notebook4] |
 
 ## Getting started
 
@@ -57,14 +57,14 @@ This package is strongly inspired by [GREAT][great_article] allowing Helmholtz t
 
 #### <ins>1. Create regulatory domain from tss</ins>
 
--   Translate a genetic file in `.bed` format and containing the following information: 
+-   Translate a genetic file in `.bed` format and containing the following information:
     -   TSS file should have the following columns :`\t` `chromosome_number` `\t` `position` `\t` `strand` `\t` `gene_name`.
     -   Chromosome size file should have the following columns :`\t` `chromosome_number` `\t` `chromosome_size`.
 
 ```python
 regdom = greatpy.tl.REGDOM.create_regdom(
-    tss_file=Input_TSS_path, # eg : "../data/human/hg38/tss.bed"
-    chr_sizes_file=Input_chromosome_size_path, # eg : "../data/human/hg38/chr_size.bed"
+    tss_file=Input_TSS_path,  # eg : "../data/human/hg38/tss.bed"
+    chr_sizes_file=Input_chromosome_size_path,  # eg : "../data/human/hg38/chr_size.bed"
     association_rule="Basalplusextention",
     out_path=path_save_output,
 )
@@ -83,18 +83,18 @@ The [association rules][association_rules] parameters could be :
 #### <ins>2. Get enrichment of GO term in the tests genomics regions</ins>
 
 -   Analyzes the significance of proximal and distal cis-regulatory regions in the genome.
--   Some files should be used as input : 
+-   Some files should be used as input :
     -   test file should have the following columns :`\t` `chr` `\t` `chr_start` `\t` `chr_end`.
-    -   regulatory domain file should have the following columns :`chr` `\t` `chr_start` `\t` `chr_end` `\t` `name` `\t` `tss	strand`
+    -   regulatory domain file should have the following columns :`chr` `\t` `chr_start` `\t` `chr_end` `\t` `name` `\t` `tss strand`
     -   chromosome size file should have the following columns :`\t` `chromosome_number` `\t` `chromosome_size`.
     -   annotation file should have the following columns :`\t` `ensembl` `\t` `id` `\t` `name` `\t` `ontology.group` `\t` `gene.name` `\t` `symbol`
 
 ```python
 res = greatpy.tl.GREAT.enrichment(
-    test_file=Input_path_or_df, # eg : "../data/tests/test_data/input/10_MAX.bed"
-    regdom_file=regdom_path_or_df, # eg : "../data/human/hg38/regdom.bed"
-    chr_size_file=chromosome_size_path_or_df, # eg : "../data/human/hg38/chr_size.bed"
-    annotation_file=annotation_path_or_df, # eg : "../data/human/ontologies.csv"
+    test_file=Input_path_or_df,  # eg : "../data/tests/test_data/input/10_MAX.bed"
+    regdom_file=regdom_path_or_df,  # eg : "../data/human/hg38/regdom.bed"
+    chr_size_file=chromosome_size_path_or_df,  # eg : "../data/human/hg38/chr_size.bed"
+    annotation_file=annotation_path_or_df,  # eg : "../data/human/ontologies.csv"
 )
 ```
 
@@ -121,19 +121,19 @@ great.tl.GREAT.set_bonferroni(res, alpha=0.05)
 ```python
 fig, ax = plt.subplots(1, 3, figsize=(30, 8))
 greatpy.pl.graph_nb_asso_per_peaks(
-    Input_path_or_df, # eg : "../data/tests/test_data/input/10_MAX.bed"
-    regdom_path_or_df, # eg : "../data/human/hg38/regdom.bed"
-    ax[0]
+    Input_path_or_df,  # eg : "../data/tests/test_data/input/10_MAX.bed"
+    regdom_path_or_df,  # eg : "../data/human/hg38/regdom.bed"
+    ax[0],
 )
 greatpy.pl.graph_dist_tss(
-    Input_path_or_df, # eg : "../data/tests/test_data/input/10_MAX.bed"
-    regdom_path_or_df, # eg : "../data/human/hg38/regdom.bed"
-    ax[0]
+    Input_path_or_df,  # eg : "../data/tests/test_data/input/10_MAX.bed"
+    regdom_path_or_df,  # eg : "../data/human/hg38/regdom.bed"
+    ax[0],
 )
 greatpy.pl.graph_absolute_dist_tss(
-    Input_path_or_df, # eg : "../data/tests/test_data/input/10_MAX.bed"
-    regdom_path_or_df, # eg : "../data/human/hg38/regdom.bed"
-    ax[0]
+    Input_path_or_df,  # eg : "../data/tests/test_data/input/10_MAX.bed"
+    regdom_path_or_df,  # eg : "../data/human/hg38/regdom.bed"
+    ax[0],
 )
 plt.show()
 ```
