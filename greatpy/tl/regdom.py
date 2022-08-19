@@ -3,7 +3,7 @@ import pandas as pd
 pd.options.display.float_format = "{:12.5e}".format
 
 
-class REGDOM:
+class Regdom:
     def __validate_input(association: str, max_extension: int, basal_upstream: int, basal_downstream: int) -> bool:
         """
         Checks that the inputs (association_rule, max_extension, basal_upstream, basal_downstream) are valid
@@ -219,7 +219,7 @@ class REGDOM:
         ...    |  4 | chr1  |       17436 |     30365 | WASH7P    | 29370 | -        |
 
         """
-        return REGDOM.__create_basal_plus_extension_regdom(tss, max_extension, 0, 0, chr_size)
+        return Regdom.__create_basal_plus_extension_regdom(tss, max_extension, 0, 0, chr_size)
 
     def create_one_closet_regdom(tss: pd.DataFrame, maximum_extension: int, chr_size: pd.DataFrame) -> pd.DataFrame:
         """
@@ -357,7 +357,7 @@ class REGDOM:
         ...    |  4 | chr1  |       23403 |     29867 | WASH7P    | 29370 | -        |
 
         """
-        if not REGDOM.__validate_input(association_rule, max_extension, basal_upstream, basal_downstream):
+        if not Regdom.__validate_input(association_rule, max_extension, basal_upstream, basal_downstream):
             print("Invalid input")
             return False
         df = pd.read_csv(tss_file, sep="\t", comment="#", names=["chr", "tss", "strand", "name"])
@@ -367,11 +367,11 @@ class REGDOM:
         chr_size = pd.read_csv(chr_sizes_file, sep="\t", comment="#", names=["chr", "size"])
 
         if association_rule == "one_closet":
-            out = REGDOM.create_one_closet_regdom(df, max_extension, chr_size)
+            out = Regdom.create_one_closet_regdom(df, max_extension, chr_size)
         elif association_rule == "two_closet":
-            out = REGDOM.__create_two_closet_regdom(df, max_extension, chr_size)
+            out = Regdom.__create_two_closet_regdom(df, max_extension, chr_size)
         elif association_rule == "basal_plus_extention":
-            out = REGDOM.__create_basal_plus_extension_regdom(
+            out = Regdom.__create_basal_plus_extension_regdom(
                 df, max_extension, basal_upstream, basal_downstream, chr_size
             )
         else:
@@ -380,5 +380,5 @@ class REGDOM:
         out = out.reindex(["chr", "chr_start", "chr_end", "name", "tss", "strand"], axis=1)
 
         if out_path is not None:
-            REGDOM.__write_regdom(out, out_path)
+            Regdom.__write_regdom(out, out_path)
         return out
