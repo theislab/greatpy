@@ -232,7 +232,7 @@ class Great:
             "../../data/human/hg38/chr_size.bed",
             "../data/human/ontologies.csv"
             )
-        >>> enrichment = Great.__enrichment_binom_and_hypergeom(
+        >>> enrichment = Great._enrichment_binom_and_hypergeom(
             test = test,
             regdom = regdom,
             size = size,
@@ -358,7 +358,7 @@ class Great:
             "../../data/human/hg38/chr_size.bed",
             "../data/human/ontologies.csv"
             )
-        >>> enrichment = Great.__enrichment_binom(
+        >>> enrichment = Great._enrichment_binom(
             test = test,
             regdom = regdom,
             size = size,
@@ -467,7 +467,7 @@ class Great:
             "../data/human/hg19/chr_size.bed",
             "../data/human/ontologies.csv"
             )
-        >>> enrichment = Great.__enrichment_hypergeom(
+        >>> enrichment = Great._enrichment_hypergeom(
             test = test,
             regdom = regdom,
             ann = ann,
