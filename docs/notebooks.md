@@ -4,7 +4,7 @@
 
 ### Create regulatory domain
 
-greatpy can allow you to create regulatory domains with a TSS.bed and chromosome_size.bed files with the function `greatpy.tl.REGDOM.create_regdom()`. You can show an example of this function with the following code:
+greatpy can allow you to create regulatory domains with a TSS.bed and chromosome_size.bed files with the function `greatpy.tl.Regdom.create_regdom()`. You can show an example of this function with the following code:
 
 ```
 import greatpy as great
@@ -18,11 +18,11 @@ great.tl.REGDOM.create_regdom(
 
 ### Get enrichment
 
-greatpy can allow you to compute the GO term enrichment on a set of the chromosomic region on a bed format with `greatpy.tl.GREAT.enrichment()`. You can show an example of this function with the following code:
+greatpy can allow you to compute the GO term enrichment on a set of the chromosomic region on a bed format with `greatpy.tl.Great.enrichment()`. You can show an example of this function with the following code:
 
 ```
 import greatpy as great
-enrichment = great.tl.GREAT.enrichment(
+enrichment = great.tl.Great.enrichment(
     test_file = df_or_path_to_test_file,
     regdom_file = df_or_path_to_regdomfile_file, # could be create with great.tl.REGDOM.create_regdom()
     chr_size_file = df_or_path_to_size_file,
@@ -37,19 +37,19 @@ After the calculation, it is possible to apply corrections to the p_values, two 
 -   Bonferroni correction :
 
 ```
-great.tl.GREAT.set_fdr(enrichment)
+great.tl.Great.set_fdr(enrichment)
 ```
 
 -   FDR correction :
 
 ```
-great.tl.GREAT.set_bonferroni(enrichment)
+great.tl.Great.set_bonferroni(enrichment)
 ```
 
 It is also possible to apply a threshold on one of the columns to reduce the table
 
 ```
-great.tl.GREAT.set_threshold(enrichment,colname = "column_to_apply_the_threshold",alpha = 0.05)
+great.tl.Great.set_threshold(enrichment,colname = "column_to_apply_the_threshold",alpha = 0.05)
 ```
 
 ### plot the results
@@ -117,7 +117,7 @@ test = [
     "AFF1:MV4-11,K-562"
     ]
 
-results = great.tl.GREAT.enrichment_multiple(
+results = great.tl.Great.enrichment_multiple(
     tests = test,
     regdom_file = "../data/human/hg38/regulatory_domain.bed",
     chr_size_file = "../data/human/hg38/chr_size.bed",

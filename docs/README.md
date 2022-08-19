@@ -90,7 +90,7 @@ The [association rules][association_rules] parameters could be :
     -   annotation file should have the following columns :`ensembl \t id \t name \t ontology.group \t gene.name \t symbol`
 
 ```python
-res = greatpy.tl.GREAT.enrichment(
+res = greatpy.tl.Great.enrichment(
     test_file=Input_path_or_df,  # eg : "../data/tests/test_data/input/10_MAX.bed"
     regdom_file=regdom_path_or_df,  # eg : "../data/human/hg38/regdom.bed"
     chr_size_file=chromosome_size_path_or_df,  # eg : "../data/human/hg38/chr_size.bed"
@@ -106,8 +106,8 @@ Several arguments can be added to this function such as :
 It is then possible to apply a Bonferroni and/or FDR correction to the found p-values:
 
 ```python
-great.tl.GREAT.set_fdr(res, alpha=0.05)
-great.tl.GREAT.set_bonferroni(res, alpha=0.05)
+great.tl.Great.set_fdr(res, alpha=0.05)
+great.tl.Great.set_bonferroni(res, alpha=0.05)
 ```
 
 #### <ins>3. Plot</ins>
@@ -158,7 +158,7 @@ great.pl.plot_enrich(plot)
 
 ```python
 test = ["name_bindome_biosample_1", "name_bindome_biosample_2", "..."]
-tmp_df = great.tl.GREAT.enrichment_multiple(
+tmp_df = great.tl.Great.enrichment_multiple(
     tests=test,
     regdom_file="../data/human/hg38/regulatory_domain.bed",
     chr_size_file="../data/human/hg38/chr_size.bed",
