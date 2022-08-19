@@ -221,7 +221,7 @@ class Regdom:
         """
         return Regdom._create_basal_plus_extension_regdom(tss, max_extension, 0, 0, chr_size)
 
-    def create_one_closet_regdom(tss: pd.DataFrame, maximum_extension: int, chr_size: pd.DataFrame) -> pd.DataFrame:
+    def _create_one_closet_regdom(tss: pd.DataFrame, maximum_extension: int, chr_size: pd.DataFrame) -> pd.DataFrame:
         """
         Create the regulatory domains using the OneCloset association rule
 
@@ -367,7 +367,7 @@ class Regdom:
         chr_size = pd.read_csv(chr_sizes_file, sep="\t", comment="#", names=["chr", "size"])
 
         if association_rule == "one_closet":
-            out = Regdom.create_one_closet_regdom(df, max_extension, chr_size)
+            out = Regdom._create_one_closet_regdom(df, max_extension, chr_size)
         elif association_rule == "two_closet":
             out = Regdom._create_two_closet_regdom(df, max_extension, chr_size)
         elif association_rule == "basal_plus_extention":
