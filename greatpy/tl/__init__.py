@@ -1,5 +1,5 @@
-from .GREAT import (
-    GREAT,
+from .great import (
+    Great,
     betacf,
     betai,
     get_association,
@@ -9,7 +9,7 @@ from .GREAT import (
     len_regdom,
     number_of_hits,
 )
-from .REGDOM import REGDOM
+from .regdom import Regdom
 from .utils import (
     get_dist_to_tss,
     get_nb_asso_per_region,

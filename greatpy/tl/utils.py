@@ -55,7 +55,7 @@ def get_nb_asso_per_region(test: str or pd.DataFrame, regdom: str or pd.DataFram
 
     """
     res = {}
-    test, regdom, _, _ = great.tl.GREAT.loader(test, regdom, None, None)
+    test, regdom, _, _ = great.tl.Great.loader(test, regdom, None, None)
     for i in range(test.shape[0]):
         currTest = test.iloc[i]
         regdom_curr_test = regdom.loc[(regdom["chr"] == currTest["chr"])].sort_values("chr_start")
@@ -123,7 +123,7 @@ def get_dist_to_tss(test: str or pd.DataFrame, regdom: str or pd.DataFrame) -> d
 
     """
     res = {}
-    test, regdom, _, _ = great.tl.GREAT.loader(test, regdom, None, None)
+    test, regdom, _, _ = great.tl.Great.loader(test, regdom, None, None)
     for i in range(test.shape[0]):
         currTest = test.iloc[i]
         mean_pos_test = (currTest["chr_end"] + currTest["chr_start"]) / 2
@@ -241,7 +241,7 @@ def online_vs_local_vs_greatpy_comparison(
         local = rpy2.robjects.r["getEnrichmentTables"](local)
 
         # greatpy calculation
-        greatpy = great.tl.GREAT.enrichment(
+        greatpy = great.tl.Great.enrichment(
             test_file=f"{input_folder}{name}",
             regdom_file=f"{information_folder}{assembly}/regulatory_domain.bed",
             chr_size_file=f"{information_folder}{assembly}/chr_size.bed",
@@ -387,7 +387,7 @@ def online_vs_local_vs_greatpy_comparison(
     res = pd.DataFrame(res)
     res = res.pivot("file", "name3", "value")
     g = sns.heatmap(data=res, cmap="Reds", annot=True)
-    g.set_title("correlation with GREAT server")
+    g.set_title("correlation with Great server")
     g.set_ylabel("online results for each file")
     g.set_xlabel("algorithm results for each file")
 
