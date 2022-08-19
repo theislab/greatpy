@@ -1,5 +1,5 @@
-from .GREAT import (
-    GREAT,
+from .great import (
+    Great,
     betacf,
     betai,
     get_association,
