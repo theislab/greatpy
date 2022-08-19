@@ -30,6 +30,7 @@ dependencies = [
     "dask",
     "scipy",
     "gprofiler",
+    "rpy2"
     ]
 
 [project.optional-dependencies]
