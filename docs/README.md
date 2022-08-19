@@ -9,6 +9,37 @@
 
 Implementation of GREAT in Python
 
+## Installation
+
+You need to have Python 3.8 or newer installed on your system. If you don't have
+Python installed, we recommend installing `Miniconda <https://docs.conda.io/en/latest/miniconda.html>`\_.
+
+There are several alternative options to install greatpy:
+
+<!--
+1) Install the latest release of `greatpy` from `PyPI <https://pypi.org/project/greatpy/>`_:
+
+```bash
+pip install greatpy
+```
+-->
+
+1. Install the latest development version:
+
+```bash
+pip install git+https://github.com/theislab/greatpy.git@main
+```
+
+## Notebook
+
+|   Information             |   link                    |
+| ------------------------- | ------------------------- |
+|   Create regdom           | [notebook][notebook1]     |
+|   enrichment              | [notebook][notebook2]     |
+|   plot                    | [notebook][notebook3]     |
+|   Comparaison with GREAT  | [notebook][notebook4]     |
+
+
 ## Getting started
 
 Please refer to the [documentation][link-docs]. In particular, the
@@ -32,8 +63,8 @@ This package is strongly inspired by [GREAT][great_article] allowing Helmholtz t
 
 ```python
 regdom = greatpy.tl.REGDOM.create_regdom(
-    tss_file=path_of_the_file,
-    chr_sizes_file="path_of_the_file",
+    tss_file=Input_TSS_path, # eg : "../data/human/hg38/tss.bed"
+    chr_sizes_file=Input_chromosome_size_path, # eg : "../data/human/hg38/chr_size.bed"
     association_rule="Basalplusextention",
     out_path=path_save_output,
 )
@@ -55,10 +86,10 @@ The [association rules][association_rules] parameters could be :
 
 ```python
 res = greatpy.tl.GREAT.enrichment(
-    test=path_of_genomic_region_to_test,
-    regdom_file=path_of_regdom_file,
-    chr_size_file=path_each_chromosome_size,
-    annotation=path_of_the_csv_file_of_ontologies,
+    test_file=Input_path_or_df, # eg : "../data/tests/test_data/input/10_MAX.bed"
+    regdom_file=regdom_path_or_df, # eg : "../data/human/hg38/regdom.bed"
+    chr_size_file=chromosome_size_path_or_df, # eg : "../data/human/hg38/chr_size.bed"
+    annotation_file=annotation_path_or_df, # eg : "../data/human/ontologies.csv"
 )
 ```
 
@@ -70,19 +101,13 @@ Several arguments can be added to this function such as :
 It is then possible to apply a Bonferroni and/or FDR correction to the found p-values:
 
 ```python
-res = greatpy.tl.GREAT.enrichment(
-    test_file=path_or_dataframe_of_genomic_region_to_test,
-    regdom_file=path_or_dataframe_of_regdom_file,
-    chr_size_file=path_or_dataframe_each_chromosome_size,
-    annotation_file=path_or_dataframe_of_the_csv_file_of_ontologies,
-)
 great.tl.GREAT.set_fdr(res, alpha=0.05)
 great.tl.GREAT.set_bonferroni(res, alpha=0.05)
 ```
 
 #### <ins>3. Plot</ins>
 
-It is also possible to create several types of plots:
+##### 1 genomic distribution of data
 
 -   Number of genetic associations per genomic region
 -   Distance to the associated gene TSS for each genomic region studied
@@ -91,13 +116,19 @@ It is also possible to create several types of plots:
 ```python
 fig, ax = plt.subplots(1, 3, figsize=(30, 8))
 greatpy.pl.graph_nb_asso_per_peaks(
-    path_or_dataframe_of_genomic_region_to_test, path_or_dataframe_of_regdom_file, ax[0]
+    Input_path_or_df, # eg : "../data/tests/test_data/input/10_MAX.bed"
+    regdom_path_or_df, # eg : "../data/human/hg38/regdom.bed"
+    ax[0]
 )
 greatpy.pl.graph_dist_tss(
-    path_or_dataframe_of_genomic_region_to_test, path_or_dataframe_of_regdom_file, ax[1]
+    Input_path_or_df, # eg : "../data/tests/test_data/input/10_MAX.bed"
+    regdom_path_or_df, # eg : "../data/human/hg38/regdom.bed"
+    ax[0]
 )
 greatpy.pl.graph_absolute_dist_tss(
-    path_or_dataframe_of_genomic_region_to_test, path_or_dataframe_of_regdom_file, ax[2]
+    Input_path_or_df, # eg : "../data/tests/test_data/input/10_MAX.bed"
+    regdom_path_or_df, # eg : "../data/human/hg38/regdom.bed"
+    ax[0]
 )
 plt.show()
 ```
@@ -106,7 +137,7 @@ plt.show()
 
 ```
 
--   Dotplot of the enrichment GO term in the genomic test region
+##### 2 Enrichments by GO terms (dotplot) - one input
 
 ```python
 plot = enrichment_df.rename(columns={"binom_p_value": "p_value", "go_term": "name"})
@@ -118,8 +149,7 @@ great.pl.plot_enrich(plot)
 :width: 600px
 ```
 
--   Dotplot of the enrichment GO terms in multiple genomic test regions
-
+#### 3 Enrichments by GO terms (dotplot) - multiple inputs
 ```python
 test = ["name_bindome_biosample_1", "name_bindome_biosample_2", "..."]
 tmp_df = great.tl.GREAT.enrichment_multiple(
@@ -136,12 +166,6 @@ tmp_df = great.tl.GREAT.enrichment_multiple(
 :width: 600px
 ```
 
-Several examples of uses can be found in the notebook part of the package:
-
--   For the create_regdom option: [notebook][notebook1]
--   For the enrichment function: [notebook][notebook2]
--   Plot : [notebook][notebook3]
-
 ## Note
 
 Both types of tests (binomial and hypergeometric) performed may be susceptible to certain biases of which one must be aware to analyze the results with a critical mind.
@@ -151,27 +175,6 @@ Both types of tests (binomial and hypergeometric) performed may be susceptible t
 
 But these biases are partially compensated between each of the tests the binomial test reduces the hypergeometric bias by taking into account exactly the size of the regulatory domains of the genes and the hypergeometric test compensates for the bias of the binomial test by counting each gene only once.
 The two types of tests are complementary and must be analyzed together to conclude.
-
-## Installation
-
-You need to have Python 3.8 or newer installed on your system. If you don't have
-Python installed, we recommend installing `Miniconda <https://docs.conda.io/en/latest/miniconda.html>`\_.
-
-There are several alternative options to install greatpy:
-
-<!--
-1) Install the latest release of `greatpy` from `PyPI <https://pypi.org/project/greatpy/>`_:
-
-```bash
-pip install greatpy
-```
--->
-
-1. Install the latest development version:
-
-```bash
-pip install git+https://github.com/theislab/greatpy.git@main
-```
 
 ## Release notes
 
@@ -209,6 +212,7 @@ References aviable in the [references page][reference].
 [notebook1]: https://greatpy.readthedocs.io/en/latest/notebooks/01_create_regdom.html
 [notebook2]: https://greatpy.readthedocs.io/en/latest/notebooks/02_binom_vs_hypergeom.html
 [notebook3]: https://greatpy.readthedocs.io/en/latest/notebooks/07_plot.html
+[notebook4]: https://greatpy.readthedocs.io/en/latest/notebooks/03_great_vs_greatpy.html
 [reference]: https://greatpy.readthedocs.io/en/latest/references.html
 [great_article]: https://www.nature.com/articles/nbt.1630
 [great_figure]: https://www.nature.com/articles/nbt.1630/figures/1
