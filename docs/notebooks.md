@@ -8,7 +8,7 @@ greatpy can allow you to create regulatory domains with a TSS.bed and chromosome
 
 ```
 import greatpy as great
-great.tl.REGDOM.create_regdom(
+great.tl.create_regdom(
     tss_file = '/path/to/tss.bed',
     chrom_size_file = '/path/to/chrom_size.bed',
     association_rule = "Basalplusextention_or_OneCloset_ore_TwoCloset",
