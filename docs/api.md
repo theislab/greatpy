@@ -64,7 +64,6 @@ import greatpy as gp
 
     tl.get_nb_asso_per_region
     tl.get_dist_to_tss
-    tl.online_vs_local_vs_greatpy_comparison
     tl.get_association
     tl.len_regdom
     tl.number_of_hits
