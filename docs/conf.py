@@ -19,7 +19,7 @@ sys.path.insert(0, str(HERE / "extensions"))
 info = metadata("greatpy")
 project = info["Name"]
 author = info["Author"]
-copyright = f"{datetime.now():%Y}, {author}."
+copyright = f"{datetime.now():%Y}, {author}"
 version = info["Version"]
 
 # The full version, including alpha/beta/rc tags
@@ -65,11 +65,6 @@ napoleon_include_init_with_doc = False
 napoleon_use_rtype = True  # having a separate entry generally helps readability
 napoleon_use_param = True
 
-intersphinx_mapping = {
-    "anndata": ("https://anndata.readthedocs.io/en/stable/", None),
-    "numpy": ("https://numpy.org/doc/stable/", None),
-}
-
 nbsphinx_execute = "never"
 
 # List of patterns, relative to source directory, that match files and
@@ -83,16 +78,36 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", "**.ipynb_checkpoints"]
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = "furo"
+html_theme = "scanpydoc"
 html_static_path = ["_static"]
+html_css_files = ["custom.css"]
 
 pygments_style = "sphinx"
 
 nitpick_ignore = [
     # If building the documentation fails because of a missing link that is outside your control,
     # you can add an exception to this list.
-    #     ("py:class", "igraph.Graph"),
+    ("py:class", "pd.DataFrame"),
+    ("py:class", "pd.dataFrame"),
+    ("py:class", "int : default 1000000"),
+    ("py:class", "int : default 5000"),
+    ("py:class", "int : default 1000"),
+    ("py:class", "default True"),
+    ("py:class", "NoneType : default None"),
+    ("py:class", "matplotlib.cm"),
+    ("py:class", "matplotlib.axes"),
+    ("py:class", "optional"),
+    ("py:class", "NoneType"),
 ]
+
+
+intersphinx_mapping = dict(
+    matplotlib=("https://matplotlib.org/stable", None),
+    numpy=("https://numpy.org/doc/stable/", None),
+    pandas=("https://pandas.pydata.org/pandas-docs/stable/", None),
+    upsetplot=("https://upsetplot.readthedocs.io/en/stable/", None),
+    python=("https://docs.python.org/3", None),
+)
 
 
 def setup(app):

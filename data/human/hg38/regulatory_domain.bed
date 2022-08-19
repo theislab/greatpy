@@ -1,4 +1,4 @@
-#chr	ChrStart	ChrEnd	name	tss	strand
+#chr	chr_start	chr_end	name	tss	strand
 chr1	0	450697	OR4F5	65418	+
 chr1	66418	685673	OR4F29	451697	-
 chr1	456697	920737	OR4F16	686673	-

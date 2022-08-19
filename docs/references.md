@@ -1,5 +1,10 @@
 # References
 
+## GREAT article
+
 ```{bibliography}
-:cited:
+    :cited:
+
+GREAT
+rGREAT
 ```
