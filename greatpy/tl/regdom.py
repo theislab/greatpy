@@ -4,7 +4,7 @@ pd.options.display.float_format = "{:12.5e}".format
 
 
 class Regdom:
-    def __validate_input(association: str, max_extension: int, basal_upstream: int, basal_downstream: int) -> bool:
+    def _validate_input(association: str, max_extension: int, basal_upstream: int, basal_downstream: int) -> bool:
         """
         Checks that the inputs (association_rule, max_extension, basal_upstream, basal_downstream) are valid
 
@@ -46,7 +46,7 @@ class Regdom:
             return False
         return True
 
-    def __write_regdom(regdom: pd.DataFrame, file_name: str) -> None:
+    def _write_regdom(regdom: pd.DataFrame, file_name: str) -> None:
         """
         Write the regulatory regions calculated in a file given in argument
 
@@ -74,7 +74,7 @@ class Regdom:
             f.write(f"{chr}\t{start}\t{end}\t{name}\t{tss}\t{strand}\n")
         f.close()
 
-    def __create_basal_plus_extension_regdom(
+    def _create_basal_plus_extension_regdom(
         tss: pd.DataFrame, maximumExtension: int, basalUp: int, basalDown: int, chr_size: pd.DataFrame
     ) -> pd.DataFrame:
         """
@@ -183,7 +183,7 @@ class Regdom:
         tss["chr_end"] = end
         return tss
 
-    def __create_two_closet_regdom(tss: pd.DataFrame, max_extension: int, chr_size: pd.DataFrame) -> pd.DataFrame:
+    def _create_two_closet_regdom(tss: pd.DataFrame, max_extension: int, chr_size: pd.DataFrame) -> pd.DataFrame:
         """
         Create the regulatory domains using the TwoCloset association rule.\n
         It is based on the basal plus extension rule but with basalUp and basalDown equals to 0.\n
@@ -204,7 +204,7 @@ class Regdom:
 
         Examples
         --------
-        >>> regdom = __create_two_closet_regdom(
+        >>> regdom = _create_two_closet_regdom(
             tss_file=pd.read_csv("../../data/human/tss.bed",sep="\t",names=["chr","tss","strand"]),
             maximumExtension=100000,
             chr_sizes=pd.read_csv("../../data/human/chr_size.bed",sep="\t",names=["chr","size"])
@@ -219,7 +219,7 @@ class Regdom:
         ...    |  4 | chr1  |       17436 |     30365 | WASH7P    | 29370 | -        |
 
         """
-        return Regdom.__create_basal_plus_extension_regdom(tss, max_extension, 0, 0, chr_size)
+        return Regdom._create_basal_plus_extension_regdom(tss, max_extension, 0, 0, chr_size)
 
     def create_one_closet_regdom(tss: pd.DataFrame, maximum_extension: int, chr_size: pd.DataFrame) -> pd.DataFrame:
         """
@@ -357,7 +357,7 @@ class Regdom:
         ...    |  4 | chr1  |       23403 |     29867 | WASH7P    | 29370 | -        |
 
         """
-        if not Regdom.__validate_input(association_rule, max_extension, basal_upstream, basal_downstream):
+        if not Regdom._validate_input(association_rule, max_extension, basal_upstream, basal_downstream):
             print("Invalid input")
             return False
         df = pd.read_csv(tss_file, sep="\t", comment="#", names=["chr", "tss", "strand", "name"])
@@ -369,9 +369,9 @@ class Regdom:
         if association_rule == "one_closet":
             out = Regdom.create_one_closet_regdom(df, max_extension, chr_size)
         elif association_rule == "two_closet":
-            out = Regdom.__create_two_closet_regdom(df, max_extension, chr_size)
+            out = Regdom._create_two_closet_regdom(df, max_extension, chr_size)
         elif association_rule == "basal_plus_extention":
-            out = Regdom.__create_basal_plus_extension_regdom(
+            out = Regdom._create_basal_plus_extension_regdom(
                 df, max_extension, basal_upstream, basal_downstream, chr_size
             )
         else:
@@ -380,5 +380,5 @@ class Regdom:
         out = out.reindex(["chr", "chr_start", "chr_end", "name", "tss", "strand"], axis=1)
 
         if out_path is not None:
-            Regdom.__write_regdom(out, out_path)
+            Regdom._write_regdom(out, out_path)
         return out

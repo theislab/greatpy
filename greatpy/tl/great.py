@@ -200,7 +200,7 @@ class Great:
 
         return test_data, regdom, size, ann
 
-    def __enrichment_binom_and_hypergeom(
+    def _enrichment_binom_and_hypergeom(
         test: pd.DataFrame, regdom: pd.DataFrame, size: pd.DataFrame, ann: pd.DataFrame, asso: list
     ) -> pd.DataFrame:
         """
@@ -232,7 +232,7 @@ class Great:
             "../../data/human/hg38/chr_size.bed",
             "../data/human/ontologies.csv"
             )
-        >>> enrichment = Great.____enrichment_binom_and_hypergeom(
+        >>> enrichment = Great.__enrichment_binom_and_hypergeom(
             test = test,
             regdom = regdom,
             size = size,
@@ -326,7 +326,7 @@ class Great:
             .sort_values(by="binom_p_value")
         )
 
-    def __enrichment_binom(
+    def _enrichment_binom(
         test: pd.DataFrame, regdom: pd.DataFrame, size: pd.DataFrame, ann: pd.DataFrame, asso: list
     ) -> pd.DataFrame:
         """
@@ -358,7 +358,7 @@ class Great:
             "../../data/human/hg38/chr_size.bed",
             "../data/human/ontologies.csv"
             )
-        >>> enrichment = Great.____enrichment_binom(
+        >>> enrichment = Great.__enrichment_binom(
             test = test,
             regdom = regdom,
             size = size,
@@ -437,7 +437,7 @@ class Great:
             .sort_values(by="binom_p_value")
         )
 
-    def __enrichment_hypergeom(test: pd.DataFrame, regdom: pd.DataFrame, ann: pd.DataFrame, asso: list) -> pd.DataFrame:
+    def _enrichment_hypergeom(test: pd.DataFrame, regdom: pd.DataFrame, ann: pd.DataFrame, asso: list) -> pd.DataFrame:
         """
         Used to compute the enrichment of the test data using the hypergeometric test.
 
@@ -467,7 +467,7 @@ class Great:
             "../data/human/hg19/chr_size.bed",
             "../data/human/ontologies.csv"
             )
-        >>> enrichment = Great.____enrichment_hypergeom(
+        >>> enrichment = Great.__enrichment_hypergeom(
             test = test,
             regdom = regdom,
             ann = ann,
@@ -639,13 +639,13 @@ class Great:
         )  # get the name of the regulatory domain associated to each genomic region in the test set
 
         if binom and hypergeom:
-            return Great.__enrichment_binom_and_hypergeom(test, regdom, size, ann, asso)
+            return Great._enrichment_binom_and_hypergeom(test, regdom, size, ann, asso)
 
         elif binom:
-            return Great.__enrichment_binom(test, regdom, size, ann, asso)
+            return Great._enrichment_binom(test, regdom, size, ann, asso)
 
         else:
-            return Great.__enrichment_hypergeom(test, regdom, ann, asso)
+            return Great._enrichment_hypergeom(test, regdom, ann, asso)
 
     # TODO : add bindome when it is available
     def enrichment_multiple(
@@ -733,13 +733,13 @@ class Great:
             )  # get the name of the regulatory domain associated to each genomic region in the test set
 
             if binom and hypergeom:
-                enrichment = Great.__enrichment_binom_and_hypergeom(tmp, regdom, size, ann, asso)
+                enrichment = Great._enrichment_binom_and_hypergeom(tmp, regdom, size, ann, asso)
 
             elif binom:
-                enrichment = Great.__enrichment_binom(tmp, regdom, size, ann, asso)
+                enrichment = Great._enrichment_binom(tmp, regdom, size, ann, asso)
 
             else:
-                enrichment = Great.__enrichment_hypergeom(tmp, regdom, ann, asso)
+                enrichment = Great._enrichment_hypergeom(tmp, regdom, ann, asso)
 
             # if annpath is not None:
             #     res[name_TF] = enrichment
