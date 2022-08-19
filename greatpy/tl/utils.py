@@ -1,5 +1,7 @@
 import pandas as pd
+
 import greatpy as great
+
 
 def get_nb_asso_per_region(test: str or pd.DataFrame, regdom: str or pd.DataFrame) -> dict:
     """

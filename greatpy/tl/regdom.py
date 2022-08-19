@@ -45,6 +45,7 @@ def _validate_input(association: str, max_extension: int, basal_upstream: int, b
         return False
     return True
 
+
 def _write_regdom(regdom: pd.DataFrame, file_name: str) -> None:
     """
     Write the regulatory regions calculated in a file given in argument
@@ -72,6 +73,7 @@ def _write_regdom(regdom: pd.DataFrame, file_name: str) -> None:
         strand = curr["strand"]
         f.write(f"{chr}\t{start}\t{end}\t{name}\t{tss}\t{strand}\n")
     f.close()
+
 
 def _create_basal_plus_extension_regdom(
     tss: pd.DataFrame, maximumExtension: int, basalUp: int, basalDown: int, chr_size: pd.DataFrame
@@ -134,9 +136,7 @@ def _create_basal_plus_extension_regdom(
             curr_chr_start = max(0, tmp - basalDown)
             curr_chr_end = min(curr_chr_size, tmp + basalUp)
         elif curr["strand"] == ".":
-            print(
-                "Invalid_Input : Impossible to create a basal expression regdom if you have not specify the strand"
-            )
+            print("Invalid_Input : Impossible to create a basal expression regdom if you have not specify the strand")
             return False
         else:
             err = curr["strand"]
@@ -182,6 +182,7 @@ def _create_basal_plus_extension_regdom(
     tss["chr_end"] = end
     return tss
 
+
 def _create_two_closet_regdom(tss: pd.DataFrame, max_extension: int, chr_size: pd.DataFrame) -> pd.DataFrame:
     """
     Create the regulatory domains using the TwoCloset association rule.\n
@@ -219,6 +220,7 @@ def _create_two_closet_regdom(tss: pd.DataFrame, max_extension: int, chr_size: p
 
     """
     return _create_basal_plus_extension_regdom(tss, max_extension, 0, 0, chr_size)
+
 
 def _create_one_closet_regdom(tss: pd.DataFrame, maximum_extension: int, chr_size: pd.DataFrame) -> pd.DataFrame:
     """
@@ -297,6 +299,7 @@ def _create_one_closet_regdom(tss: pd.DataFrame, maximum_extension: int, chr_siz
     tss["chr_end"] = end
     return tss
 
+
 def create_regdom(
     tss_file: str,
     chr_sizes_file: str,
@@ -370,9 +373,7 @@ def create_regdom(
     elif association_rule == "two_closet":
         out = _create_two_closet_regdom(df, max_extension, chr_size)
     elif association_rule == "basal_plus_extention":
-        out = _create_basal_plus_extension_regdom(
-            df, max_extension, basal_upstream, basal_downstream, chr_size
-        )
+        out = _create_basal_plus_extension_regdom(df, max_extension, basal_upstream, basal_downstream, chr_size)
     else:
         return False
     out = out.astype({"chr_start": int, "chr_end": int})

@@ -137,9 +137,7 @@ def loader(
         test_data = test_data.iloc[:, :3]
         colname = list(test_data.columns)
         try:
-            test_data = test_data.rename(
-                columns={colname[0]: "chr", colname[1]: "chr_start", colname[2]: "chr_end"}
-            )
+            test_data = test_data.rename(columns={colname[0]: "chr", colname[1]: "chr_start", colname[2]: "chr_end"})
         except:
             print("Error in test dataframe, please check your input")
             print("Columns should be : chr...(type object), start(type int), end(type int)")
@@ -198,6 +196,7 @@ def loader(
         ann = annotation_file
 
     return test_data, regdom, size, ann
+
 
 def _enrichment_binom_and_hypergeom(
     test: pd.DataFrame, regdom: pd.DataFrame, size: pd.DataFrame, ann: pd.DataFrame, asso: list
@@ -297,8 +296,7 @@ def _enrichment_binom_and_hypergeom(
                     get_binom_pval(n_binom, elem[0], elem[1] / total_nu),
                     elem[0] / (elem[1] / total_nu),  # binom enrichment
                     hypergeom_cdf(hypergeom_total_number_gene, elem[4], hypergeom_gene_set, elem[5]),
-                    (elem[5] * hypergeom_total_number_gene)
-                    / (hypergeom_gene_set * elem[4]),  # Hypergeom enrichment
+                    (elem[5] * hypergeom_total_number_gene) / (hypergeom_gene_set * elem[4]),  # Hypergeom enrichment
                     elem[0],
                     elem[0] / elem[4],
                 ]
@@ -324,6 +322,7 @@ def _enrichment_binom_and_hypergeom(
         .dropna()
         .sort_values(by="binom_p_value")
     )
+
 
 def _enrichment_binom(
     test: pd.DataFrame, regdom: pd.DataFrame, size: pd.DataFrame, ann: pd.DataFrame, asso: list
@@ -436,6 +435,7 @@ def _enrichment_binom(
         .sort_values(by="binom_p_value")
     )
 
+
 def _enrichment_hypergeom(test: pd.DataFrame, regdom: pd.DataFrame, ann: pd.DataFrame, asso: list) -> pd.DataFrame:
     """
     Used to compute the enrichment of the test data using the hypergeometric test.
@@ -513,8 +513,7 @@ def _enrichment_hypergeom(test: pd.DataFrame, regdom: pd.DataFrame, ann: pd.Data
                 elem[0]: [
                     elem[1],
                     hypergeom_cdf(hypergeom_total_number_gene, elem[2], hypergeom_gene_set, elem[3]),
-                    (elem[3] * hypergeom_total_number_gene)
-                    / (hypergeom_gene_set * elem[2]),  # hypergeom enrichment
+                    (elem[3] * hypergeom_total_number_gene) / (hypergeom_gene_set * elem[2]),  # hypergeom enrichment
                     elem[3],
                     elem[3] / elem[2],
                 ]
@@ -538,6 +537,7 @@ def _enrichment_hypergeom(test: pd.DataFrame, regdom: pd.DataFrame, ann: pd.Data
         .dropna()
         .sort_values(by="hypergeom_p_value")
     )
+
 
 def enrichment(
     test_file: str or pd.DataFrame,
@@ -646,6 +646,7 @@ def enrichment(
     else:
         return _enrichment_hypergeom(test, regdom, ann, asso)
 
+
 # TODO : add bindome when it is available
 def enrichment_multiple(
     tests: list,
@@ -746,7 +747,8 @@ def enrichment_multiple(
         res[name] = enrichment
     return res
 
-def set_bonferroni(enrichment_df:pd.DataFrame, alpha: float = 0.05) -> pd.DataFrame:
+
+def set_bonferroni(enrichment_df: pd.DataFrame, alpha: float = 0.05) -> pd.DataFrame:
     """
     Create new columns in the dataframe with the Bonferroni correction
 
@@ -793,10 +795,13 @@ def set_bonferroni(enrichment_df:pd.DataFrame, alpha: float = 0.05) -> pd.DataFr
     for col in enrichment_df.columns:
         if col in ["binom_p_value", "hypergeom_p_value"]:
             col_split = col.split("_")
-            enrichment_df[f"{col_split[0]}_bonferroni"] = multipletests(enrichment_df[col], alpha=alpha, method="bonferroni")[1]
+            enrichment_df[f"{col_split[0]}_bonferroni"] = multipletests(
+                enrichment_df[col], alpha=alpha, method="bonferroni"
+            )[1]
     return enrichment_df
 
-def set_fdr(enrichment_df:pd.DataFrame, alpha: float = 0.05) -> pd.DataFrame:
+
+def set_fdr(enrichment_df: pd.DataFrame, alpha: float = 0.05) -> pd.DataFrame:
     """
     Create new columns in the dataframe with the fdr correction
 
@@ -846,7 +851,8 @@ def set_fdr(enrichment_df:pd.DataFrame, alpha: float = 0.05) -> pd.DataFrame:
             enrichment_df[f"{col_split[0]}_fdr"] = multipletests(enrichment_df[col], alpha=alpha, method="fdr_bh")[1]
     return enrichment_df
 
-def set_threshold(enrichment_df:pd.DataFrame, colname: str, alpha: int = 0.05) -> pd.DataFrame:
+
+def set_threshold(enrichment_df: pd.DataFrame, colname: str, alpha: int = 0.05) -> pd.DataFrame:
     """
     Delete rows according to the p-value of the column taken as argument. By default the alpha value is 0.05
 
