@@ -11,55 +11,54 @@ Implementation of GREAT in Python
 
 ## Installation
 
-You need to have Python 3.8 or newer installed on your system. If you don't have
+You require Python 3.8 or newer installed on your system. In case you do not have
 Python installed, we recommend installing `Miniconda <https://docs.conda.io/en/latest/miniconda.html>`\_.
 
-There are several alternative options to install greatpy:
+Options to install `greatpy`:
 
-<!--
-1) Install the latest release of `greatpy` from `PyPI <https://pypi.org/project/greatpy/>`_:
-
-```bash
-pip install greatpy
-```
--->
-
-1. Install the latest development version:
+1. Install the latest release of `greatpy` from `PyPI <https://pypi.org/project/greatpy/>`:
 
 ```bash
-pip install git+https://github.com/theislab/greatpy.git@main
+ pip install greatpy
 ```
 
-## Notebook
+2. Install the latest development version:
 
-| Information            | link                  |
-| ---------------------- | --------------------- |
-| Create regdom          | [notebook][notebook1] |
-| enrichment             | [notebook][notebook2] |
-| plot                   | [notebook][notebook3] |
-| Comparaison with GREAT | [notebook][notebook4] |
+```bash
+ pip install git+https://github.com/theislab/greatpy.git@main
+```
+
+## Notebooks
+
+| Information                               | link                  |
+| ----------------------------------------- | --------------------- |
+| Create regulatory domains file (regdom)   | [notebook][notebook1] |
+| Enrichment test (binomial/hypergeometric) | [notebook][notebook2] |
+| Plotting of results                       | [notebook][notebook3] |
+| Comparisons with GREAT                    | [notebook][notebook4] |
 
 ## Getting started
 
-Please refer to the [documentation][link-docs]. In particular, the
+Please refer to
 
+-   [Documentation][link-docs].
 -   [API documentation][link-api].
 
-### What is GREAT :
+### What is greatpy:
 
-GREAT (Genomic Regions Enrichment of Annotations Tool) is a bioinformatics tool, this method enables to associate genetic regions to the most probable GO terms.
-
-### How to use greatpy :
-
-This package is strongly inspired by [GREAT][great_article] allowing Helmholtz to have a stable, perennial and updated version of the package.
+greatpy is a bioinformatics method that associates custom genomic regions to Gene Ontology (GO) terms by weighting genomic neighborhoods. It is based on and inspired by and inspired by [GREAT][great_article] (Genomic Regions Enrichment of Annotations Tool).
 
 [GREAT figure][great_figure] issue from [GREAT article][great_article]
 
+### Usage:
+
 #### <ins>1. Create regulatory domain from tss</ins>
 
--   Translate a genetic file in `.bed` format and containing the following information:
-    -   TSS file should have the following columns :`chromosome_number \t position \t strand \t gene_name`.
-    -   Chromosome size file should have the following columns :`chromosome_number \t chromosome_size`.
+-   Translate tab-separated files (`.tsv` or `.bed` format) containing the following information:
+    1.  Transcription start site annotations:`chromosome_number \t position \t strand \t gene_name`.
+    2.  Chromosome sizes file should have the following columns :`chromosome_number \t chromosome_size`.
+
+See [data](https://github.com/theislab/greatpy/tree/main/data/human/hg38) for input files
 
 ```python
 regdom = greatpy.tl.create_regdom(
@@ -70,24 +69,26 @@ regdom = greatpy.tl.create_regdom(
 )
 ```
 
-The [association rules][association_rules] parameters could be :
+Allowed [association rules][association_rules] are:
 
 -   `Basalplusextention`
 -   `OneCloset`
 -   `TwoCloset`
 
 <p align="center">
-  <img src="./sketch/association_rule.jpg?raw=true" style="width:75%">
+<img src="./sketch/association_rule.jpg?raw=true" style="width:75%">
 </p>
 
 #### <ins>2. Get enrichment of GO term in the tests genomics regions</ins>
 
--   Analyzes the significance of proximal and distal cis-regulatory regions in the genome.
--   Some files should be used as input :
-    -   test file should have the following columns :`chr \t chr_start \t chr_end`.
-    -   regulatory domain file should have the following columns :`chr \t chr_start \t chr_end \t name \t tss strand`
-    -   chromosome size file should have the following columns :`chromosome_number \t chromosome_size`.
-    -   annotation file should have the following columns :`ensembl \t id \t name \t ontology.group \t gene.name \t symbol`
+-   This step calculates the significance of a custom set of genomic annotations through peak-gene mapping, using distal cis-regulatory regions of the genome.
+-   Input files :
+-   test file should have the following columns :`chr \t chr_start \t chr_end`.
+-   regulatory domain file should have the following columns :`chr \t chr_start \t chr_end \t name \t tss strand`
+-   chromosome size file should have the following columns :`chromosome_number \t chromosome_size`.
+-   annotation file should have the following columns :`ensembl \t id \t name \t ontology.group \t gene.name \t symbol`
+
+See [test cases](https://github.com/theislab/greatpy/tree/main/data/tests/test_data) for genomic input files.
 
 ```python
 res = greatpy.tl.enrichment(
@@ -98,12 +99,12 @@ res = greatpy.tl.enrichment(
 )
 ```
 
-Several arguments can be added to this function such as :
+Allowed tests for this function such as :
 
--   `binom` (default True): should the binomial p-value be calculated?
--   `hypergeom` (default True): should the hypergeometric p-value be computed?
+-   `binom` (default True): it calculates the binomial p-value.
+-   `hypergeom` (default True): it calculates the hypergeometric p-value.
 
-It is then possible to apply a Bonferroni and/or FDR correction to the found p-values:
+Additionally, it is also possible to apply a Bonferroni and/or FDR correction to the found p-values:
 
 ```python
 res = great.tl.set_fdr(res, alpha=0.05)
@@ -112,11 +113,11 @@ res = great.tl.set_bonferroni(res, alpha=0.05)
 
 #### <ins>3. Plot</ins>
 
-##### 1 genomic distribution of data
+##### 1 Distribution of custom genomic annotations in regulatory domains
 
--   Number of genetic associations per genomic region
--   Distance to the associated gene TSS for each genomic region studied
--   Absolute distance to the associated gene TSS for each genomic region studied
+-   Number of genetic associations per genomic region.
+-   Distance to the associated gene TSS for each genomic region studied.
+-   Absolute distance to the associated gene TSS for each genomic region studied.
 
 ```python
 fig, ax = plt.subplots(1, 3, figsize=(30, 8))
@@ -139,7 +140,7 @@ plt.show()
 ```
 
 <p align="center">
-  <img src="./sketch/plot1.png?raw=true">
+<img src="./sketch/plot1.png?raw=true">
 </p>
 
 ##### 2 Enrichments by GO terms (dotplot) - one input
@@ -151,10 +152,10 @@ great.pl.plot_enrich(plot)
 ```
 
 <p align="center">
-  <img src="./sketch/dotplot.png?raw=true" style="width:75%">
+<img src="./sketch/dotplot.png?raw=true" style="width:75%">
 </p>
 
-#### 3 Enrichments by GO terms (dotplot) - multiple inputs
+##### 3 Enrichments by GO terms (dotplot) - multiple inputs
 
 ```python
 test = ["name_bindome_biosample_1", "name_bindome_biosample_2", "..."]
@@ -169,18 +170,13 @@ tmp_df = great.tl.enrichment_multiple(
 ```
 
 <p align="center">
-  <img src="./sketch/multidot.png?raw=true" alt="dotplot of multi sample" width="300" height="400">
+<img src="./sketch/multidot.png?raw=true" alt="dotplot of multi sample" width="300" height="400">
 </p>
 
-## Note
+## Notes
 
-Both types of tests (binomial and hypergeometric) performed may be susceptible to certain biases of which one must be aware to analyze the results with a critical mind.
-
--   The hypergeometric test may be biased by the size of the regulatory domains of the genes since isolated genes have very large regulatory domains and are therefore more likely to generate false positives.
--   The binomial test can also be biased if a large number of genomic regions to be tested are associated with a small set of genes that can also generate false positives.
-
-But these biases are partially compensated between each of the tests the binomial test reduces the hypergeometric bias by taking into account exactly the size of the regulatory domains of the genes and the hypergeometric test compensates for the bias of the binomial test by counting each gene only once.
-The two types of tests are complementary and must be analyzed together to conclude.
+Both binomial and hypergeometric tests may be susceptible to biases of which one must be aware to analyze the results critically. The binomial test reduces the hypergeometric bias by taking into account exactly the size of the regulatory domains of the genes, whereas the hypergeometric test compensates for the bias of the binomial test by counting each gene only once.
+The two types of tests are complementary and are recommended to be analyzed together.
 
 ## Release notes
 
@@ -193,16 +189,16 @@ If you found a bug, please use the [issue tracker][issue-tracker].
 
 ## Citation
 
-For cite greatpy :
+If greatpy is useful for your research, please consider to cite as:
 
 ```bibtex
 @software{greatpy,
-  author = {Ibarra, Mauger-Birocheau},
-  doi = {},
-  month = {},
-  title = {{greatpy}},
-  url = {https://github.com/theislab/greatpy},
-  year = {2022}
+author = {Ibarra, Mauger-Birocheau},
+doi = {},
+month = {},
+title = {{greatpy}},
+url = {https://github.com/theislab/greatpy},
+year = {2022}
 }
 ```
 
@@ -210,28 +206,28 @@ For cite greatpy :
 
 ```bibtex
 @article{GREAT,
-  author   = {McLean, C.
-              and Bristor, D.
-              and Hiller, M. et al.},
-  title    = {GREAT improves functional interpretation of cis-regulatory regions},
-  journal  = {Nat Biotechnol},
-  year     = {2010},
-  month    = {May},
-  day      = {02},
-  volume   = {28},
-  number   = {495},
-  pages    = {501},
-  doi      = {10.1038/nbt.1630},
-  url      = {https://doi.org/10.1038/nbt.1630}
+author   = {McLean, C.
+            and Bristor, D.
+            and Hiller, M. et al.},
+title    = {GREAT improves functional interpretation of cis-regulatory regions},
+journal  = {Nat Biotechnol},
+year     = {2010},
+month    = {May},
+day      = {02},
+volume   = {28},
+number   = {495},
+pages    = {501},
+doi      = {10.1038/nbt.1630},
+url      = {https://doi.org/10.1038/nbt.1630}
 }
 ```
 
 ```bibtex
 @Manual{rGREAT,
-  title = {rGREAT: GREAT Analysis - Functional Enrichment on Genomic Regions},
-  author = {Zuguang Gu},
-  year = {2022},
-  note = {https://github.com/jokergoo/rGREAT, http://great.stanford.edu/public/html/},
+title = {rGREAT: GREAT Analysis - Functional Enrichment on Genomic Regions},
+author = {Zuguang Gu},
+year = {2022},
+note = {https://github.com/jokergoo/rGREAT, http://great.stanford.edu/public/html/},
 }
 ```
 
