@@ -186,12 +186,13 @@ def loader(
     elif type(annotation_file) == pd.DataFrame:
         ann = annotation_file.iloc[:, :4]
         colname = list(ann.columns)
-        try:
-            ann = ann.rename(columns={colname[0]: "id", colname[1]: "name", colname[3]: "symbol"})
-        except:
-            print("Error in the format of the annotation file")
-            print("The annotation file must have the following columns : id, name, symbol")
-            return False
+        if not colname == ['id', 'name', 'symbol']:
+            try:
+                ann = ann.rename(columns={colname[0]: "id", colname[1]: "name", colname[3]: "symbol"})
+            except:
+                print("Error in the format of the annotation file")
+                print("The annotation file must have the following columns : id, name, symbol")
+                return False
     else:
         ann = annotation_file
 
@@ -405,7 +406,7 @@ def _enrichment_binom(
             nb_binom = sum(
                 len_on_chr[i] for i in curr_regdom["name"]
             )  # get the portion of the genome in the regulatory domain of a gene with annotation
-            tmp.append(k_binom, nb_binom, i, gene_imply.iloc[0]["name"], K)
+            tmp.append((k_binom, nb_binom, i, gene_imply.iloc[0]["name"], K))
 
         res.update(
             {
